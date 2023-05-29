@@ -1,0 +1,309 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    border: none;
+    outline: none;
+    scroll-behavior: smooth;
+    font-family: 'Raleway', 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+}
+
+html {
+    font-size: 62.5%;
+    overflow-x: hidden;
+}
+
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 2rem 9%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 2.5rem;
+    font-weight: 600;
+    cursor: grab;
+    color: #000;
+}
+
+.navbar a {
+    color: #000;
+    font-size: 1.7rem;
+    margin-left: 4rem;
+    transition: .3s;
+}
+
+.navbar a:hover,
+.navbar a.active {
+    color: orangered;
+}
+
+section {
+    min-height: 100vh;
+    padding: 10rem 9% 2rem;
+}
+
+.home {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.home-content h1 {
+    font-size: 5.2rem;
+    font-weight: 700;
+
+}
+
+.home-content h2 {
+    font-size: 3.2rem;
+    font-weight: 700;
+}
+
+.home-content h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.social-media a {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 4rem;
+    height: 4rem;
+    background: transparent;
+    border: .2rem solid var(#00000070);
+    border-radius: 50%;
+    font-size: 2rem;
+    color: black;
+    margin: 3rem 1.5rem 3rem 0;
+    transition: .5s ease;
+}
+
+.social-media a:hover {
+    background: orangered;
+    color: white;
+    box-shadow: 0 0 1rem var(#000)
+}
+
+.home-img {
+    height: 600px;
+    width: 600px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 1rem 2.8rem;
+    background: orangered;
+    border-radius: 4rem;
+    box-shadow: 0 0 1rem orange;
+    font-size: 1.6rem;
+    color: white;
+    letter-spacing: .1rem;
+    font-weight: 600;
+}
+
+.about {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+
+
+}
+
+.about-img {
+    width: 35vw;
+}
+
+.heading {
+    text-align: center;
+    font-size: 4.5rem;
+}
+
+.about-content span {
+    color: orangered;
+}
+
+.about-content h2 {
+    text-align: left;
+    line-height: 1.2;
+}
+
+.about-content h3 {
+    font-size: 2.6rem;
+}
+
+.about-content p {
+    font-size: 1.6rem;
+    margin: 2rem 0 3rem;
+}
+
+.skills-content span {
+    color: orangered;
+}
+
+.skills h2 {
+    margin-bottom: 5rem;
+}
+
+.skills-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.skills-container .skills-box {
+    flex: 1 1 30rem;
+    padding: 3rem 2rem 4rem;
+    border-radius: 2rem;
+    text-align: center;
+    border: .2rem solid;
+    transition: .5s ease;
+    display: inline-block;
+    margin: 10px;
+
+
+
+}
+
+.skills-container .skills-box:hover {
+    border-color: orangered;
+    transform: scale(1.02);
+}
+
+.skills-box i {
+    font-size: 7rem;
+    color: orangered;
+}
+
+.skills-box h3 {
+    font-size: 2.6rem;
+}
+
+.skills-box p {
+    font-size: 1.6rem;
+    margin: 1rem 0 3rem;
+}
+
+.projects-content span {
+    color: orangered;
+}
+
+/* Add the following styles to your CSS file */
+
+.me-img {
+    display: flex;
+    justify-content: center;
+    border-color: orangered;
+    
+  }
+  
+  .me-img img {
+    border-radius:90%;
+    max-width: 100%;
+    height: 700px;
+    border-color: orangered;
+    border-style:groove;
+    
+  }
+  
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 2rem 9%;
+    background: whitesmoke;
+}
+
+.footer-text {
+    font-size: 1.6rem;
+}
+
+.footer-icon a {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: .8rem;
+    background: orangered;
+    border-radius: 25px;
+    transition: .5 ease;
+}
+
+.footer-icon a i {
+    font-size: 2.4rem;
+    color: whitesmoke;
+}
+.portfolio-container{
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+align-items: center;
+gap: 2.5rem;
+}
+
+.portfolio-container .portfolio-box {
+    position: relative;
+    border-radius: .2rem;
+    box-shadow: 0 0 1rem var (orangered);
+    display: flex;
+    cursor:pointer;
+}
+  
+.portfolio-box img {
+    width: 100%;
+}
+
+.portfolio-box:hover img {
+    transform: scale(1.1);
+}
+.portfolio-box .portfolio-layer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 0 4rem;
+    transform: translateY(100%);
+    transition: .5s ease
+
+}
+.portfolio-box:hover .portfolio-layer
+{
+
+    transform: translateY(100%);
+}
+
+.portfolio-layer h4 {
+    font-size: 3rem;
+    color:#000;
+}     
+.portfolio-layer a{
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+}
+.portfolio-layer a i {
+    font-size: 2rem;
+}
