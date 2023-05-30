@@ -12,6 +12,9 @@
         'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
         sans-serif;
 }
+.animate__animated.animate__bounce {
+    --animate-duration: 2s;
+  }
 
 html {
     font-size: 62.5%;
