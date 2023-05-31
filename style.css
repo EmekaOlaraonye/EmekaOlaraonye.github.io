@@ -214,14 +214,22 @@ section {
 .me-img {
     display: flex;
     justify-content: center;
+    
+    
+  }
+  .me-img:hover {
+    transform: scale(1.02);
     border-color: orangered;
     
   }
-  
+
+  .about {
+    margin-top: -145px;
+  }
   .me-img img {
     border-radius:90%;
-    max-width: 100%;
-    height: 700px;
+    width: 50%;
+    height: auto;
     border-color: orangered;
     border-style:groove;
     
