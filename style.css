@@ -22,7 +22,7 @@ html {
 }
 
 .header {
-    position: fixed;
+    position:absolute;
     top: 0;
     left: 0;
     width: 100%;
@@ -55,6 +55,10 @@ html {
 section {
     min-height: 100vh;
     padding: 10rem 9% 2rem;
+    margin-top: -150px;
+}
+.me {
+    margin-top: -100px;
 }
 
 .home {
