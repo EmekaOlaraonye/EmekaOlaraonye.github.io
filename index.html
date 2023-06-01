@@ -12,6 +12,14 @@
 </head>
 
 <body>
+
+    <script>
+        document.querySelector('.menu-toggle').addEventListener('click', function() {
+    this.classList.toggle('active');
+    document.querySelector('.header').classList.toggle('show-nav');
+});
+
+    </script>
     <header class="header">
         <a href="#home" class="logo">Portfolio</a>
         <nav class="navbar">
@@ -86,7 +94,7 @@
             <div class="portfolio-container">
                 <a href="https://github.com/EmekaOlaraonye/voyageapp" target="_blank">
                     <div class="portfolio-box">
-                        <img src="web3.jpg">
+                        <img src="andr.jpg">
                         <div class="portfolio-layer">
                             <h4>Guesthouse Web Application</h4>
                         </div>
