@@ -151,7 +151,7 @@ section {
 }
 
 .portfolio {
-    margin-top: 50px;
+    margin-top: -120px;
 }
 .about-content span {
     color: orangered;
@@ -263,10 +263,10 @@ section {
 }
 
 .portfolio-box img {
-    width: 100%;
+    width: 70%;
     height: auto;
     object-fit: cover;
-    max-width: 100%;
+    max-width: 70%;
     max-height: 100%;
 }
 
@@ -326,7 +326,7 @@ section {
     height: auto;
     border-color: orangered;
     border-style:groove;
-    
+    margin-top: -10px;
   }
   
 
