@@ -144,6 +144,11 @@ section {
     text-align: center;
     font-size: 4.5rem;
 }
+.about .heading {
+    justify-content: center;
+    text-align: center;
+    font-size: 4.5rem;  
+}
 
 .about-content span {
     color: orangered;
