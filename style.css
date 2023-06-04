@@ -132,7 +132,7 @@ section {
     justify-content: center;
     align-items: center;
     gap: 2rem;
-    margin-top: -230px;
+    margin-top: -600px;
 }
 
 .about-img {
@@ -172,6 +172,7 @@ section {
 }
 .skills {
     margin-bottom: 4rem;
+    margin-top: -300px;
 }
 
 .skills-title {
@@ -219,6 +220,7 @@ section {
 
 .portfolio {
     padding: 8rem 0;
+    margin-top: -400px;
 }
 
 .projects-content {
@@ -255,10 +257,10 @@ section {
 }
 
 .portfolio-box img {
-    width: 100%;
+    width: 80%;
     height: auto;
     object-fit: cover;
-    max-width: 100%;
+    max-width: 80%;
     max-height: 100%;
 }
 
