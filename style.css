@@ -150,6 +150,9 @@ section {
     font-size: 4.5rem;  
 }
 
+.portfolio {
+    margin-top: 50px;
+}
 .about-content span {
     color: orangered;
 }
