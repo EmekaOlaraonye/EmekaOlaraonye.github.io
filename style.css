@@ -23,6 +23,12 @@ html {
     font-size: 62.5%;
     overflow-x: hidden;
 }
+.header i {
+    background-color: white;
+    color:black;
+
+    
+}
 
 .header {
     position: fixed;
@@ -37,6 +43,38 @@ html {
     background-color: white;
     box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
 }
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.navbar {
+    display: flex;
+}
+
+.navbar a {
+    margin-right: 10px;
+}
+
+/* Media query for screens with a maximum width of 600px */
+@media (max-width: 600px) {
+    .navbar {
+        display: none; /* Hide the navbar links */
+        flex-direction: column; /* Stack the links vertically */
+        align-items: flex-start; /* Align links to the left */
+        margin-top: 10px; /* Add some space above the links */
+    }
+
+    .navbar.show {
+        display: flex; /* Show the navbar links when the toggle button is clicked */
+    }
+
+    .navbar-toggle {
+        display: block; /* Show the toggle button */
+    }
+}
+
 
 .logo {
     font-size: 2.5rem;

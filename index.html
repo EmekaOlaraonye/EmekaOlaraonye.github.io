@@ -13,23 +13,26 @@
 
 <body>
 
-    <script>
-        document.querySelector('.menu-toggle').addEventListener('click', function() {
-    this.classList.toggle('active');
-    document.querySelector('.header').classList.toggle('show-nav');
-});
 
+
+<header class="header">
+    <a href="#home" class="logo">Portfolio</a>
+    <nav class="navbar">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#portfolio">Projects</a>
+        <a href="#me">Me</a>
+    </nav>
+    <button class="navbar-toggle"><i class='bx bx-menu'></i></button>
+</header>
+<script>
+    document.querySelector('.navbar-toggle').addEventListener('click', function() {
+        document.querySelector('.navbar').classList.toggle('show');
+    });
+    
     </script>
-    <header class="header">
-        <a href="#home" class="logo">Portfolio</a>
-        <nav class="navbar">
-            <a href="#home">Home</a>
-            <a href="#about">About</a>
-            <a href="#skills">Skills</a>
-            <a href="#portfolio">Projects</a>
-            <a href="#me">Me</a>
-        </nav>
-    </header>
+
     <!--Home Section-->
     <section class="home" id="home">
         <div class="home-content">
