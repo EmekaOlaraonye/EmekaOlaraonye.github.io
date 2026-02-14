@@ -37,6 +37,8 @@ import {
   CATEGORY_ICONS,
   PROJECTS
 } from './constants';
+import portfolioPic from './portfolio-pic.JPG';
+import cvPdf from "./Chukwuemeka's CV (2).pdf";
 
 // Component to handle smooth reveal animations as sections enter the viewport
 const SectionWrapper = ({ children, id, className = "" }: { children: React.ReactNode, id: string, className?: string }) => {
@@ -302,7 +304,7 @@ const Hero = () => {
               View Innovations <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
             </a>
             <a 
-              href="/Chukwuemeka%27s%20CV%20(2).pdf"
+              href={cvPdf}
               download="Chukwuemeka_Olaraonye_CV.pdf"
               className="px-10 py-4 border border-white/10 hover:border-brand/50 bg-white/5 hover:bg-brand/10 rounded-xl transition-all flex items-center gap-2 group text-white/80 hover:text-white"
             >
@@ -417,7 +419,7 @@ const App = () => {
                 <div className="absolute -inset-10 bg-brand/10 rounded-full blur-[100px] opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
                 <div className="relative aspect-[4/5] rounded-3xl overflow-hidden bg-surface border border-white/10 shadow-2xl transition-transform duration-700 group-hover:scale-[1.02] group-hover:shadow-brand/20">
                     <img 
-                      src="/portfolio-pic.JPG" 
+                      src={portfolioPic} 
                       alt="Chukwuemeka Olaraonye" 
                       className="w-full h-full object-cover contrast-110 brightness-90 group-hover:brightness-100 transition-all duration-1000"
                     />
