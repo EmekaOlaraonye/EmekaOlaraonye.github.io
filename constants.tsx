@@ -144,9 +144,9 @@ export const LEADERSHIP: Leadership[] = [
 ];
 
 export const CATEGORY_ICONS = {
-  'Programming': <Terminal size={20} className="text-brand" />,
-  'Frontend': <Layout size={20} className="text-brand" />,
-  'Backend': <Server size={20} className="text-brand" />,
-  'DevOps & Cloud': <Cloud size={20} className="text-brand" />,
-  'Languages': <Globe size={20} className="text-brand" />,
+  'Programming': <Terminal size={20} className="text-brand group-hover:text-white transition-colors duration-300" />,
+  'Frontend': <Layout size={20} className="text-brand group-hover:text-white transition-colors duration-300" />,
+  'Backend': <Server size={20} className="text-brand group-hover:text-white transition-colors duration-300" />,
+  'DevOps & Cloud': <Cloud size={20} className="text-brand group-hover:text-white transition-colors duration-300" />,
+  'Languages': <Globe size={20} className="text-brand group-hover:text-white transition-colors duration-300" />,
 };

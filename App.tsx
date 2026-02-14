@@ -22,7 +22,10 @@ import {
   AlertCircle,
   Terminal,
   Database,
-  Globe
+  Globe,
+  Sun,
+  Monitor,
+  Moon
 } from 'lucide-react';
 import { 
   SKILLS, 
@@ -69,7 +72,15 @@ const SectionWrapper = ({ children, id, className = "" }: { children: React.Reac
   );
 };
 
-const Header = () => {
+type ThemeMode = 'system' | 'light' | 'dark';
+
+const Header = ({
+  themeMode,
+  setThemeMode
+}: {
+  themeMode: ThemeMode;
+  setThemeMode: React.Dispatch<React.SetStateAction<ThemeMode>>;
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('');
@@ -132,7 +143,7 @@ const Header = () => {
   };
 
   return (
-    <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled ? 'bg-dark/90 backdrop-blur-xl border-b border-white/5 py-4' : 'bg-transparent py-6'}`}>
+    <nav className={`sticky top-0 w-full z-50 transition-all duration-500 ${scrolled ? 'bg-dark/95 md:bg-dark/90 md:backdrop-blur-xl border-b border-white/5 py-4' : 'bg-transparent py-6'}`}>
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
         <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="flex items-center gap-3 group">
           <div className="w-10 h-10 bg-brand rounded-lg flex items-center justify-center group-hover:shadow-[0_0_20px_rgba(39,128,226,0.6)] transition-all">
@@ -163,6 +174,29 @@ const Header = () => {
           >
             LET'S TALK <ArrowRight size={14} className="group-hover/btn:translate-x-1 transition-transform" />
           </a>
+          <div className="flex items-center p-1 rounded-full bg-surface border border-white/10">
+            <button
+              onClick={() => setThemeMode('system')}
+              aria-label="Use system theme"
+              className={`p-2 rounded-full transition-colors ${themeMode === 'system' ? 'bg-brand text-white' : 'text-gray-400 hover:text-white'}`}
+            >
+              <Monitor size={14} />
+            </button>
+            <button
+              onClick={() => setThemeMode('light')}
+              aria-label="Use light theme"
+              className={`p-2 rounded-full transition-colors ${themeMode === 'light' ? 'bg-brand text-white' : 'text-gray-400 hover:text-white'}`}
+            >
+              <Sun size={14} />
+            </button>
+            <button
+              onClick={() => setThemeMode('dark')}
+              aria-label="Use dark theme"
+              className={`p-2 rounded-full transition-colors ${themeMode === 'dark' ? 'bg-brand text-white' : 'text-gray-400 hover:text-white'}`}
+            >
+              <Moon size={14} />
+            </button>
+          </div>
         </div>
 
         {/* Mobile Toggle */}
@@ -174,6 +208,29 @@ const Header = () => {
       {/* Mobile Nav Overlay */}
       <div className={`fixed inset-0 bg-dark/98 backdrop-blur-2xl z-40 transition-all duration-500 md:hidden flex items-center justify-center ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
         <div className="flex flex-col items-center gap-8">
+          <div className="flex items-center p-1 rounded-full bg-surface border border-white/10">
+            <button
+              onClick={() => setThemeMode('system')}
+              aria-label="Use system theme"
+              className={`p-3 rounded-full transition-colors ${themeMode === 'system' ? 'bg-brand text-white' : 'text-gray-400 hover:text-white'}`}
+            >
+              <Monitor size={18} />
+            </button>
+            <button
+              onClick={() => setThemeMode('light')}
+              aria-label="Use light theme"
+              className={`p-3 rounded-full transition-colors ${themeMode === 'light' ? 'bg-brand text-white' : 'text-gray-400 hover:text-white'}`}
+            >
+              <Sun size={18} />
+            </button>
+            <button
+              onClick={() => setThemeMode('dark')}
+              aria-label="Use dark theme"
+              className={`p-3 rounded-full transition-colors ${themeMode === 'dark' ? 'bg-brand text-white' : 'text-gray-400 hover:text-white'}`}
+            >
+              <Moon size={18} />
+            </button>
+          </div>
           {navLinks.map((link, i) => (
             <a 
               key={link.name} 
@@ -244,12 +301,13 @@ const Hero = () => {
             >
               View Innovations <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
             </a>
-            <button 
-              onClick={() => window.print()}
+            <a 
+              href="/Chukwuemeka%27s%20CV%20(2).pdf"
+              download="Chukwuemeka_Olaraonye_CV.pdf"
               className="px-10 py-4 border border-white/10 hover:border-brand/50 bg-white/5 hover:bg-brand/10 rounded-xl transition-all flex items-center gap-2 group text-white/80 hover:text-white"
             >
               Download CV <Download size={18} className="group-hover:translate-y-1 transition-transform" />
-            </button>
+            </a>
           </div>
         </div>
 
@@ -296,6 +354,19 @@ const SectionHeading = ({ title, subtitle }: { title: string, subtitle?: string 
 
 const App = () => {
   const [formStatus, setFormStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [themeMode, setThemeMode] = useState<ThemeMode>('system');
+
+  useEffect(() => {
+    const savedThemeMode = window.localStorage.getItem('theme-mode');
+    if (savedThemeMode === 'system' || savedThemeMode === 'light' || savedThemeMode === 'dark') {
+      setThemeMode(savedThemeMode);
+    }
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', themeMode);
+    window.localStorage.setItem('theme-mode', themeMode);
+  }, [themeMode]);
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -327,7 +398,7 @@ const App = () => {
 
   return (
     <div className="bg-dark text-white selection:bg-brand/30 selection:text-white relative">
-      <Header />
+      <Header themeMode={themeMode} setThemeMode={setThemeMode} />
       
       <main className="relative z-10">
         <Hero />
@@ -630,7 +701,7 @@ const App = () => {
 
                 <button 
                   disabled={formStatus === 'loading'}
-                  className={`w-full py-6 bg-brand text-white font-black text-sm uppercase tracking-[0.4em] rounded-2xl transition-all active:scale-[0.98] flex items-center justify-center gap-4 ${
+                  className={`w-full py-6 bg-brand text-white font-black text-xs sm:text-sm uppercase tracking-[0.2em] sm:tracking-[0.4em] rounded-2xl transition-all active:scale-[0.98] flex items-center justify-center gap-2 sm:gap-4 whitespace-nowrap ${
                     formStatus === 'loading' ? 'opacity-70 cursor-not-allowed' : 'hover:shadow-[0_0_50px_rgba(39,128,226,0.5)]'
                   }`}
                 >
@@ -641,7 +712,7 @@ const App = () => {
                     </>
                   ) : (
                     <>
-                      Execute Contact Protocol <Send size={18} />
+                      Execute Contact Protocol <Send size={18} className="shrink-0" />
                     </>
                   )}
                 </button>

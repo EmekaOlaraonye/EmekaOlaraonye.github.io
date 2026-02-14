@@ -11,8 +11,8 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #050505;
-            color: #ffffff;
+            background-color: var(--color-dark, #050505);
+            color: var(--color-white, #ffffff);
             overflow-x: hidden;
         }
         .glow-mesh {
@@ -124,6 +124,17 @@
             }
         }
     </style>
+    <script>
+        (function () {
+            try {
+                var mode = localStorage.getItem('theme-mode');
+                if (mode !== 'light' && mode !== 'system' && mode !== 'dark') mode = 'system';
+                document.documentElement.setAttribute('data-theme', mode);
+            } catch (_) {
+                document.documentElement.setAttribute('data-theme', 'system');
+            }
+        })();
+    </script>
 </head>
 <body class="custom-scrollbar relative">
     <div class="fixed inset-0 bg-noise z-[9999] pointer-events-none print:hidden"></div>

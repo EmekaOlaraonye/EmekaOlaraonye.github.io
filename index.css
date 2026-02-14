@@ -8,3 +8,29 @@
   --color-surface-accent: #121212;
   --animate-pulse-slow: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
+
+:root {
+  color-scheme: dark;
+}
+
+:root[data-theme='light'] {
+  --color-dark: #f4f7fb;
+  --color-surface: #e9eef6;
+  --color-surface-accent: #dfe7f2;
+  --color-white: #0f172a;
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: light) {
+  :root[data-theme='system'] {
+    --color-dark: #f4f7fb;
+    --color-surface: #e9eef6;
+    --color-surface-accent: #dfe7f2;
+    --color-white: #0f172a;
+    color-scheme: light;
+  }
+}
