@@ -100,8 +100,8 @@ export const ACHIEVEMENTS: Achievement[] = [
 export const PROJECTS: Project[] = [
   {
     title: 'The 13 Way',
-    description: 'An architectural exploration of sophisticated design patterns and algorithmic optimization in modern software engineering.',
-    tags: ['Python', 'Architecture', 'Research'],
+    description: 'A web application built for an agricultural project to manage workflows, data, and day-to-day farm operations.',
+    tags: ['Web App', 'Agriculture', 'Project Management'],
     link: 'https://github.com/EmekaOlaraonye/The-13-Way'
   },
   {
@@ -111,10 +111,10 @@ export const PROJECTS: Project[] = [
     link: 'https://github.com/EmekaOlaraonye/Lekhuku-Secondary-School'
   },
   {
-    title: 'Orange Africa ODC Hackathon',
-    description: 'Collaborated with a team to develop solutions addressing real-world challenges in the African digital landscape.',
-    tags: ['Hackathon', 'Problem Solving', 'Innovation'],
-    link: 'https://github.com/EmekaOlaraonye'
+    title: 'Photo Album',
+    description: 'A photo management web app focused on organizing image collections with a clean browsing experience.',
+    tags: ['React', 'Frontend', 'UI'],
+    link: 'https://github.com/EmekaOlaraonye/Photo-Album'
   }
 ];
 

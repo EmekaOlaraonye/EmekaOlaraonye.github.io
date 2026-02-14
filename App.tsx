@@ -153,7 +153,7 @@ const Header = ({
         </a>
 
         {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-8 ml-auto">
           {navLinks.map(link => (
             <a 
               key={link.name} 
@@ -174,29 +174,29 @@ const Header = ({
           >
             LET'S TALK <ArrowRight size={14} className="group-hover/btn:translate-x-1 transition-transform" />
           </a>
-          <div className="flex items-center p-1 rounded-full bg-surface border border-white/10">
-            <button
-              onClick={() => setThemeMode('system')}
-              aria-label="Use system theme"
-              className={`p-2 rounded-full transition-colors ${themeMode === 'system' ? 'bg-brand text-white' : 'text-gray-400 hover:text-white'}`}
-            >
-              <Monitor size={14} />
-            </button>
-            <button
-              onClick={() => setThemeMode('light')}
-              aria-label="Use light theme"
-              className={`p-2 rounded-full transition-colors ${themeMode === 'light' ? 'bg-brand text-white' : 'text-gray-400 hover:text-white'}`}
-            >
-              <Sun size={14} />
-            </button>
-            <button
-              onClick={() => setThemeMode('dark')}
-              aria-label="Use dark theme"
-              className={`p-2 rounded-full transition-colors ${themeMode === 'dark' ? 'bg-brand text-white' : 'text-gray-400 hover:text-white'}`}
-            >
-              <Moon size={14} />
-            </button>
-          </div>
+        </div>
+        <div className="hidden md:flex items-center p-1 rounded-full bg-surface border border-white/10 ml-6">
+          <button
+            onClick={() => setThemeMode('system')}
+            aria-label="Use system theme"
+            className={`p-2 rounded-full transition-colors ${themeMode === 'system' ? 'bg-brand text-white' : 'text-gray-400 hover:text-white'}`}
+          >
+            <Monitor size={14} />
+          </button>
+          <button
+            onClick={() => setThemeMode('light')}
+            aria-label="Use light theme"
+            className={`p-2 rounded-full transition-colors ${themeMode === 'light' ? 'bg-brand text-white' : 'text-gray-400 hover:text-white'}`}
+          >
+            <Sun size={14} />
+          </button>
+          <button
+            onClick={() => setThemeMode('dark')}
+            aria-label="Use dark theme"
+            className={`p-2 rounded-full transition-colors ${themeMode === 'dark' ? 'bg-brand text-white' : 'text-gray-400 hover:text-white'}`}
+          >
+            <Moon size={14} />
+          </button>
         </div>
 
         {/* Mobile Toggle */}
@@ -374,9 +374,16 @@ const App = () => {
     
     const form = e.currentTarget;
     const formData = new FormData(form);
+    const senderEmail = formData.get('email');
+    if (typeof senderEmail === 'string') {
+      formData.append('_replyto', senderEmail);
+    }
+    formData.append('_subject', 'New Portfolio Contact Message');
+    formData.append('_template', 'table');
+    formData.append('_captcha', 'false');
     
     try {
-      const response = await fetch("https://formspree.io/f/olaraonyemeka@gmail.com", {
+      const response = await fetch("https://formsubmit.co/ajax/olaraonyemeka@gmail.com", {
         method: "POST",
         body: formData,
         headers: {
@@ -410,7 +417,7 @@ const App = () => {
                 <div className="absolute -inset-10 bg-brand/10 rounded-full blur-[100px] opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
                 <div className="relative aspect-[4/5] rounded-3xl overflow-hidden bg-surface border border-white/10 shadow-2xl transition-transform duration-700 group-hover:scale-[1.02] group-hover:shadow-brand/20">
                     <img 
-                      src="./profile.png" 
+                      src="/portfolio-pic.JPG" 
                       alt="Chukwuemeka Olaraonye" 
                       className="w-full h-full object-cover contrast-110 brightness-90 group-hover:brightness-100 transition-all duration-1000"
                     />
