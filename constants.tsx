@@ -100,20 +100,35 @@ export const ACHIEVEMENTS: Achievement[] = [
 export const PROJECTS: Project[] = [
   {
     title: 'The 13 Way',
+    year: '2024',
     description: 'A web application built for an agricultural project to manage workflows, data, and day-to-day farm operations.',
     tags: ['Web App', 'Agriculture', 'Project Management'],
+    problem: 'Farm operations depended on scattered manual records and disconnected communication.',
+    constraint: 'Needed to be easy for non-technical users while still supporting structured operational data.',
+    decision: 'Designed a role-aware web workflow with centralized records and simple daily activity logging.',
+    impact: 'Improved operational visibility and reduced friction for day-to-day farm coordination.',
     link: 'https://github.com/EmekaOlaraonye/The-13-Way'
   },
   {
     title: 'Lekhuku School Portal',
+    year: '2024',
     description: 'A comprehensive digital management system built to streamline administrative workflows and student engagement.',
     tags: ['React', 'Fullstack', 'Education'],
+    problem: 'Administrative and student communication processes were fragmented across manual channels.',
+    constraint: 'Portal had to support multiple user groups with different access patterns and priorities.',
+    decision: 'Built a unified fullstack system with clear role boundaries and workflow-focused interfaces.',
+    impact: 'Created a single source of truth for school operations and student-facing coordination.',
     link: 'https://github.com/EmekaOlaraonye/Lekhuku-Secondary-School'
   },
   {
     title: 'Photo Album',
+    year: '2023',
     description: 'A photo management web app focused on organizing image collections with a clean browsing experience.',
     tags: ['React', 'Frontend', 'UI'],
+    problem: 'Users needed a cleaner way to browse and organize growing media collections.',
+    constraint: 'Had to keep interactions fast and intuitive without backend complexity.',
+    decision: 'Focused on lightweight React state architecture and streamlined gallery-first navigation.',
+    impact: 'Delivered a responsive browsing experience that makes large collections easier to manage.',
     link: 'https://github.com/EmekaOlaraonye/Photo-Album'
   }
 ];

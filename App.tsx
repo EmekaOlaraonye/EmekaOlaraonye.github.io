@@ -4,7 +4,6 @@ import {
   Github, 
   Linkedin, 
   Mail, 
-  ChevronRight, 
   ExternalLink, 
   Download,
   Menu,
@@ -25,7 +24,9 @@ import {
   Globe,
   Sun,
   Monitor,
-  Moon
+  Moon,
+  BrainCircuit,
+  Zap
 } from 'lucide-react';
 import { 
   SKILLS, 
@@ -37,6 +38,7 @@ import {
   CATEGORY_ICONS,
   PROJECTS
 } from './constants';
+import { Project } from './types';
 import portfolioPic from './portfolio-pic.JPG';
 import cvPdf from "./Chukwuemeka's CV (2).pdf";
 
@@ -259,9 +261,59 @@ const Header = ({
   );
 };
 
+const STRATEGY_SCENARIOS = [
+  {
+    id: 'growth',
+    label: 'Scale a startup tool',
+    challenge: 'A product gets traction but response times and UX quality begin to drop.',
+    strategy: 'Instrument bottlenecks first, simplify high-friction flows, then phase in selective AI automation.',
+    stack: 'React + API observability + workflow automation',
+    win: 'Goal: keep speed under load while improving feature adoption.'
+  },
+  {
+    id: 'education',
+    label: 'Fix academic workflows',
+    challenge: 'Student updates, admin approvals, and communication are spread across disconnected channels.',
+    strategy: 'Build one role-aware platform with shared source-of-truth records and explicit process states.',
+    stack: 'Fullstack portal architecture + access controls',
+    win: 'Goal: reduce turnaround time and eliminate information mismatches.'
+  },
+  {
+    id: 'operations',
+    label: 'Digitize operations',
+    challenge: 'Operations teams rely on manual logs, limiting forecasting and coordination.',
+    strategy: 'Standardize data capture at source and layer dashboards around daily decision points.',
+    stack: 'Operational data model + lightweight reporting surfaces',
+    win: 'Goal: improve execution quality without increasing process complexity.'
+  }
+] as const;
+
+const NOW_BUILDING = [
+  {
+    title: 'Confidential Product Prototype',
+    status: 'Prototype',
+    detail: 'Details are intentionally private at this stage.',
+    progress: '60%'
+  },
+  {
+    title: 'Advancing E-Commerce Recommendation Systems with Neural Collaborative Filtering',
+    status: 'Research',
+    detail: 'Current research focus on improving recommendation quality and personalization.',
+    progress: '52%'
+  },
+  {
+    title: 'Mentor & Guest Speaker',
+    status: 'Active',
+    detail: 'Service Xcellence Mentorship / CT Graduate Conference: Providing guidance to future-focused mindsets and sharing technical expertise with graduates.',
+    progress: '81%'
+  }
+];
+
 const Hero = () => {
   const [text, setText] = useState('');
+  const [scenarioId, setScenarioId] = useState<(typeof STRATEGY_SCENARIOS)[number]['id']>('growth');
   const fullText = "Aspiring Tech Founder & AI-Driven Computer Scientist";
+  const activeScenario = STRATEGY_SCENARIOS.find(item => item.id === scenarioId) ?? STRATEGY_SCENARIOS[0];
   
   useEffect(() => {
     let i = 0;
@@ -288,9 +340,35 @@ const Hero = () => {
             {text}
             <span className="inline-block w-1.5 h-10 md:h-16 bg-brand ml-2 animate-pulse align-middle" />
           </h1>
-          <p className="text-gray-400 text-lg md:text-xl max-w-xl mb-12 leading-relaxed font-light italic">
+          <p className="text-gray-400 text-lg md:text-xl max-w-xl mb-8 leading-relaxed font-light italic">
             "Leveraging Artificial Intelligence to architect scalable solutions for the next generation of global industry."
           </p>
+          <div className="mb-10 rounded-3xl bg-surface/90 border border-white/10 p-6 backdrop-blur-sm text-left">
+            <div className="flex items-center gap-2 text-brand text-[10px] font-black uppercase tracking-[0.25em] mb-4">
+              <BrainCircuit size={14} /> AI Strategy Console
+            </div>
+            <div className="flex flex-wrap gap-2 mb-5">
+              {STRATEGY_SCENARIOS.map(option => (
+                <button
+                  key={option.id}
+                  onClick={() => setScenarioId(option.id)}
+                  className={`px-3 py-2 rounded-lg text-[10px] font-black uppercase tracking-[0.15em] transition-all ${
+                    scenarioId === option.id
+                      ? 'bg-brand text-white shadow-[0_0_20px_rgba(39,128,226,0.35)]'
+                      : 'bg-dark border border-white/10 text-gray-400 hover:text-white'
+                  }`}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
+            <div className="space-y-3 text-sm">
+              <p className="text-gray-300"><span className="text-brand font-bold">Challenge:</span> {activeScenario.challenge}</p>
+              <p className="text-gray-300"><span className="text-brand font-bold">Playbook:</span> {activeScenario.strategy}</p>
+              <p className="text-gray-300"><span className="text-brand font-bold">Stack:</span> {activeScenario.stack}</p>
+              <p className="text-gray-300"><span className="text-brand font-bold">Expected Win:</span> {activeScenario.win}</p>
+            </div>
+          </div>
           <div className="flex flex-wrap gap-5 justify-center md:justify-start">
             <a 
               href="#projects" 
@@ -343,6 +421,43 @@ const Hero = () => {
   );
 };
 
+const NowBuildingSection = () => (
+  <SectionWrapper id="now" className="py-20 max-w-7xl mx-auto px-6">
+    <div className="mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-5">
+      <div>
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand/10 border border-brand/30 text-brand text-[10px] font-black uppercase tracking-[0.2em] mb-4">
+          <Zap size={12} /> Live Focus
+        </div>
+        <h2 className="text-3xl md:text-5xl font-black tracking-tight uppercase text-white">Now Building</h2>
+      </div>
+      <p className="text-gray-400 max-w-xl leading-relaxed text-sm">
+        A live snapshot of what I am actively shipping and researching right now.
+      </p>
+    </div>
+    <div className="grid md:grid-cols-3 gap-6">
+      {NOW_BUILDING.map((item, index) => (
+        <div
+          key={item.title}
+          className="rounded-3xl bg-surface border border-white/10 p-7 transition-all hover:border-brand/40 hover:-translate-y-1"
+          style={{ transitionDelay: `${index * 100}ms` }}
+        >
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-[9px] uppercase tracking-[0.2em] font-black text-brand bg-brand/10 border border-brand/25 px-2 py-1 rounded-full">
+              {item.status}
+            </span>
+            <span className="text-sm font-bold text-white">{item.progress}</span>
+          </div>
+          <h3 className="text-xl font-black text-white leading-tight mb-3">{item.title}</h3>
+          <p className="text-sm text-gray-400 leading-relaxed">{item.detail}</p>
+          <div className="mt-5 h-1.5 rounded-full bg-dark overflow-hidden">
+            <div className="h-full bg-brand rounded-full" style={{ width: item.progress }} />
+          </div>
+        </div>
+      ))}
+    </div>
+  </SectionWrapper>
+);
+
 const SectionHeading = ({ title, subtitle }: { title: string, subtitle?: string }) => (
   <div className="mb-16">
     <div className="flex items-center gap-4 mb-4">
@@ -357,6 +472,7 @@ const SectionHeading = ({ title, subtitle }: { title: string, subtitle?: string 
 const App = () => {
   const [formStatus, setFormStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [themeMode, setThemeMode] = useState<ThemeMode>('system');
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   useEffect(() => {
     const savedThemeMode = window.localStorage.getItem('theme-mode');
@@ -369,6 +485,24 @@ const App = () => {
     document.documentElement.setAttribute('data-theme', themeMode);
     window.localStorage.setItem('theme-mode', themeMode);
   }, [themeMode]);
+
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setSelectedProject(null);
+      }
+    };
+
+    if (selectedProject) {
+      document.body.style.overflow = 'hidden';
+      window.addEventListener('keydown', handleEscape);
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', handleEscape);
+    };
+  }, [selectedProject]);
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -411,6 +545,7 @@ const App = () => {
       
       <main className="relative z-10">
         <Hero />
+        <NowBuildingSection />
 
         {/* About Me */}
         <SectionWrapper id="about" className="py-32 max-w-7xl mx-auto px-6">
@@ -504,16 +639,31 @@ const App = () => {
                    <div className="absolute inset-0 bg-gradient-to-t from-surface-accent to-transparent"></div>
                 </div>
                 <div className="p-8 flex-1 flex flex-col">
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {project.tags.map(tag => (
-                      <span key={tag} className="px-3 py-1 bg-brand/10 text-brand text-[9px] font-black uppercase tracking-widest rounded-full">{tag}</span>
-                    ))}
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex flex-wrap gap-2">
+                      {project.tags.map(tag => (
+                        <span key={tag} className="px-3 py-1 bg-brand/10 text-brand text-[9px] font-black uppercase tracking-widest rounded-full">{tag}</span>
+                      ))}
+                    </div>
+                    <span className="text-[10px] text-gray-500 font-black uppercase tracking-[0.2em]">{project.year}</span>
                   </div>
                   <h3 className="text-2xl font-black mb-3 text-white group-hover:text-brand transition-colors tracking-tight">{project.title}</h3>
-                  <p className="text-gray-500 text-sm mb-8 font-light leading-relaxed flex-1">{project.description}</p>
-                  <a href={project.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-brand text-xs font-black uppercase tracking-widest hover:gap-4 transition-all group/link">
-                    Explore Codebase <ExternalLink size={14} className="group-hover/link:opacity-100 opacity-50 transition-opacity" />
-                  </a>
+                  <p className="text-gray-500 text-sm mb-6 font-light leading-relaxed">{project.description}</p>
+                  <div className="mb-8 rounded-xl border border-white/10 bg-dark/50 p-4">
+                    <p className="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-black mb-2">Impact Snapshot</p>
+                    <p className="text-sm text-gray-300 leading-relaxed">{project.impact}</p>
+                  </div>
+                  <div className="mt-auto flex items-center justify-between gap-4">
+                    <button
+                      onClick={() => setSelectedProject(project)}
+                      className="inline-flex items-center gap-2 text-brand text-xs font-black uppercase tracking-widest hover:gap-4 transition-all"
+                    >
+                      View Case Study <ArrowRight size={14} />
+                    </button>
+                    <a href={project.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-gray-300 hover:text-brand text-xs font-black uppercase tracking-widest transition-colors group/link">
+                      Explore Codebase <ExternalLink size={14} className="group-hover/link:opacity-100 opacity-70 transition-opacity" />
+                    </a>
+                  </div>
                 </div>
               </div>
             ))}
@@ -760,6 +910,62 @@ const App = () => {
           </div>
         </SectionWrapper>
       </main>
+
+      {selectedProject && (
+        <div
+          className="fixed inset-0 z-[70] bg-dark/90 backdrop-blur-md flex items-center justify-center px-4"
+          onClick={() => setSelectedProject(null)}
+        >
+          <div
+            className="w-full max-w-3xl bg-surface border border-white/10 rounded-3xl p-8 md:p-10 relative shadow-[0_20px_70px_rgba(0,0,0,0.5)]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setSelectedProject(null)}
+              className="absolute top-4 right-4 p-2 rounded-full bg-dark border border-white/10 text-gray-400 hover:text-white transition-colors"
+              aria-label="Close case study"
+            >
+              <X size={16} />
+            </button>
+            <div className="flex flex-wrap items-center gap-3 mb-6">
+              <span className="text-[10px] uppercase tracking-[0.2em] text-brand font-black border border-brand/30 bg-brand/10 px-3 py-1 rounded-full">
+                Case Study
+              </span>
+              <span className="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-black">{selectedProject.year}</span>
+            </div>
+            <h3 className="text-3xl font-black text-white tracking-tight mb-8">{selectedProject.title}</h3>
+            <div className="grid sm:grid-cols-2 gap-4 mb-8">
+              {selectedProject.tags.map(tag => (
+                <span key={tag} className="w-fit px-3 py-1 bg-brand/10 text-brand text-[9px] font-black uppercase tracking-widest rounded-full">
+                  {tag}
+                </span>
+              ))}
+            </div>
+            <div className="space-y-5 text-sm">
+              <p className="text-gray-300"><span className="text-brand font-bold">Problem:</span> {selectedProject.problem}</p>
+              <p className="text-gray-300"><span className="text-brand font-bold">Constraint:</span> {selectedProject.constraint}</p>
+              <p className="text-gray-300"><span className="text-brand font-bold">Architecture Decision:</span> {selectedProject.decision}</p>
+              <p className="text-gray-300"><span className="text-brand font-bold">Impact:</span> {selectedProject.impact}</p>
+            </div>
+            <div className="mt-10 flex flex-wrap gap-4">
+              <a
+                href={selectedProject.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-6 py-3 bg-brand text-white font-bold rounded-xl hover:shadow-[0_0_30px_rgba(39,128,226,0.35)] transition-all inline-flex items-center gap-2"
+              >
+                Explore Codebase <ExternalLink size={14} />
+              </a>
+              <button
+                onClick={() => setSelectedProject(null)}
+                className="px-6 py-3 border border-white/10 text-gray-300 hover:text-white hover:border-brand/40 rounded-xl transition-all"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <footer className="py-20 border-t border-white/5 relative overflow-hidden bg-dark">
         <div className="absolute inset-0 grid-pattern opacity-5" />

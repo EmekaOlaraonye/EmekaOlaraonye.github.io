@@ -39,8 +39,13 @@ export interface Leadership {
 
 export interface Project {
   title: string;
+  year: string;
   description: string;
   tags: string[];
+  problem: string;
+  constraint: string;
+  decision: string;
+  impact: string;
   link?: string;
   image?: string;
 }
