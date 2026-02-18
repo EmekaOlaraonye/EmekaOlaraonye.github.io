@@ -13,7 +13,7 @@ import {
   Server,
   Cpu
 } from 'lucide-react';
-import { Skill, Experience, Education, Achievement, Talk, Leadership, Project } from './types';
+import { Skill, Experience, Education, Certification, Achievement, Talk, Leadership, Project } from './types';
 
 export const SKILLS: Skill[] = [
   { name: 'Python', category: 'Programming' },
@@ -76,6 +76,19 @@ export const EDUCATION_DATA: Education[] = [
     institution: 'Livingstone Kolobeng College',
     period: 'Jan 2015 - Nov 2019',
     details: 'Foundation in advanced science and mathematics.'
+  }
+];
+
+export const CERTIFICATIONS: Certification[] = [
+  {
+    title: 'Online Leadership Course',
+    issuer: 'MCW Global',
+    period: 'November 2024',
+    status: 'Completed',
+    details: [
+      'Completed a comprehensive leadership program covering modern leadership, mental health, gender inclusion, vision planning, and self-awareness.',
+      'Designed and facilitated workshop frameworks focused on practical communication and team impact.'
+    ]
   }
 ];
 

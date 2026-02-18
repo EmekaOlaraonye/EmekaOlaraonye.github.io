@@ -32,6 +32,7 @@ import {
   SKILLS, 
   EXPERIENCES, 
   EDUCATION_DATA, 
+  CERTIFICATIONS,
   ACHIEVEMENTS, 
   TALKS, 
   LEADERSHIP, 
@@ -731,6 +732,36 @@ const App = () => {
                   </div>
                 ))}
               </div>
+
+              <div className="mt-16">
+                <div className="flex items-center gap-3 mb-8">
+                  <CheckCircle2 className="text-brand" size={24} />
+                  <h3 className="text-2xl font-black uppercase tracking-widest text-white">Certifications</h3>
+                </div>
+                <div className="space-y-8">
+                  {CERTIFICATIONS.map((cert, idx) => (
+                    <div key={idx} className="p-8 rounded-3xl bg-surface-accent border border-white/5 hover:border-brand/40 transition-all duration-500">
+                      <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-5">
+                        <div>
+                          <h4 className="text-xl font-black text-white uppercase tracking-tight mb-2">{cert.title}</h4>
+                          <p className="text-gray-400 text-sm font-medium">{cert.issuer}</p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="px-4 py-1.5 bg-white/5 text-gray-400 text-[10px] font-black rounded-full uppercase tracking-widest border border-white/10">{cert.period}</span>
+                          <span className="px-4 py-1.5 bg-brand/10 text-brand text-[10px] font-black rounded-full uppercase tracking-widest border border-brand/20">{cert.status}</span>
+                        </div>
+                      </div>
+                      <ul className="space-y-3">
+                        {cert.details.map((item, i) => (
+                          <li key={i} className="text-gray-500 text-sm leading-relaxed flex gap-3">
+                            <span className="text-brand font-bold">//</span> {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </SectionWrapper>
@@ -755,7 +786,7 @@ const App = () => {
 
             <div className="space-y-12">
               <div className="flex items-center gap-3 mb-8">
-                <Mic className="text-brand" size={28} />
+                <Mic className="text-brand animate-mic-pulse" size={28} />
                 <h3 className="text-2xl font-black uppercase tracking-widest text-white">Thought Hub</h3>
               </div>
               {TALKS.map((talk, i) => (

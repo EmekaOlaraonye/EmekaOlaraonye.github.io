@@ -20,6 +20,14 @@ export interface Education {
   details?: string;
 }
 
+export interface Certification {
+  title: string;
+  issuer: string;
+  period: string;
+  status: string;
+  details: string[];
+}
+
 export interface Achievement {
   title: string;
   year: string;
