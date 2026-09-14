@@ -2,40 +2,34 @@
 
 /*
   Palette: violet + citron on ink.
-  The page is authored dark-first. Each theme block below redefines the same
-  token set, including the gray ramp - the body copy lives in gray-300..500 and
-  the most muted text in gray-600..800, so flipping only the surfaces would
-  leave that text washed out on a pale background.
+
+  Every themed token is declared exactly once, as light-dark(light, dark).
+  The CSS `color-scheme` property decides which half applies, so the three
+  theme modes are just three values of one property:
+
+      data-theme="light"   -> color-scheme: light
+      data-theme="dark"    -> color-scheme: dark
+      data-theme="system"  -> color-scheme: light dark   (follows the OS)
+
+  The previous version spelled the light palette out twice - once in a
+  [data-theme='light'] block and again inside a prefers-color-scheme media
+  query - which meant every colour change had to be made in two places or the
+  two light paths would drift apart.
+
+  Each token is declared twice below on purpose, and that is not the same
+  duplication: the first line is a plain dark value for browsers that do not
+  support light-dark(), the second overrides it for those that do. Old
+  browsers therefore get a working dark theme rather than an unstyled page.
 */
 @theme {
-  /* Surfaces */
   --color-dark: #0b0f1a;
   --color-surface: #151b2b;
   --color-surface-accent: #1e2739;
-
-  /* Accents */
   --color-brand: #8b6dff;
   --color-brand-deep: #6438e8;
   --color-brand-glow: #8b6dff44;
   --color-accent: #c8f751;
   --color-accent-ink: #c8f751;
-
-  /* Text sitting on a filled violet/citron surface - constant across themes,
-     since --color-white flips to near-black in light mode. */
-  --color-on-brand: #ffffff;
-  --color-on-accent: #16210a;
-
-  /* Type */
-  --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
-  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-
-  --animate-pulse-slow: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  --animate-marquee: marquee 42s linear infinite;
-}
-
-:root {
-  color-scheme: dark;
   --color-white: #f4f6fb;
   --color-gray-300: #cbd5e6;
   --color-gray-400: #a3afc7;
@@ -43,80 +37,58 @@
   --color-gray-600: #5d6980;
   --color-gray-700: #414b5e;
   --color-gray-800: #2a3244;
+
+  /* Text on a filled violet/citron surface. Constant across themes, because
+     --color-white flips to near-black in light mode. */
+  --color-on-brand: #ffffff;
+  --color-on-accent: #16210a;
+
+  --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --animate-pulse-slow: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-:root[data-theme='dark'] {
-  color-scheme: dark;
+/* One declaration per token: light value first, dark value second. */
+:root {
+  --color-dark: light-dark(#fafaff, #0b0f1a);
+  --color-surface: light-dark(#ffffff, #151b2b);
+  --color-surface-accent: light-dark(#f2f1fb, #1e2739);
+
+  --color-brand: light-dark(#6438e8, #8b6dff);
+  --color-brand-deep: light-dark(#4c22c7, #6438e8);
+  --color-brand-glow: light-dark(#6438e833, #8b6dff44);
+  --color-accent: light-dark(#c8f751, #c8f751);
+  --color-accent-ink: light-dark(#55730a, #c8f751);
+
+  --color-white: light-dark(#0b0f1a, #f4f6fb);
+  --color-gray-300: light-dark(#1f2937, #cbd5e6);
+  --color-gray-400: light-dark(#374151, #a3afc7);
+  --color-gray-500: light-dark(#4b5563, #7d8aa5);
+  --color-gray-600: light-dark(#6b7280, #5d6980);
+  --color-gray-700: light-dark(#9ca3af, #414b5e);
+  --color-gray-800: light-dark(#d1d5db, #2a3244);
 }
 
-/* Shared light-theme token overrides. */
-@media (prefers-color-scheme: light) {
-  :root[data-theme='system'] {
-    --color-dark: #fafaff;
-    --color-surface: #ffffff;
-    --color-surface-accent: #f2f1fb;
-    --color-brand: #6438e8;
-    --color-brand-deep: #4c22c7;
-    --color-brand-glow: #6438e833;
-    --color-accent: #c8f751;
-    --color-accent-ink: #55730a;
-    --color-white: #0b0f1a;
-    --color-gray-300: #1f2937;
-    --color-gray-400: #374151;
-    --color-gray-500: #4b5563;
-    --color-gray-600: #6b7280;
-    --color-gray-700: #9ca3af;
-    --color-gray-800: #d1d5db;
-    color-scheme: light;
-  }
-}
+/* The theme switch is now a single property. The inline script in index.html
+   stamps data-theme before first paint, so there is no flash. */
+:root,
+:root[data-theme='system'] { color-scheme: light dark; }
+:root[data-theme='light'] { color-scheme: light; }
+:root[data-theme='dark'] { color-scheme: dark; }
 
-:root[data-theme='light'] {
-  --color-dark: #fafaff;
-  --color-surface: #ffffff;
-  --color-surface-accent: #f2f1fb;
-  --color-brand: #6438e8;
-  --color-brand-deep: #4c22c7;
-  --color-brand-glow: #6438e833;
-  --color-accent: #c8f751;
-  --color-accent-ink: #55730a;
-  --color-white: #0b0f1a;
-  --color-gray-300: #1f2937;
-  --color-gray-400: #374151;
-  --color-gray-500: #4b5563;
-  --color-gray-600: #6b7280;
-  --color-gray-700: #9ca3af;
-  --color-gray-800: #d1d5db;
-  color-scheme: light;
-}
+/* Decorative blurred glows paint outside their layout box on purpose; keep
+   them from widening the document on narrow screens.
 
-/* Decorative blurred glows paint outside their layout box on purpose;
-   keep them from widening the document on narrow screens.
-
-   `clip` rather than `hidden` on purpose: `overflow-x: hidden` resolves
-   overflow-y to `auto`, which makes this element a scroll container and
-   silently breaks `position: sticky` on the nav. `clip` clips without
-   creating one. */
+   `clip` rather than `hidden`: overflow-x: hidden resolves overflow-y to
+   `auto`, which makes this a scroll container and silently breaks the sticky
+   nav. `clip` clips without creating one. */
 html {
   overflow-x: clip;
 }
 
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .animate-marquee,
-  .animate-float-ai,
-  .animate-mic-pulse,
-  .scanline {
-    animation: none !important;
-  }
-}
-
-/* Pulsing halo on the speaking-section mic. Carried over from the
-   certifications commit, recoloured from the retired blue to the violet. */
+/* Pulsing halo on the speaking mic. */
 @keyframes mic-pulse-glow {
   0%,
   100% {
@@ -134,4 +106,13 @@ html {
 .animate-mic-pulse {
   animation: mic-pulse-glow 3.2s ease-in-out infinite;
   transform-origin: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float-ai,
+  .animate-mic-pulse,
+  .animate-ping,
+  .scanline {
+    animation: none !important;
+  }
 }

@@ -1,16 +1,7 @@
-import React from 'react';
 import {
-  Layout,
-  Cloud,
-  Globe,
-  Terminal,
-  Server,
-  BrainCircuit,
-  BarChart3
-} from 'lucide-react';
-import {
-  Skill,
-  SkillCategory,
+  PipelineStage,
+  ToolGroup,
+  Affiliation,
   Experience,
   Education,
   Achievement,
@@ -21,45 +12,58 @@ import {
   Research
 } from './types';
 
-export const SKILL_CATEGORIES: SkillCategory[] = [
-  'AI & Machine Learning',
-  'Data & Analytics',
-  'Programming',
-  'Frontend',
-  'Backend',
-  'DevOps & Cloud',
-  'Languages'
+/*
+  The stack presented as the path a model actually takes to reach a user,
+  rather than an alphabetised list of technologies. The stage a piece of work
+  belongs to says more to an employer than the tool's name on its own.
+*/
+export const STACK_PIPELINE: PipelineStage[] = [
+  {
+    num: '01',
+    name: 'Data',
+    what: 'Collect it, clean it, and find out what is actually in it.',
+    tools: ['Pandas', 'NumPy', 'SQL', 'Matplotlib / Seaborn', 'R / SPSS', 'Power BI']
+  },
+  {
+    num: '02',
+    name: 'Model',
+    what: 'Learn the interaction, then prove it beats the baseline.',
+    tools: ['Neural Collaborative Filtering', 'Recommender Systems', 'Embedding Models', 'HR@K / NDCG@K'],
+    highlight: true
+  },
+  {
+    num: '03',
+    name: 'Serve',
+    what: 'Put it behind an API that holds its trust boundary.',
+    tools: ['Node.js', 'Fastify / Express', 'REST API Design', 'Firestore', 'Firebase Auth']
+  },
+  {
+    num: '04',
+    name: 'Interface',
+    what: 'Make the output something a person can act on.',
+    tools: ['React', 'TypeScript', 'Vite', 'HTML5 / CSS']
+  },
+  {
+    num: '05',
+    name: 'Ship',
+    what: 'Get it running somewhere real, repeatably.',
+    tools: ['Docker', 'Google Cloud Run', 'AWS', 'Kubernetes']
+  }
 ];
 
-export const SKILLS: Skill[] = [
-  { name: 'Neural Collaborative Filtering', category: 'AI & Machine Learning' },
-  { name: 'Recommender Systems', category: 'AI & Machine Learning' },
-  { name: 'Embedding Models', category: 'AI & Machine Learning' },
-  { name: 'Model Evaluation', category: 'AI & Machine Learning' },
-  { name: 'NumPy', category: 'Data & Analytics' },
-  { name: 'Pandas', category: 'Data & Analytics' },
-  { name: 'Matplotlib / Seaborn', category: 'Data & Analytics' },
-  { name: 'SQL', category: 'Data & Analytics' },
-  { name: 'R / SPSS', category: 'Data & Analytics' },
-  { name: 'Power BI', category: 'Data & Analytics' },
-  { name: 'Python', category: 'Programming' },
-  { name: 'Java', category: 'Programming' },
-  { name: 'JavaScript / TypeScript', category: 'Programming' },
-  { name: 'LaTeX', category: 'Programming' },
-  { name: 'React', category: 'Frontend' },
-  { name: 'Vite', category: 'Frontend' },
-  { name: 'HTML5 / CSS', category: 'Frontend' },
-  { name: 'Node.js', category: 'Backend' },
-  { name: 'Fastify / Express', category: 'Backend' },
-  { name: 'REST API Design', category: 'Backend' },
-  { name: 'Firestore / Firebase Auth', category: 'Backend' },
-  { name: 'AWS', category: 'DevOps & Cloud' },
-  { name: 'Google Cloud Run', category: 'DevOps & Cloud' },
-  { name: 'Docker', category: 'DevOps & Cloud' },
-  { name: 'Kubernetes', category: 'DevOps & Cloud' },
-  { name: 'English', category: 'Languages' },
-  { name: 'Setswana', category: 'Languages' },
-  { name: 'French', category: 'Languages' },
+export const TOOL_GROUPS: ToolGroup[] = [
+  { label: 'languages', items: ['Python', 'Java', 'JavaScript / TypeScript', 'LaTeX'] },
+  { label: 'spoken', items: ['English', 'Setswana', 'French'] }
+];
+
+/* Sits in the band under the hero. Deliberately not the GPA and award figures
+   - those already appear as tiles in the About section - but the places the
+   work actually happened, which nothing else on the page states. */
+export const AFFILIATIONS: Affiliation[] = [
+  { name: 'BIUST', role: 'msc researcher · teaching assistant' },
+  { name: 'Spectrum Analytics', role: 'data analytics intern' },
+  { name: 'Google Developer Club', role: 'events & workshop lead' },
+  { name: 'Orange Digital Champions', role: 'hackathon finalist' }
 ];
 
 export const RESEARCH: Research = {
@@ -273,12 +277,3 @@ export const LEADERSHIP: Leadership[] = [
   }
 ];
 
-export const CATEGORY_ICONS = {
-  'AI & Machine Learning': <BrainCircuit size={20} className="text-brand group-hover:text-on-brand transition-colors duration-300" />,
-  'Data & Analytics': <BarChart3 size={20} className="text-brand group-hover:text-on-brand transition-colors duration-300" />,
-  'Programming': <Terminal size={20} className="text-brand group-hover:text-on-brand transition-colors duration-300" />,
-  'Frontend': <Layout size={20} className="text-brand group-hover:text-on-brand transition-colors duration-300" />,
-  'Backend': <Server size={20} className="text-brand group-hover:text-on-brand transition-colors duration-300" />,
-  'DevOps & Cloud': <Cloud size={20} className="text-brand group-hover:text-on-brand transition-colors duration-300" />,
-  'Languages': <Globe size={20} className="text-brand group-hover:text-on-brand transition-colors duration-300" />,
-};

@@ -1,17 +1,23 @@
 
-export type SkillCategory =
-  | 'AI & Machine Learning'
-  | 'Data & Analytics'
-  | 'Programming'
-  | 'Frontend'
-  | 'Backend'
-  | 'DevOps & Cloud'
-  | 'Languages';
-
-export interface Skill {
+export interface PipelineStage {
+  /** Ordered label, e.g. "01". */
+  num: string;
   name: string;
-  category: SkillCategory;
-  icon?: string;
+  /** One line on what actually happens at this stage. */
+  what: string;
+  tools: string[];
+  /** Marks the stage the research sits in, highlighted in the UI. */
+  highlight?: boolean;
+}
+
+export interface ToolGroup {
+  label: string;
+  items: string[];
+}
+
+export interface Affiliation {
+  name: string;
+  role: string;
 }
 
 export interface Experience {
