@@ -29,16 +29,20 @@ export interface Education {
   details?: string;
 }
 
-export interface Achievement {
-  title: string;
-  year: string;
-  description: string;
-}
-
 export interface Certification {
   title: string;
   issuer: string;
   date: string;
+  /** Shown as a badge, e.g. "Completed". */
+  status?: string;
+  description: string;
+  /** Optional longer breakdown, rendered as bullets when present. */
+  details?: string[];
+}
+
+export interface Achievement {
+  title: string;
+  year: string;
   description: string;
 }
 

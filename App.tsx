@@ -766,7 +766,7 @@ const App = () => {
                 {TALKS.map(talk => (
                   <div key={talk.title} className="rounded-[2rem] bg-surface border border-white/10 p-8 hover:border-accent/40 transition-colors group">
                     <div className="flex items-center gap-2 mb-5">
-                      <Mic size={14} className="text-accent-ink" />
+                      <Mic size={14} className="text-accent-ink animate-mic-pulse" />
                       <p className="text-[11px] font-mono text-gray-500">// speaking</p>
                     </div>
                     <h4 className="font-display text-lg font-bold text-white leading-snug mb-3 group-hover:text-brand transition-colors">{talk.title}</h4>
@@ -1008,8 +1008,24 @@ const App = () => {
                       <h4 className="font-display font-bold text-white leading-snug group-hover:text-brand transition-colors">{cert.title}</h4>
                       <span className="text-[10px] font-mono text-gray-500 shrink-0 mt-1">{cert.date}</span>
                     </div>
-                    <p className="text-[11px] font-mono text-accent-ink mb-3">{cert.issuer}</p>
+                    <div className="flex flex-wrap items-center gap-2 mb-3">
+                      <p className="text-[11px] font-mono text-accent-ink">{cert.issuer}</p>
+                      {cert.status && (
+                        <span className="text-[9px] font-mono text-brand bg-brand/10 border border-brand/25 px-2 py-0.5 rounded-full">
+                          {cert.status}
+                        </span>
+                      )}
+                    </div>
                     <p className="text-gray-400 text-sm leading-relaxed">{cert.description}</p>
+                    {cert.details && (
+                      <ul className="mt-4 space-y-2 pt-4 border-t border-white/10">
+                        {cert.details.map(d => (
+                          <li key={d} className="text-gray-500 text-[13px] leading-relaxed flex gap-2.5">
+                            <span className="text-accent-ink font-mono shrink-0">-</span> {d}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
                 ))}
               </div>

@@ -109,7 +109,29 @@ html {
 @media (prefers-reduced-motion: reduce) {
   .animate-marquee,
   .animate-float-ai,
+  .animate-mic-pulse,
   .scanline {
     animation: none !important;
   }
+}
+
+/* Pulsing halo on the speaking-section mic. Carried over from the
+   certifications commit, recoloured from the retired blue to the violet. */
+@keyframes mic-pulse-glow {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.85;
+    filter: drop-shadow(0 0 0 rgba(139, 109, 255, 0));
+  }
+  50% {
+    transform: scale(1.18);
+    opacity: 1;
+    filter: drop-shadow(0 0 12px rgba(139, 109, 255, 0.8));
+  }
+}
+
+.animate-mic-pulse {
+  animation: mic-pulse-glow 3.2s ease-in-out infinite;
+  transform-origin: center;
 }

@@ -129,6 +129,27 @@ export const EDUCATION_DATA: Education[] = [
   }
 ];
 
+export const CERTIFICATIONS: Certification[] = [
+  {
+    title: 'Data Analytics and Visualization',
+    issuer: 'Infnova Technologies',
+    date: 'Jul 2026',
+    status: 'Completed',
+    description: 'Python-based data wrangling, exploratory analysis, and visual storytelling with Pandas, NumPy, and Matplotlib.'
+  },
+  {
+    title: 'Online Leadership Course',
+    issuer: 'MCW Global',
+    date: 'Nov 2024',
+    status: 'Completed',
+    description: 'Modern leadership, mental health, gender inclusion, vision planning, self-awareness, and workshop design.',
+    details: [
+      'Completed a comprehensive leadership program covering modern leadership, mental health, gender inclusion, vision planning, and self-awareness.',
+      'Designed and facilitated workshop frameworks focused on practical communication and team impact.'
+    ]
+  }
+];
+
 export const ACHIEVEMENTS: Achievement[] = [
   {
     title: '1st Place, Best Final Year Project',
@@ -144,21 +165,6 @@ export const ACHIEVEMENTS: Achievement[] = [
     title: 'Finalist, BIUST Annual Hackathon',
     year: '2021',
     description: 'Prototyped and pitched a working solution under time-constrained, high-pressure competitive conditions.'
-  }
-];
-
-export const CERTIFICATIONS: Certification[] = [
-  {
-    title: 'Data Analytics and Visualization',
-    issuer: 'Infnova Technologies',
-    date: 'Jul 2026',
-    description: 'Python-based data wrangling, exploratory analysis, and visual storytelling with Pandas, NumPy, and Matplotlib.'
-  },
-  {
-    title: 'Online Leadership Course',
-    issuer: 'MCW Global',
-    date: 'Nov 2024',
-    description: 'Modern leadership, mental health, gender inclusion, vision planning, self-awareness, and workshop design.'
   }
 ];
 
