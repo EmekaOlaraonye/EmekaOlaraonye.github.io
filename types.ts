@@ -1,7 +1,16 @@
 
+export type SkillCategory =
+  | 'AI & Machine Learning'
+  | 'Data & Analytics'
+  | 'Programming'
+  | 'Frontend'
+  | 'Backend'
+  | 'DevOps & Cloud'
+  | 'Languages';
+
 export interface Skill {
   name: string;
-  category: 'Programming' | 'Frontend' | 'Backend' | 'DevOps & Cloud' | 'Languages';
+  category: SkillCategory;
   icon?: string;
 }
 
@@ -26,8 +35,17 @@ export interface Achievement {
   description: string;
 }
 
+export interface Certification {
+  title: string;
+  issuer: string;
+  date: string;
+  description: string;
+}
+
 export interface Talk {
   title: string;
+  venue: string;
+  date: string;
   description: string;
 }
 
@@ -42,10 +60,23 @@ export interface Project {
   year: string;
   description: string;
   tags: string[];
+  stack: string[];
   problem: string;
   constraint: string;
   decision: string;
   impact: string;
-  link?: string;
+  highlights: string[];
+  repo?: string;
+  demo?: string;
   image?: string;
+}
+
+export interface Research {
+  title: string;
+  status: string;
+  field: string;
+  question: string;
+  approach: string;
+  why: string;
+  methods: string[];
 }

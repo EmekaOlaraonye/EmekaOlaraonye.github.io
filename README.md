@@ -1,20 +1,41 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Chukwuemeka Olaraonye — Portfolio
 
-# Run and deploy your AI Studio app
+Personal site for Chukwuemeka Olaraonye — MSc Computer Science researcher
+(neural collaborative filtering for e-commerce recommendation) based in
+Gaborone, Botswana.
 
-This contains everything you need to run your app locally.
+Live at **[chemz.tech](https://chemz.tech)** (see `CNAME`).
 
-View your app in AI Studio: https://ai.studio/apps/drive/1I1BYY4hFivliwTDbhJZ5vXmUO9RGKEmp
+## Stack
 
-## Run Locally
+React 19 · TypeScript · Vite · Tailwind CSS v4 · lucide-react
 
-**Prerequisites:**  Node.js
+## Run locally
 
+```bash
+npm install
+npm run dev      # http://localhost:3000
+```
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+```bash
+npm run build    # production build to dist/
+npm run preview  # serve the production build
+```
+
+## Deployment
+
+Pushing to `main` triggers `.github/workflows/deploy.yml`, which builds the
+site and publishes `dist/` to GitHub Pages.
+
+## Layout
+
+| Path | Purpose |
+|---|---|
+| `App.tsx` | Every page section and the case-study modal |
+| `constants.tsx` | All site content — projects, research, skills, experience |
+| `types.ts` | Shapes for that content |
+| `index.css` | Design tokens: violet/citron palette, light + dark ramps |
+| `Chukwuemeka_Olaraonye_CV.pdf` | Served by the Download CV button |
+
+To update the CV, replace that PDF and keep the filename (it is imported in
+`App.tsx`). To change content, edit `constants.tsx` — not the markup.

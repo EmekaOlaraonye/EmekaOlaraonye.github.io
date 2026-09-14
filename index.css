@@ -1,36 +1,115 @@
 @import "tailwindcss";
 
+/*
+  Palette: violet + citron on ink.
+  The page is authored dark-first. Each theme block below redefines the same
+  token set, including the gray ramp - the body copy lives in gray-300..500 and
+  the most muted text in gray-600..800, so flipping only the surfaces would
+  leave that text washed out on a pale background.
+*/
 @theme {
-  --color-brand: #2780e2;
-  --color-brand-glow: #2780e244;
-  --color-dark: #050505;
-  --color-surface: #0d0d0d;
-  --color-surface-accent: #121212;
+  /* Surfaces */
+  --color-dark: #0b0f1a;
+  --color-surface: #151b2b;
+  --color-surface-accent: #1e2739;
+
+  /* Accents */
+  --color-brand: #8b6dff;
+  --color-brand-deep: #6438e8;
+  --color-brand-glow: #8b6dff44;
+  --color-accent: #c8f751;
+  --color-accent-ink: #c8f751;
+
+  /* Text sitting on a filled violet/citron surface - constant across themes,
+     since --color-white flips to near-black in light mode. */
+  --color-on-brand: #ffffff;
+  --color-on-accent: #16210a;
+
+  /* Type */
+  --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
   --animate-pulse-slow: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-marquee: marquee 42s linear infinite;
 }
 
 :root {
   color-scheme: dark;
-}
-
-:root[data-theme='light'] {
-  --color-dark: #f4f7fb;
-  --color-surface: #e9eef6;
-  --color-surface-accent: #dfe7f2;
-  --color-white: #0f172a;
-  color-scheme: light;
+  --color-white: #f4f6fb;
+  --color-gray-300: #cbd5e6;
+  --color-gray-400: #a3afc7;
+  --color-gray-500: #7d8aa5;
+  --color-gray-600: #5d6980;
+  --color-gray-700: #414b5e;
+  --color-gray-800: #2a3244;
 }
 
 :root[data-theme='dark'] {
   color-scheme: dark;
 }
 
+/* Shared light-theme token overrides. */
 @media (prefers-color-scheme: light) {
   :root[data-theme='system'] {
-    --color-dark: #f4f7fb;
-    --color-surface: #e9eef6;
-    --color-surface-accent: #dfe7f2;
-    --color-white: #0f172a;
+    --color-dark: #fafaff;
+    --color-surface: #ffffff;
+    --color-surface-accent: #f2f1fb;
+    --color-brand: #6438e8;
+    --color-brand-deep: #4c22c7;
+    --color-brand-glow: #6438e833;
+    --color-accent: #c8f751;
+    --color-accent-ink: #55730a;
+    --color-white: #0b0f1a;
+    --color-gray-300: #1f2937;
+    --color-gray-400: #374151;
+    --color-gray-500: #4b5563;
+    --color-gray-600: #6b7280;
+    --color-gray-700: #9ca3af;
+    --color-gray-800: #d1d5db;
     color-scheme: light;
+  }
+}
+
+:root[data-theme='light'] {
+  --color-dark: #fafaff;
+  --color-surface: #ffffff;
+  --color-surface-accent: #f2f1fb;
+  --color-brand: #6438e8;
+  --color-brand-deep: #4c22c7;
+  --color-brand-glow: #6438e833;
+  --color-accent: #c8f751;
+  --color-accent-ink: #55730a;
+  --color-white: #0b0f1a;
+  --color-gray-300: #1f2937;
+  --color-gray-400: #374151;
+  --color-gray-500: #4b5563;
+  --color-gray-600: #6b7280;
+  --color-gray-700: #9ca3af;
+  --color-gray-800: #d1d5db;
+  color-scheme: light;
+}
+
+/* Decorative blurred glows paint outside their layout box on purpose;
+   keep them from widening the document on narrow screens.
+
+   `clip` rather than `hidden` on purpose: `overflow-x: hidden` resolves
+   overflow-y to `auto`, which makes this element a scroll container and
+   silently breaks `position: sticky` on the nav. `clip` clips without
+   creating one. */
+html {
+  overflow-x: clip;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee,
+  .animate-float-ai,
+  .scanline {
+    animation: none !important;
   }
 }

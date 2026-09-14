@@ -1,13 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <circle cx="32" cy="32" r="30" fill="#2780e2"/>
-  <text
-    x="50%"
-    y="50%"
-    text-anchor="middle"
-    dominant-baseline="middle"
-    font-family="Poppins, Arial, sans-serif"
-    font-size="34"
-    font-weight="700"
-    fill="#ffffff"
-  >C</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Chukwuemeka Olaraonye">
+  <title>Chukwuemeka Olaraonye</title>
+  <!-- The C is a stroked arc rather than <text>: a favicon renders outside the
+       page, so Space Grotesk would not be available and the glyph would fall
+       back to whatever sans the OS picks. A path looks identical everywhere. -->
+  <rect width="64" height="64" rx="15" fill="#8b6dff"/>
+  <path d="M40.6 19.71 A15 15 0 1 0 40.6 44.29"
+        fill="none" stroke="#ffffff" stroke-width="8.5" stroke-linecap="butt"/>
 </svg>
