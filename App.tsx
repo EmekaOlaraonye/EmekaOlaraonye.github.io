@@ -657,11 +657,11 @@ const App = () => {
 
           <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-5 auto-rows-[minmax(0,auto)]">
             {/* Portrait */}
-            <div className="md:col-span-1 lg:row-span-2 relative rounded-3xl overflow-hidden bg-surface border border-white/10 min-h-[340px] group">
+            <div className="md:col-span-1 lg:row-span-2 relative rounded-3xl overflow-hidden bg-surface border border-white/10 aspect-[4/5] md:aspect-auto md:min-h-[340px] group">
               <img
                 src={portfolioPic}
                 alt="Chukwuemeka Olaraonye"
-                className="w-full h-full object-cover absolute inset-0 group-hover:scale-105 transition-transform duration-[1.2s]"
+                className="w-full h-full object-cover object-[46%_24%] absolute inset-0 group-hover:scale-105 transition-transform duration-[1.2s]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/20 to-transparent" />
               <div className="absolute bottom-5 left-5 right-5">
