@@ -153,7 +153,7 @@ const RecommenderDemo = () => {
         </p>
         <button
           onClick={() => setPicked([])}
-          className="inline-flex items-center gap-1.5 text-[11px] font-mono text-gray-500 hover:text-white transition-colors"
+          className="inline-flex items-center gap-1.5 py-2 text-[11px] font-mono text-gray-500 hover:text-white transition-colors"
         >
           <RotateCcw size={11} /> clear
         </button>
@@ -167,7 +167,7 @@ const RecommenderDemo = () => {
               key={item.id}
               onClick={() => toggle(item.id)}
               aria-pressed={on}
-              className={`px-3 py-1.5 rounded-lg text-[12px] transition-all border ${
+              className={`px-3 py-2 rounded-lg text-[12px] transition-all border ${
                 on
                   ? 'bg-brand text-on-brand border-brand font-medium'
                   : 'bg-dark border-white/10 text-gray-400 hover:text-white hover:border-white/30'

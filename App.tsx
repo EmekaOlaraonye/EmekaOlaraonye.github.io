@@ -183,12 +183,12 @@ const Header = ({
   }, []);
 
   const navLinks = [
-    { name: 'About', href: '#about' },
-    { name: 'Projects', href: '#projects' },
-    { name: 'Research', href: '#research' },
-    { name: 'Experience', href: '#experience' },
-    { name: 'Skills', href: '#skills' },
-    { name: 'Awards', href: '#achievements' }
+    { name: 'About', href: '#about', num: '01', kicker: "who's writing" },
+    { name: 'Projects', href: '#projects', num: '02', kicker: 'things I built' },
+    { name: 'Research', href: '#research', num: '03', kicker: 'ai / machine learning' },
+    { name: 'Experience', href: '#experience', num: '04', kicker: 'how I got here' },
+    { name: 'Skills', href: '#skills', num: '05', kicker: 'the toolkit' },
+    { name: 'Awards', href: '#achievements', num: '06', kicker: 'receipts' }
   ];
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -207,7 +207,7 @@ const Header = ({
         <a
           href="#"
           onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-          className="group shrink-0"
+          className="group shrink-0 py-1.5"
         >
           {/* The first name is dropped on narrow screens rather than the whole
               wordmark, so the surname always identifies the page. */}
@@ -264,35 +264,84 @@ const Header = ({
         </button>
       </div>
 
-      {/* Mobile Nav Overlay */}
-      <div className={`fixed inset-0 bg-dark/98 backdrop-blur-2xl z-40 transition-all duration-500 lg:hidden flex items-center justify-center ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
-        <div className="flex flex-col items-center gap-7">
-          <ThemeSwitch themeMode={themeMode} setThemeMode={setThemeMode} size={18} pad="p-3" />
-          {navLinks.map((link, i) => (
-            <a
-              key={link.name}
-              href={link.href}
-              onClick={(e) => handleNavClick(e, link.href)}
-              className={`font-display text-4xl font-bold tracking-tight transition-all duration-500 ${
-                isOpen ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
-              } ${activeSection === link.href.substring(1) ? 'text-brand' : 'text-white hover:text-brand'}`}
-              style={{ transitionDelay: `${i * 60}ms` }}
-            >
-              {link.name}
-            </a>
-          ))}
-          <a
-            href="#contact"
-            onClick={(e) => handleNavClick(e, '#contact')}
-            className={`mt-4 inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-surface-accent border border-brand/45 text-white font-mono text-sm transition-all duration-500 ${isOpen ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
-            style={{ transitionDelay: `${navLinks.length * 60}ms` }}
+      {/* Mobile Nav Overlay - an index of the page, not a list of words */}
+      <div
+        className={`fixed inset-0 z-40 lg:hidden transition-opacity duration-300 ${
+          isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
+      >
+        <div className="absolute inset-0 bg-dark/97 backdrop-blur-2xl" />
+        <div className="absolute inset-0 grid-pattern opacity-30" />
+
+        <div className="relative h-full overflow-y-auto custom-scrollbar flex flex-col px-6 pt-24 pb-8">
+          <p className="font-mono text-[11px] text-brand mb-5">// menu</p>
+
+          <nav className="flex flex-col">
+            {navLinks.map((link, i) => {
+              const active = activeSection === link.href.substring(1);
+              return (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  onClick={(e) => handleNavClick(e, link.href)}
+                  className={`group flex items-center gap-4 py-3.5 border-b border-white/[0.07] transition-all duration-500 ${
+                    isOpen ? 'translate-x-0 opacity-100' : 'translate-x-6 opacity-0'
+                  }`}
+                  style={{ transitionDelay: `${i * 45}ms` }}
+                >
+                  <span className={`font-mono text-[11px] w-5 shrink-0 ${active ? 'text-accent-ink' : 'text-gray-600'}`}>
+                    {link.num}
+                  </span>
+                  <span className="flex-1 min-w-0">
+                    <span className={`block font-display text-2xl font-bold tracking-tight ${active ? 'text-brand' : 'text-white'}`}>
+                      {link.name}
+                    </span>
+                    <span className="block font-mono text-[10.5px] text-gray-500 mt-0.5">{link.kicker}</span>
+                  </span>
+                  <ArrowUpRight size={16} className="shrink-0 text-gray-700 group-hover:text-brand transition-colors" />
+                </a>
+              );
+            })}
+          </nav>
+
+          <div
+            className={`mt-auto pt-8 transition-all duration-500 ${isOpen ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}
+            style={{ transitionDelay: `${navLinks.length * 45}ms` }}
           >
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-ink opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-accent-ink" />
-            </span>
-            say hi
-          </a>
+            <div className="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-full bg-surface border border-white/10 text-[11px] font-mono mb-5">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-ink opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-accent-ink" />
+              </span>
+              <span className="text-gray-300">open to 2026 roles</span>
+            </div>
+
+            <div className="flex flex-wrap gap-2.5 mb-6">
+              <a
+                href={cvPdf}
+                download="Chukwuemeka_Olaraonye_CV.pdf"
+                className="inline-flex items-center gap-2 px-4 py-3 rounded-lg bg-brand text-on-brand font-mono text-[12.5px]"
+              >
+                download cv <Download size={14} />
+              </a>
+              <a
+                href="#contact"
+                onClick={(e) => handleNavClick(e, '#contact')}
+                className="inline-flex items-center gap-2 px-4 py-3 rounded-lg bg-surface-accent border border-brand/45 text-white font-mono text-[12.5px]"
+              >
+                say hi <ArrowRight size={14} />
+              </a>
+            </div>
+
+            <div className="flex items-center justify-between gap-4 pt-5 border-t border-white/[0.07]">
+              <div className="flex items-center gap-4 text-[12px] font-mono text-gray-500">
+                <a href="https://github.com/EmekaOlaraonye" target="_blank" rel="noopener noreferrer" className="py-2.5 hover:text-white transition-colors">github</a>
+                <a href="https://www.linkedin.com/in/chukwuemeka-olaraonye/" target="_blank" rel="noopener noreferrer" className="py-2.5 hover:text-white transition-colors">linkedin</a>
+                <a href="mailto:olaraonyemeka@gmail.com" className="py-2.5 hover:text-white transition-colors">email</a>
+              </div>
+              <ThemeSwitch themeMode={themeMode} setThemeMode={setThemeMode} size={16} pad="p-2.5" />
+            </div>
+          </div>
         </div>
       </div>
     </nav>
@@ -408,14 +457,14 @@ const Hero = () => (
             </a>
           </div>
 
-          <div className="flex flex-wrap items-center gap-5 text-[12px] font-mono text-gray-500">
-            <a href="https://github.com/EmekaOlaraonye" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 hover:text-white transition-colors">
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-1 text-[12px] font-mono text-gray-500">
+            <a href="https://github.com/EmekaOlaraonye" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 py-2.5 hover:text-white transition-colors">
               <Github size={14} /> github
             </a>
-            <a href="https://www.linkedin.com/in/chukwuemeka-olaraonye/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 hover:text-white transition-colors">
+            <a href="https://www.linkedin.com/in/chukwuemeka-olaraonye/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 py-2.5 hover:text-white transition-colors">
               <Linkedin size={14} /> linkedin
             </a>
-            <a href="mailto:olaraonyemeka@gmail.com" className="inline-flex items-center gap-1.5 hover:text-white transition-colors">
+            <a href="mailto:olaraonyemeka@gmail.com" className="inline-flex items-center gap-1.5 py-2.5 hover:text-white transition-colors">
               <Mail size={14} /> olaraonyemeka@gmail.com
             </a>
           </div>
@@ -430,8 +479,8 @@ const Hero = () => (
             </div>
             <dl className="divide-y divide-white/[0.07]">
               {AT_A_GLANCE.map(([label, value]) => (
-                <div key={label} className="grid grid-cols-[76px_1fr] gap-4 px-6 py-3.5">
-                  <dt className="text-[11px] font-mono text-gray-500 pt-0.5">{label}</dt>
+                <div key={label} className="grid grid-cols-1 sm:grid-cols-[84px_1fr] gap-0.5 sm:gap-4 px-5 sm:px-6 py-3.5">
+                  <dt className="text-[11px] font-mono text-gray-500 sm:pt-0.5">{label}</dt>
                   <dd className="text-[13.5px] text-gray-300 leading-relaxed">{value}</dd>
                 </div>
               ))}
@@ -461,7 +510,7 @@ const ApproachConsole = () => {
             <button
               key={o.id}
               onClick={() => setScenarioId(o.id)}
-              className={`px-2.5 py-1 rounded-md text-[11px] font-mono transition-all ${
+              className={`px-3 py-2.5 rounded-md text-[11px] font-mono transition-all ${
                 scenarioId === o.id
                   ? 'bg-brand text-on-brand'
                   : 'bg-dark border border-white/10 text-gray-500 hover:text-white'
@@ -642,28 +691,28 @@ const App = () => {
             </div>
 
             {/* Stats */}
-            <div className="md:col-span-2 lg:col-span-2 grid grid-cols-3 gap-5">
-            <div className="rounded-3xl bg-brand p-6 flex flex-col justify-between min-h-[140px]">
+            <div className="md:col-span-2 lg:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-5">
+            <div className="rounded-3xl bg-brand p-5 sm:p-6 flex flex-col justify-between gap-2 sm:gap-0 sm:min-h-[140px]">
               <span className="font-mono text-[10px] text-on-brand/70">bsc gpa</span>
-              <div>
-                <div className="font-display text-4xl font-bold text-on-brand tracking-tight">4.42</div>
-                <div className="font-mono text-[11px] text-on-brand/70 mt-1">out of 5.00 · first class</div>
+              <div className="flex items-baseline gap-3 sm:block">
+                <div className="font-display text-3xl sm:text-4xl font-bold text-on-brand tracking-tight">4.42</div>
+                <div className="font-mono text-[11px] text-on-brand/70 sm:mt-1">out of 5.00 · first class</div>
               </div>
             </div>
 
-            <div className="rounded-3xl bg-accent p-6 flex flex-col justify-between min-h-[140px]">
+            <div className="rounded-3xl bg-accent p-5 sm:p-6 flex flex-col justify-between gap-2 sm:gap-0 sm:min-h-[140px]">
               <span className="font-mono text-[10px] text-on-accent/70">final year project</span>
-              <div>
-                <div className="font-display text-4xl font-bold text-on-accent tracking-tight">1st</div>
-                <div className="font-mono text-[11px] text-on-accent/70 mt-1">best in department</div>
+              <div className="flex items-baseline gap-3 sm:block">
+                <div className="font-display text-3xl sm:text-4xl font-bold text-on-accent tracking-tight">1st</div>
+                <div className="font-mono text-[11px] text-on-accent/70 sm:mt-1">best in department</div>
               </div>
             </div>
 
-            <div className="rounded-3xl bg-surface-accent border border-white/10 p-6 flex flex-col justify-between min-h-[140px]">
+            <div className="rounded-3xl bg-surface-accent border border-white/10 p-5 sm:p-6 flex flex-col justify-between gap-2 sm:gap-0 sm:min-h-[140px]">
               <span className="font-mono text-[10px] text-gray-500">teaching since</span>
-              <div>
-                <div className="font-display text-4xl font-bold text-white tracking-tight">2024</div>
-                <div className="font-mono text-[11px] text-gray-500 mt-1">TA · BIUST</div>
+              <div className="flex items-baseline gap-3 sm:block">
+                <div className="font-display text-3xl sm:text-4xl font-bold text-white tracking-tight">2024</div>
+                <div className="font-mono text-[11px] text-gray-500 sm:mt-1">TA · BIUST</div>
               </div>
             </div>
             </div>
@@ -724,17 +773,17 @@ const App = () => {
                     <div className="flex flex-wrap items-center gap-6">
                       <button
                         onClick={() => setSelectedProject(project)}
-                        className="inline-flex items-center gap-2 text-brand text-sm font-bold hover:gap-3.5 transition-all"
+                        className="inline-flex items-center gap-2 py-2 -my-2 text-brand text-sm font-bold hover:gap-3.5 transition-all"
                       >
                         Read the case study <ArrowRight size={15} />
                       </button>
                       {project.repo && (
-                        <a href={project.repo} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-gray-400 hover:text-white text-[12px] font-mono transition-colors">
+                        <a href={project.repo} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 py-2.5 text-gray-400 hover:text-white text-[12px] font-mono transition-colors">
                           <Github size={14} /> code
                         </a>
                       )}
                       {project.demo && (
-                        <a href={project.demo} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-gray-400 hover:text-accent-ink text-[12px] font-mono transition-colors">
+                        <a href={project.demo} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 py-2.5 text-gray-400 hover:text-accent-ink text-[12px] font-mono transition-colors">
                           <ExternalLink size={14} /> live site
                         </a>
                       )}
