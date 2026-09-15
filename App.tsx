@@ -34,6 +34,8 @@ import {
   STACK_PIPELINE,
   TOOL_GROUPS,
   AFFILIATIONS,
+  CONTACT_INTENTS,
+  CONTACT_META,
   EXPERIENCES,
   EDUCATION_DATA,
   ACHIEVEMENTS,
@@ -584,6 +586,7 @@ const SectionHeading = ({
 
 const App = () => {
   const [formStatus, setFormStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [intent, setIntent] = useState<(typeof CONTACT_INTENTS)[number]>('a role');
   // Read the saved preference during initialisation rather than in an effect:
   // a separate read-effect would still be holding 'system' when the write-effect
   // below first runs, which overwrites the stored choice before it is applied.
@@ -625,7 +628,8 @@ const App = () => {
     if (typeof senderEmail === 'string') {
       formData.append('_replyto', senderEmail);
     }
-    formData.append('_subject', 'New Portfolio Contact Message');
+    formData.append('_subject', `Portfolio — ${intent}`);
+    formData.append('reaching out about', intent);
     formData.append('_template', 'table');
     formData.append('_captcha', 'false');
 
@@ -1157,122 +1161,174 @@ const App = () => {
         </SectionWrapper>
 
         {/* ============ CONTACT ============ */}
-        <SectionWrapper id="contact" className="py-20 max-w-5xl mx-auto px-6">
-          <div className="text-center mb-10">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/15 border border-accent/30 rounded-full text-accent-ink text-[11px] font-mono mb-8">
+        <SectionWrapper id="contact" className="py-20 max-w-7xl mx-auto px-6">
+          <div className="mb-10 max-w-2xl">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/15 border border-accent/30 rounded-full text-accent-ink text-[11px] font-mono mb-6">
               <Sparkles size={13} /> open to opportunities
             </div>
-            <h2 className="font-display text-5xl md:text-7xl font-bold tracking-tight mb-7 text-white leading-[1.02]">
+            <h2 className="font-display text-5xl md:text-6xl font-bold tracking-tight mb-5 text-white leading-[1.02]">
               Let&rsquo;s build <Mark>something</Mark>.
             </h2>
-            <p className="text-gray-400 text-lg max-w-xl mx-auto leading-relaxed">
-              Hiring, collaborating on research, or want to argue about recommender systems? I read every message and reply.
+            <p className="text-gray-400 text-lg leading-relaxed">
+              Hiring, collaborating on research, or want to argue about recommender systems? Pick what it is about
+              and I will know how to read it.
             </p>
           </div>
 
-          <div className="bg-surface p-7 md:p-10 rounded-[2.5rem] border border-white/10 relative overflow-hidden">
-            {formStatus === 'success' ? (
-              <div className="py-16 flex flex-col items-center gap-6 text-center">
-                <div className="w-20 h-20 bg-accent/15 rounded-full flex items-center justify-center text-accent-ink border border-accent/30">
-                  <CheckCircle2 size={40} />
+          <div className="grid lg:grid-cols-[1.25fr_0.9fr] gap-5">
+            {/* the form */}
+            <div className="bg-surface p-7 md:p-9 rounded-[2rem] border border-white/10">
+              {formStatus === 'success' ? (
+                <div className="py-16 flex flex-col items-center gap-6 text-center">
+                  <div className="w-20 h-20 bg-accent/15 rounded-full flex items-center justify-center text-accent-ink border border-accent/30">
+                    <CheckCircle2 size={40} />
+                  </div>
+                  <h3 className="font-display text-3xl font-bold text-white">Message sent</h3>
+                  <p className="text-gray-400 max-w-md mx-auto leading-relaxed">
+                    Thanks for reaching out &mdash; it&rsquo;s on its way to olaraonyemeka@gmail.com. I&rsquo;ll get back to you shortly.
+                  </p>
+                  <button
+                    onClick={() => setFormStatus('idle')}
+                    className="mt-2 px-8 py-3 bg-brand/10 text-brand border border-brand/25 font-bold rounded-xl hover:bg-brand-deep hover:text-on-brand transition-all text-sm"
+                  >
+                    Send another
+                  </button>
                 </div>
-                <h3 className="font-display text-3xl font-bold text-white">Message sent</h3>
-                <p className="text-gray-400 max-w-md mx-auto leading-relaxed">
-                  Thanks for reaching out — it&rsquo;s on its way to olaraonyemeka@gmail.com. I&rsquo;ll get back to you shortly.
-                </p>
-                <button
-                  onClick={() => setFormStatus('idle')}
-                  className="mt-2 px-8 py-3 bg-brand/10 text-brand border border-brand/25 font-bold rounded-xl hover:bg-brand-deep hover:text-on-brand transition-all text-sm"
-                >
-                  Send another
-                </button>
-              </div>
-            ) : (
-              <form className="space-y-7 max-w-2xl mx-auto text-left" onSubmit={handleFormSubmit}>
-                <div className="grid md:grid-cols-2 gap-7">
-                  <div className="space-y-3">
-                    <label htmlFor="name" className="font-mono text-[11px] text-gray-500">your name</label>
-                    <input
+              ) : (
+                <form className="space-y-6 text-left" onSubmit={handleFormSubmit}>
+                  <fieldset>
+                    <legend className="font-mono text-[11px] text-gray-500 mb-3">// I&rsquo;m reaching out about</legend>
+                    <div className="flex flex-wrap gap-2">
+                      {CONTACT_INTENTS.map(option => (
+                        <button
+                          key={option}
+                          type="button"
+                          onClick={() => setIntent(option)}
+                          aria-pressed={intent === option}
+                          className={`px-3.5 py-2.5 rounded-lg text-[12.5px] font-mono border transition-all ${
+                            intent === option
+                              ? 'bg-brand-deep text-on-brand border-brand'
+                              : 'bg-dark border-white/10 text-gray-400 hover:text-white hover:border-white/30'
+                          }`}
+                        >
+                          {option}
+                        </button>
+                      ))}
+                    </div>
+                  </fieldset>
+
+                  <div className="grid sm:grid-cols-2 gap-5">
+                    <div className="space-y-2.5">
+                      <label htmlFor="name" className="font-mono text-[11px] text-gray-500 block">your name</label>
+                      <input
+                        required
+                        id="name"
+                        name="name"
+                        type="text"
+                        placeholder="Jane Doe"
+                        className="w-full px-5 py-3.5 bg-dark border border-white/10 rounded-2xl text-white placeholder:text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand/40 focus:border-brand transition-all"
+                      />
+                    </div>
+                    <div className="space-y-2.5">
+                      <label htmlFor="email" className="font-mono text-[11px] text-gray-500 block">email address</label>
+                      <input
+                        required
+                        id="email"
+                        name="email"
+                        type="email"
+                        placeholder="jane@company.com"
+                        className="w-full px-5 py-3.5 bg-dark border border-white/10 rounded-2xl text-white placeholder:text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand/40 focus:border-brand transition-all"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2.5">
+                    <label htmlFor="message" className="font-mono text-[11px] text-gray-500 block">message</label>
+                    <textarea
                       required
-                      id="name"
-                      name="name"
-                      type="text"
-                      placeholder="Jane Doe"
-                      className="w-full px-6 py-4 bg-dark border border-white/10 rounded-2xl text-white placeholder:text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand/40 focus:border-brand transition-all"
+                      id="message"
+                      name="message"
+                      rows={5}
+                      placeholder="Tell me what you have in mind..."
+                      className="w-full px-5 py-3.5 bg-dark border border-white/10 rounded-2xl text-white placeholder:text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand/40 focus:border-brand transition-all resize-none"
                     />
                   </div>
-                  <div className="space-y-3">
-                    <label htmlFor="email" className="font-mono text-[11px] text-gray-500">email address</label>
-                    <input
-                      required
-                      id="email"
-                      name="email"
-                      type="email"
-                      placeholder="jane@company.com"
-                      className="w-full px-6 py-4 bg-dark border border-white/10 rounded-2xl text-white placeholder:text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand/40 focus:border-brand transition-all"
-                    />
-                  </div>
-                </div>
-                <div className="space-y-3">
-                  <label htmlFor="message" className="font-mono text-[11px] text-gray-500">message</label>
-                  <textarea
-                    required
-                    id="message"
-                    name="message"
-                    rows={5}
-                    placeholder="Tell me what you have in mind..."
-                    className="w-full px-6 py-4 bg-dark border border-white/10 rounded-2xl text-white placeholder:text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand/40 focus:border-brand transition-all resize-none"
-                  />
-                </div>
 
-                {formStatus === 'error' && (
-                  <div className="p-4 bg-red-500/10 border border-red-500/25 rounded-xl flex items-center gap-3 text-red-400 text-sm">
-                    <AlertCircle size={20} className="shrink-0" />
-                    <span>Something went wrong sending that. Please try again, or reach me directly on LinkedIn or by email.</span>
-                  </div>
-                )}
-
-                <button
-                  disabled={formStatus === 'loading'}
-                  className={`w-full py-5 bg-brand-deep text-on-brand font-bold rounded-2xl transition-all active:scale-[0.98] flex items-center justify-center gap-3 ${
-                    formStatus === 'loading' ? 'opacity-70 cursor-not-allowed' : 'hover:shadow-[0_10px_40px_rgba(139,109,255,0.45)]'
-                  }`}
-                >
-                  {formStatus === 'loading' ? (
-                    <>
-                      <div className="w-5 h-5 border-2 border-on-brand/30 border-t-on-brand rounded-full animate-spin" />
-                      Sending...
-                    </>
-                  ) : (
-                    <>Send message <Send size={18} className="shrink-0" /></>
+                  {formStatus === 'error' && (
+                    <div className="p-4 bg-red-500/10 border border-red-500/25 rounded-xl flex items-center gap-3 text-red-400 text-sm">
+                      <AlertCircle size={20} className="shrink-0" />
+                      <span>Something went wrong sending that. Please try again, or reach me directly on LinkedIn or by email.</span>
+                    </div>
                   )}
-                </button>
-              </form>
-            )}
-          </div>
 
-          <div className="flex flex-wrap justify-center gap-5 mt-10">
-            {[
-              { href: 'https://github.com/EmekaOlaraonye', Icon: Github, label: 'github', value: '/EmekaOlaraonye' },
-              { href: 'https://www.linkedin.com/in/chukwuemeka-olaraonye/', Icon: Linkedin, label: 'linkedin', value: '/chukwuemeka-olaraonye' },
-              { href: 'mailto:olaraonyemeka@gmail.com', Icon: Mail, label: 'email', value: 'olaraonyemeka@gmail.com' }
-            ].map(({ href, Icon, label, value }) => (
+                  <button
+                    disabled={formStatus === 'loading'}
+                    className={`inline-flex items-center gap-2.5 px-6 py-3.5 rounded-lg bg-brand-deep text-on-brand font-mono text-[13px] transition-all active:scale-95 ${
+                      formStatus === 'loading' ? 'opacity-70 cursor-not-allowed' : 'hover:shadow-[0_8px_30px_rgba(116,80,242,0.45)]'
+                    }`}
+                  >
+                    {formStatus === 'loading' ? (
+                      <>
+                        <div className="w-4 h-4 border-2 border-on-brand/30 border-t-on-brand rounded-full animate-spin" />
+                        sending...
+                      </>
+                    ) : (
+                      <>send message <Send size={15} /></>
+                    )}
+                  </button>
+                </form>
+              )}
+            </div>
+
+            {/* what a sender wants to know before writing */}
+            <div className="bg-surface p-7 md:p-8 rounded-[2rem] border border-white/10 flex flex-col">
+              <p className="font-mono text-[11px] text-gray-500 mb-4">// before you write</p>
+
+              <dl className="divide-y divide-white/[0.07]">
+                {CONTACT_META.map(row => (
+                  <div key={row.key} className="grid grid-cols-1 sm:grid-cols-[76px_1fr] gap-0.5 sm:gap-4 py-3.5">
+                    <dt className="font-mono text-[10.5px] text-gray-500 sm:pt-0.5">{row.key}</dt>
+                    <dd className="text-[13.5px] text-gray-300 leading-relaxed">{row.value}</dd>
+                  </div>
+                ))}
+
+                <div className="grid grid-cols-1 sm:grid-cols-[76px_1fr] gap-0.5 sm:gap-4 py-3.5">
+                  <dt className="font-mono text-[10.5px] text-gray-500 sm:pt-0.5">cv</dt>
+                  <dd>
+                    <a
+                      href={cvPdf}
+                      download="Chukwuemeka_Olaraonye_CV.pdf"
+                      className="inline-flex items-center gap-2 py-2.5 text-[13px] font-mono text-brand hover:text-white transition-colors"
+                    >
+                      download pdf <Download size={13} />
+                    </a>
+                  </dd>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-[76px_1fr] gap-0.5 sm:gap-4 py-3.5">
+                  <dt className="font-mono text-[10.5px] text-gray-500 sm:pt-0.5">elsewhere</dt>
+                  <dd className="flex flex-wrap items-center gap-4 text-[13px] font-mono">
+                    <a href="https://github.com/EmekaOlaraonye" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 py-2.5 text-gray-400 hover:text-white transition-colors">
+                      <Github size={13} /> github
+                    </a>
+                    <a href="https://www.linkedin.com/in/chukwuemeka-olaraonye/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 py-2.5 text-gray-400 hover:text-white transition-colors">
+                      <Linkedin size={13} /> linkedin
+                    </a>
+                  </dd>
+                </div>
+              </dl>
+
               <a
-                key={label}
-                href={href}
-                target={href.startsWith('http') ? '_blank' : undefined}
-                rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                className="group flex items-center gap-3 px-5 py-4 rounded-2xl bg-surface border border-white/10 hover:border-brand/45 hover:-translate-y-1 transition-all"
+                href="mailto:olaraonyemeka@gmail.com"
+                className="mt-auto pt-6 group"
               >
-                <div className="w-11 h-11 rounded-xl bg-brand/10 flex items-center justify-center text-brand group-hover:bg-brand-deep group-hover:text-on-brand transition-all">
-                  <Icon size={20} />
-                </div>
-                <div className="text-left">
-                  <p className="font-mono text-[10px] text-gray-500 mb-0.5">{label}</p>
-                  <p className="text-sm font-semibold text-white group-hover:text-brand transition-colors">{value}</p>
-                </div>
+                <span className="font-mono text-[10.5px] text-gray-500 block mb-2">or just email me</span>
+                <span className="inline-flex items-center gap-2.5 w-full px-4 py-3.5 rounded-lg bg-dark border border-brand/40 text-white font-mono text-[13px] group-hover:border-brand group-hover:bg-brand/10 transition-all">
+                  <Mail size={14} className="text-brand shrink-0" />
+                  <span className="truncate">olaraonyemeka@gmail.com</span>
+                </span>
               </a>
-            ))}
+            </div>
           </div>
         </SectionWrapper>
       </main>

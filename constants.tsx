@@ -66,6 +66,18 @@ export const AFFILIATIONS: Affiliation[] = [
   { name: 'Orange Digital Champions', role: 'hackathon finalist' }
 ];
 
+/* The chip a sender picks becomes the email subject, so the inbox is sorted
+   before it arrives rather than after. */
+export const CONTACT_INTENTS = ['a role', 'research', 'speaking', 'something else'] as const;
+
+/* Answers to what someone actually wonders before writing. Reply time is a
+   habit, not a guarantee - edit or remove the row if it stops being true. */
+export const CONTACT_META: { key: string; value: string }[] = [
+  { key: 'replies', value: 'Usually within a day or two.' },
+  { key: 'timezone', value: 'Gaborone · GMT+2 — overlaps Europe and most of Africa' },
+  { key: 'open to', value: '2026 graduate and ML roles, research collaboration, remote' }
+];
+
 export const RESEARCH: Research = {
   title: 'Advancing E-Commerce Recommendation Systems with Neural Collaborative Filtering',
   status: 'MSc research in progress',
