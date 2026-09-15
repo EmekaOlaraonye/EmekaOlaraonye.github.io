@@ -27,9 +27,11 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <meta name="theme-color" content="#0b0f1a">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Self-hosted so the fonts are not a third-party, render-blocking request.
+         Preloading the three variable files keeps the swap from shifting layout. -->
+    <link rel="preload" href="/fonts/space-grotesk.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/fonts/jetbrains-mono.woff2" as="font" type="font/woff2" crossorigin>
     <style>
         body {
             font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
@@ -165,10 +167,45 @@
             }
         })();
     </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Chukwuemeka Olaraonye",
+      "url": "https://chemz.tech/",
+      "image": "https://chemz.tech/og-image.png",
+      "email": "mailto:olaraonyemeka@gmail.com",
+      "jobTitle": "MSc Computer Science Researcher",
+      "description": "MSc Computer Science researcher working on neural collaborative filtering for e-commerce recommendation, and building the production backends and interfaces that ship models to real users.",
+      "address": { "@type": "PostalAddress", "addressLocality": "Gaborone", "addressCountry": "BW" },
+      "alumniOf": {
+        "@type": "CollegeOrUniversity",
+        "name": "Botswana International University of Science & Technology"
+      },
+      "worksFor": {
+        "@type": "CollegeOrUniversity",
+        "name": "Botswana International University of Science & Technology"
+      },
+      "knowsAbout": [
+        "Recommender systems",
+        "Neural collaborative filtering",
+        "Machine learning",
+        "Data analytics",
+        "Backend engineering",
+        "React"
+      ],
+      "sameAs": [
+        "https://github.com/EmekaOlaraonye",
+        "https://www.linkedin.com/in/chukwuemeka-olaraonye/"
+      ]
+    }
+    </script>
 </head>
 <body class="custom-scrollbar relative">
     <div class="fixed inset-0 bg-noise z-[9999] pointer-events-none print:hidden"></div>
-    <div id="root"></div>
+    <a href="#main" class="skip-link">Skip to content</a>
+<div id="root"></div>
 <script type="module" src="/index.tsx"></script>
 </body>
 </html>

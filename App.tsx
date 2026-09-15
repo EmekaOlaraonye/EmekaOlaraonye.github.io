@@ -45,8 +45,18 @@ import {
 } from './constants';
 import { Project } from './types';
 import RecommenderDemo from './RecommenderDemo';
+import TicketyDiagram from './TicketyDiagram';
+import motoraShot from './project-shots/motora.jpg';
+import tsoo13Shot from './project-shots/tsoo13.jpg';
 import portfolioPic from './portfolio-pic.JPG';
 import cvPdf from './Chukwuemeka_Olaraonye_CV.pdf';
+
+/* Vite needs a static import per asset, so constants.tsx carries a key and the
+   bundled URL is looked up here. */
+const PROJECT_SHOTS: Record<string, string> = {
+  motora: motoraShot,
+  tsoo13: tsoo13Shot
+};
 
 // Reveals each section as it scrolls into view.
 const SectionWrapper = ({ children, id, className = "" }: { children: React.ReactNode, id: string, className?: string }) => {
@@ -320,7 +330,7 @@ const Header = ({
               <a
                 href={cvPdf}
                 download="Chukwuemeka_Olaraonye_CV.pdf"
-                className="inline-flex items-center gap-2 px-4 py-3 rounded-lg bg-brand text-on-brand font-mono text-[12.5px]"
+                className="inline-flex items-center gap-2 px-4 py-3 rounded-lg bg-brand-deep text-on-brand font-mono text-[12.5px]"
               >
                 download cv <Download size={14} />
               </a>
@@ -440,7 +450,7 @@ const Hero = () => (
             <a
               href={cvPdf}
               download="Chukwuemeka_Olaraonye_CV.pdf"
-              className="inline-flex items-center gap-2.5 px-5 py-3 rounded-lg bg-brand text-on-brand font-mono text-[13px] hover:shadow-[0_8px_30px_rgba(139,109,255,0.4)] hover:-translate-y-0.5 transition-all group"
+              className="inline-flex items-center gap-2.5 px-5 py-3 rounded-lg bg-brand-deep text-on-brand font-mono text-[13px] hover:shadow-[0_8px_30px_rgba(139,109,255,0.4)] hover:-translate-y-0.5 transition-all group"
             >
               download cv <Download size={15} className="group-hover:translate-y-0.5 transition-transform" />
             </a>
@@ -512,7 +522,7 @@ const ApproachConsole = () => {
               onClick={() => setScenarioId(o.id)}
               className={`px-3 py-2.5 rounded-md text-[11px] font-mono transition-all ${
                 scenarioId === o.id
-                  ? 'bg-brand text-on-brand'
+                  ? 'bg-brand-deep text-on-brand'
                   : 'bg-dark border border-white/10 text-gray-500 hover:text-white'
               }`}
             >
@@ -643,7 +653,7 @@ const App = () => {
       <Header themeMode={themeMode} setThemeMode={setThemeMode} />
       <span aria-live="polite" className="sr-only">{`${themeMode} theme`}</span>
 
-      <main className="relative z-10">
+      <main id="main" className="relative z-10">
         <Hero />
         <AffiliationsBar />
 
@@ -661,6 +671,8 @@ const App = () => {
               <img
                 src={portfolioPic}
                 alt="Chukwuemeka Olaraonye"
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover object-[46%_24%] absolute inset-0 group-hover:scale-105 transition-transform duration-[1.2s]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/20 to-transparent" />
@@ -692,7 +704,7 @@ const App = () => {
 
             {/* Stats */}
             <div className="md:col-span-2 lg:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-5">
-            <div className="rounded-3xl bg-brand p-5 sm:p-6 flex flex-col justify-between gap-2 sm:gap-0 sm:min-h-[140px]">
+            <div className="rounded-3xl bg-brand-deep p-5 sm:p-6 flex flex-col justify-between gap-2 sm:gap-0 sm:min-h-[140px]">
               <span className="font-mono text-[10px] text-on-brand/70">bsc gpa</span>
               <div className="flex items-baseline gap-3 sm:block">
                 <div className="font-display text-3xl sm:text-4xl font-bold text-on-brand tracking-tight">4.42</div>
@@ -736,9 +748,31 @@ const App = () => {
                   i % 2 === 1 ? 'lg:ml-12' : 'lg:mr-12'
                 }`}
               >
-                <div className="grid lg:grid-cols-[auto_1fr_auto] gap-7 p-7 md:p-8 items-start">
+                <div className="grid lg:grid-cols-[1fr_370px] gap-7 lg:gap-8 p-7 md:p-8 items-start">
+                  {/* Visual: a screenshot where there is an interface, the
+                      architecture where there is not. Ordered first on phones
+                      so the work is the first thing seen. */}
+                  <div className="order-first lg:order-last rounded-xl overflow-hidden border border-white/10 bg-dark">
+                    {project.image ? (
+                      <img
+                        src={PROJECT_SHOTS[project.image]}
+                        alt={`${project.title} interface`}
+                        width={1000}
+                        height={625}
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-auto group-hover:scale-[1.03] transition-transform duration-700"
+                      />
+                    ) : (
+                      <div className="p-3">
+                        <TicketyDiagram />
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="flex gap-5 md:gap-6 min-w-0">
                   {/* Big index */}
-                  <div className="font-display text-5xl md:text-6xl font-bold text-white/10 leading-none select-none group-hover:text-brand/30 transition-colors duration-500">
+                  <div className="font-display text-4xl md:text-5xl font-bold text-white/10 leading-none select-none shrink-0 group-hover:text-brand/30 transition-colors duration-500">
                     0{i + 1}
                   </div>
 
@@ -790,10 +824,7 @@ const App = () => {
                     </div>
                   </div>
 
-                  <ArrowUpRight
-                    size={28}
-                    className="hidden lg:block text-gray-700 group-hover:text-brand group-hover:-translate-y-1 group-hover:translate-x-1 transition-all duration-300 shrink-0"
-                  />
+                  </div>
                 </div>
               </div>
             ))}
@@ -879,7 +910,7 @@ const App = () => {
                         <span className="text-gray-500">+</span>
                         <span className="px-2.5 py-1.5 rounded-lg bg-dark/60 border border-white/10 text-gray-300">item</span>
                         <ArrowRight size={12} className="text-brand" />
-                        <span className="px-2.5 py-1.5 rounded-lg bg-brand text-on-brand font-semibold">learned f()</span>
+                        <span className="px-2.5 py-1.5 rounded-lg bg-brand-deep text-on-brand font-semibold">learned f()</span>
                         <ArrowRight size={12} className="text-brand" />
                         <span className="px-2.5 py-1.5 rounded-lg bg-dark/60 border border-white/10 text-gray-300">score</span>
                       </div>
@@ -1151,7 +1182,7 @@ const App = () => {
                 </p>
                 <button
                   onClick={() => setFormStatus('idle')}
-                  className="mt-2 px-8 py-3 bg-brand/10 text-brand border border-brand/25 font-bold rounded-xl hover:bg-brand hover:text-on-brand transition-all text-sm"
+                  className="mt-2 px-8 py-3 bg-brand/10 text-brand border border-brand/25 font-bold rounded-xl hover:bg-brand-deep hover:text-on-brand transition-all text-sm"
                 >
                   Send another
                 </button>
@@ -1203,7 +1234,7 @@ const App = () => {
 
                 <button
                   disabled={formStatus === 'loading'}
-                  className={`w-full py-5 bg-brand text-on-brand font-bold rounded-2xl transition-all active:scale-[0.98] flex items-center justify-center gap-3 ${
+                  className={`w-full py-5 bg-brand-deep text-on-brand font-bold rounded-2xl transition-all active:scale-[0.98] flex items-center justify-center gap-3 ${
                     formStatus === 'loading' ? 'opacity-70 cursor-not-allowed' : 'hover:shadow-[0_10px_40px_rgba(139,109,255,0.45)]'
                   }`}
                 >
@@ -1233,7 +1264,7 @@ const App = () => {
                 rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
                 className="group flex items-center gap-3 px-5 py-4 rounded-2xl bg-surface border border-white/10 hover:border-brand/45 hover:-translate-y-1 transition-all"
               >
-                <div className="w-11 h-11 rounded-xl bg-brand/10 flex items-center justify-center text-brand group-hover:bg-brand group-hover:text-on-brand transition-all">
+                <div className="w-11 h-11 rounded-xl bg-brand/10 flex items-center justify-center text-brand group-hover:bg-brand-deep group-hover:text-on-brand transition-all">
                   <Icon size={20} />
                 </div>
                 <div className="text-left">
@@ -1316,7 +1347,7 @@ const App = () => {
                   href={selectedProject.repo}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-6 py-3 bg-brand text-on-brand font-bold rounded-xl hover:shadow-[0_8px_30px_rgba(139,109,255,0.4)] transition-all inline-flex items-center gap-2"
+                  className="px-6 py-3 bg-brand-deep text-on-brand font-bold rounded-xl hover:shadow-[0_8px_30px_rgba(139,109,255,0.4)] transition-all inline-flex items-center gap-2"
                 >
                   View the code <Github size={15} />
                 </a>

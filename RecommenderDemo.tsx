@@ -169,7 +169,7 @@ const RecommenderDemo = () => {
               aria-pressed={on}
               className={`px-3 py-2 rounded-lg text-[12px] transition-all border ${
                 on
-                  ? 'bg-brand text-on-brand border-brand font-medium'
+                  ? 'bg-brand-deep text-on-brand border-brand font-medium'
                   : 'bg-dark border-white/10 text-gray-400 hover:text-white hover:border-white/30'
               }`}
             >

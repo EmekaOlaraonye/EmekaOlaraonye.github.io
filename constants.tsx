@@ -202,6 +202,7 @@ export const PROJECTS: Project[] = [
     description:
       'A customer-facing marketplace for used cars in Gaborone — browse listings from local garages and dealers, compare options side by side, and contact the seller directly.',
     tags: ['React', 'TypeScript', 'Product'],
+    image: 'motora',
     stack: ['React', 'Vite', 'TypeScript', 'Firebase', 'CSS Modules', 'Edge middleware'],
     problem:
       'Buying a used car locally meant chasing scattered listings with no way to compare vehicles or judge what a car actually costs per month.',
@@ -226,6 +227,7 @@ export const PROJECTS: Project[] = [
     description:
       'The public marketing site for The 13 Way, an agricultural venture — built to give the operation a credible front door and explain what it does to people who have never heard of it.',
     tags: ['Web', 'Agriculture', 'Marketing'],
+    image: 'tsoo13',
     stack: ['JavaScript', 'Vercel'],
     problem:
       'The venture had no public presence, which made it harder to reach partners, buyers, and anyone evaluating it from the outside.',

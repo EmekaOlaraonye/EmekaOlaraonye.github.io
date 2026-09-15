@@ -1,5 +1,30 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'Space Grotesk';
+  src: url('/fonts/space-grotesk.woff2') format('woff2');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/inter.woff2') format('woff2');
+  font-weight: 300 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/jetbrains-mono.woff2') format('woff2');
+  font-weight: 400 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+
 /*
   Palette: violet + citron on ink.
 
@@ -57,7 +82,10 @@
   --color-surface-accent: light-dark(#f2f1fb, #1e2739);
 
   --color-brand: light-dark(#6438e8, #8b6dff);
-  --color-brand-deep: light-dark(#4c22c7, #6438e8);
+  /* Fill for solid violet surfaces carrying white text. Kept separate from
+     --color-brand, which must stay light enough to read as text on the dark
+     ground; white on #8b6dff is only 3.67:1, while #7450f2 is 5.03:1. */
+  --color-brand-deep: light-dark(#5a2fd6, #7450f2);
   --color-brand-glow: light-dark(#6438e833, #8b6dff44);
   --color-accent: light-dark(#c8f751, #c8f751);
   --color-accent-ink: light-dark(#55730a, #c8f751);
@@ -115,4 +143,32 @@ html {
   .scanline {
     animation: none !important;
   }
+}
+
+/* Keyboard affordances. The skip link stays off-screen until focused, and
+   focus rings are drawn explicitly rather than left to the browser default,
+   which is nearly invisible on the dark ground. */
+.skip-link {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translate(-50%, -120%);
+  z-index: 100;
+  padding: 0.7rem 1.2rem;
+  border-radius: 0 0 0.75rem 0.75rem;
+  background: var(--color-brand-deep);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  transition: transform 0.18s ease;
+}
+
+.skip-link:focus {
+  transform: translate(-50%, 0);
+}
+
+:where(a, button, input, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 4px;
 }
