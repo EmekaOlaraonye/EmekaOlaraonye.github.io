@@ -47,6 +47,7 @@ import {
 } from './constants';
 import { Project } from './types';
 import RecommenderDemo from './RecommenderDemo';
+import GlassControl from './GlassControl';
 import TicketyDiagram from './TicketyDiagram';
 import motoraShot from './project-shots/motora.jpg';
 import tsoo13Shot from './project-shots/tsoo13.jpg';
@@ -262,7 +263,8 @@ const Header = ({
           </a>
         </div>
 
-        <div className="hidden lg:block ml-4">
+        <div className="hidden lg:flex items-center gap-2 ml-4">
+          <GlassControl />
           <ThemeSwitch themeMode={themeMode} setThemeMode={setThemeMode} />
         </div>
 
@@ -351,7 +353,10 @@ const Header = ({
                 <a href="https://www.linkedin.com/in/chukwuemeka-olaraonye/" target="_blank" rel="noopener noreferrer" className="py-2.5 hover:text-white transition-colors">linkedin</a>
                 <a href="mailto:olaraonyemeka@gmail.com" className="py-2.5 hover:text-white transition-colors">email</a>
               </div>
-              <ThemeSwitch themeMode={themeMode} setThemeMode={setThemeMode} size={16} pad="p-2.5" />
+              <div className="flex items-center gap-2">
+                <GlassControl compact />
+                <ThemeSwitch themeMode={themeMode} setThemeMode={setThemeMode} size={16} pad="p-2.5" />
+              </div>
             </div>
           </div>
         </div>
@@ -484,7 +489,7 @@ const Hero = () => (
 
         {/* Right: the facts, scannable without reading a sentence */}
         <div className="z-10">
-          <div className="rounded-3xl glass border border-white/10 overflow-hidden">
+          <div className="rounded-3xl liquid border border-white/10 overflow-hidden">
             <div className="flex items-center gap-2 px-6 py-3.5 border-b border-white/10 bg-surface-accent">
               <Zap size={13} className="text-accent-ink" />
               <span className="text-[11px] font-mono text-gray-400">at a glance</span>
@@ -689,7 +694,7 @@ const App = () => {
             </div>
 
             {/* Intro */}
-            <div className="md:col-span-2 lg:col-span-2 rounded-3xl glass border border-white/10 p-7 md:p-8">
+            <div className="md:col-span-2 lg:col-span-2 rounded-3xl liquid border border-white/10 p-7 md:p-8">
               <p className="text-gray-300 leading-relaxed mb-4">
                 I&rsquo;m an <span className="text-white font-semibold">MSc Computer Science researcher</span> at BIUST, working on
                 what a learned interaction function recovers that classical matrix factorization throws away.
@@ -748,7 +753,7 @@ const App = () => {
             {PROJECTS.map((project, i) => (
               <div
                 key={project.title}
-                className={`group relative rounded-[2rem] border border-white/10 glass overflow-hidden transition-all duration-500 hover:border-brand/40 hover:shadow-[0_24px_60px_rgba(0,0,0,0.25)] ${
+                className={`group relative rounded-[2rem] border border-white/10 liquid overflow-hidden transition-all duration-500 hover:border-brand/40 hover:shadow-[0_24px_60px_rgba(0,0,0,0.25)] ${
                   i % 2 === 1 ? 'lg:ml-12' : 'lg:mr-12'
                 }`}
               >
@@ -859,7 +864,7 @@ const App = () => {
             />
 
             <div className="grid lg:grid-cols-[1.45fr_1fr] gap-6 items-start">
-              <div className="rounded-[2rem] glass border border-white/10 p-7 md:p-9 relative overflow-hidden group hover:border-brand/40 transition-colors duration-500">
+              <div className="rounded-[2rem] liquid border border-white/10 p-7 md:p-9 relative overflow-hidden group hover:border-brand/40 transition-colors duration-500">
                 <div className="absolute -top-24 -right-24 w-72 h-72 bg-brand/20 rounded-full blur-[100px] opacity-70 group-hover:opacity-100 transition-opacity duration-1000" />
                 <div className="relative z-10">
                   <div className="flex flex-wrap items-center gap-3 mb-7">
@@ -891,7 +896,7 @@ const App = () => {
               </div>
 
               <div className="space-y-6">
-                <div className="rounded-[2rem] glass border border-white/10 p-7">
+                <div className="rounded-[2rem] liquid border border-white/10 p-7">
                   <p className="text-[11px] font-mono text-gray-500 mb-4">// the core idea, in one picture</p>
 
                   <div className="space-y-3">
@@ -925,7 +930,7 @@ const App = () => {
                   </div>
                 </div>
 
-                <div className="rounded-[2rem] glass border border-white/10 p-6">
+                <div className="rounded-[2rem] liquid border border-white/10 p-6">
                   <p className="text-[11px] font-mono text-gray-500 mb-3.5">// methods &amp; tooling</p>
                   <div className="flex flex-wrap gap-1.5">
                     {RESEARCH.methods.map(m => (
@@ -988,7 +993,7 @@ const App = () => {
                 </div>
                 <div className="space-y-5">
                   {EDUCATION_DATA.map((edu, idx) => (
-                    <div key={idx} className="p-6 rounded-3xl glass border border-white/10 hover:border-brand/40 transition-all duration-300 group">
+                    <div key={idx} className="p-6 rounded-3xl liquid border border-white/10 hover:border-brand/40 transition-all duration-300 group">
                       <div className="flex flex-col sm:flex-row justify-between items-start gap-3 mb-4">
                         <h4 className="font-display text-xl font-bold text-white group-hover:text-brand transition-colors leading-tight">{edu.degree}</h4>
                         <span className="px-3 py-1 bg-white/5 text-gray-500 text-[10px] font-mono rounded-full border border-white/10 shrink-0">{edu.period}</span>
@@ -1025,7 +1030,7 @@ const App = () => {
                     className={`flex-1 min-w-0 rounded-2xl p-5 border transition-colors duration-300 ${
                       stage.highlight
                         ? 'border-accent/45 bg-accent/[0.06]'
-                        : 'border-white/10 glass hover:border-brand/40'
+                        : 'border-white/10 liquid hover:border-brand/40'
                     }`}
                   >
                     <div className={`font-mono text-[10px] mb-2.5 ${stage.highlight ? 'text-accent-ink' : 'text-gray-600'}`}>
@@ -1056,7 +1061,7 @@ const App = () => {
 
             <div className="grid sm:grid-cols-2 gap-3 mt-3">
               {TOOL_GROUPS.map(group => (
-                <div key={group.label} className="rounded-2xl border border-white/10 glass p-5 flex flex-wrap items-center gap-2">
+                <div key={group.label} className="rounded-2xl border border-white/10 liquid p-5 flex flex-wrap items-center gap-2">
                   <span className="font-mono text-[11px] text-brand mr-1">// {group.label}</span>
                   {group.items.map(item => (
                     <span
@@ -1100,7 +1105,7 @@ const App = () => {
               </div>
               <div className="space-y-5">
                 {CERTIFICATIONS.map((cert, i) => (
-                  <div key={i} className="p-6 rounded-2xl glass border border-white/10 group hover:border-brand/40 transition-all">
+                  <div key={i} className="p-6 rounded-2xl liquid border border-white/10 group hover:border-brand/40 transition-all">
                     <div className="flex items-start justify-between gap-3 mb-2.5">
                       <h4 className="font-display font-bold text-white leading-snug group-hover:text-brand transition-colors">{cert.title}</h4>
                       <span className="text-[10px] font-mono text-gray-500 shrink-0 mt-1">{cert.date}</span>
@@ -1177,7 +1182,7 @@ const App = () => {
 
           <div className="grid lg:grid-cols-[1.25fr_0.9fr] gap-5">
             {/* the form */}
-            <div className="glass p-7 md:p-9 rounded-[2rem] border border-white/10">
+            <div className="liquid p-7 md:p-9 rounded-[2rem] border border-white/10">
               {formStatus === 'success' ? (
                 <div className="py-16 flex flex-col items-center gap-6 text-center">
                   <div className="w-20 h-20 bg-accent/15 rounded-full flex items-center justify-center text-accent-ink border border-accent/30">
@@ -1281,7 +1286,7 @@ const App = () => {
             </div>
 
             {/* what a sender wants to know before writing */}
-            <div className="glass p-7 md:p-8 rounded-[2rem] border border-white/10 flex flex-col">
+            <div className="liquid p-7 md:p-8 rounded-[2rem] border border-white/10 flex flex-col">
               <p className="font-mono text-[11px] text-gray-500 mb-4">// before you write</p>
 
               <dl className="divide-y divide-white/[0.07]">
@@ -1343,7 +1348,7 @@ const App = () => {
           aria-label={`${selectedProject.title} case study`}
         >
           <div
-            className="w-full max-w-3xl max-h-[88vh] overflow-y-auto custom-scrollbar glass border border-white/10 rounded-[2rem] p-8 md:p-11 relative shadow-[0_24px_80px_rgba(0,0,0,0.5)]"
+            className="w-full max-w-3xl max-h-[88vh] overflow-y-auto custom-scrollbar liquid border border-white/10 rounded-[2rem] p-8 md:p-11 relative shadow-[0_24px_80px_rgba(0,0,0,0.5)]"
             onClick={(e) => e.stopPropagation()}
           >
             <button
