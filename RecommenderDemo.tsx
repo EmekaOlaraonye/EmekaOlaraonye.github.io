@@ -128,7 +128,7 @@ const RecommenderDemo = () => {
   }, [picked]);
 
   return (
-    <div className="rounded-[2rem] bg-surface border border-white/10 p-7 md:p-9">
+    <div className="rounded-[2rem] glass border border-white/10 p-7 md:p-9">
       <div className="flex flex-wrap items-start justify-between gap-4 mb-2">
         <div>
           <p className="text-[11px] font-mono text-gray-500 mb-2">// try it yourself</p>
