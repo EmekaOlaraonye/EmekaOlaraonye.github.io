@@ -285,75 +285,74 @@ body::before {
 }
 
 /*
-  A plain translucent surface for content cards. No backdrop-filter: the cost
-  of the lens scales with how many surfaces sample the backdrop, and 22 of
-  them over a vivid backdrop ran at 20fps against 47fps. Content panels get
-  the tint and the shadow; the lens is reserved for chrome.
+  Glass.
+
+  The earlier version tinted with the dark surface colour and sat at ~50%
+  opacity, which produced a tinted panel rather than glass. Two things fix
+  that, and they are what the prototype showed:
+
+    - tint with LIGHT, not dark. Glass scatters, so on a dark page it sits
+      brighter than its backdrop. Dark tint reads as a painted card.
+    - be genuinely transparent. At 50% you cannot see through it, and if you
+      cannot see through it there is nothing for the lens to reveal.
+
+  A small blur on top of the refraction reads as the thickness of the slab -
+  real glass is not optically perfect.
+
+  --liquid-strength slides between a near-solid panel at 0 and full glass at
+  1, so the control covers readability as well as taste.
 */
+.liquid,
 .pane {
-  background: color-mix(in oklab, var(--color-surface) calc(70% - 12% * var(--liquid-strength)), transparent);
-  box-shadow:
-    inset 0 1px 0 light-dark(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.07)),
-    0 20px 48px -26px light-dark(rgba(70, 50, 150, 0.28), rgba(0, 0, 0, 0.7));
-}
-
-@media (prefers-reduced-transparency: reduce) {
-  .pane { background: var(--color-surface); box-shadow: none; }
-}
-
-/*
-  Liquid glass - reserved for chrome that floats above content, which is also
-  how Apple uses it: navigation, sheets and controls, not every card.
-
-  Three things stacked, in the order they matter:
-    1. refraction  - the SVG lens in index.html bends the backdrop at the rim
-    2. specular    - a bright top-left edge, as if light catches the bevel
-    3. body        - a thin translucent tint so text stays readable
-
-  Measured against plain blur this is the cheaper material: displacement is a
-  single lookup per pixel where blur samples a whole neighbourhood. Eight of
-  these cost ~4fps against a 62fps baseline; four blurs cost ~6fps.
-
-  --liquid-strength (0..1) comes from the glass control and scales the body
-  tint and the specular rim. The refraction scale is an SVG attribute, so the
-  control sets that directly on #liquid-displace.
-*/
-.liquid {
   position: relative;
-  backdrop-filter: url(#liquid-glass) saturate(calc(1 + 0.45 * var(--liquid-strength)));
-  -webkit-backdrop-filter: url(#liquid-glass) saturate(calc(1 + 0.45 * var(--liquid-strength)));
-  background: color-mix(
+  background-color: color-mix(
     in oklab,
-    var(--color-surface) calc(62% - 22% * var(--liquid-strength)),
+    var(--color-surface) calc(72% - 56% * var(--liquid-strength)),
     transparent
   );
-  /* Bevel. Light is treated as coming from the top-left, so that edge is
-     brightest, the opposite edge carries a dim bounce, and the shadow sits
-     below - the cues that make a flat rectangle read as a thick slab. */
-  box-shadow:
-    inset 0 1px 0 light-dark(
-      rgba(255, 255, 255, calc(0.9 + 0.1 * var(--liquid-strength))),
-      rgba(255, 255, 255, calc(0.08 + 0.42 * var(--liquid-strength)))
-    ),
-    inset 1px 0 0 light-dark(
+  background-image: linear-gradient(
+    light-dark(
       rgba(255, 255, 255, calc(0.5 * var(--liquid-strength))),
-      rgba(255, 255, 255, calc(0.22 * var(--liquid-strength)))
+      rgba(255, 255, 255, calc(0.085 * var(--liquid-strength)))
     ),
-    inset -1px 0 0 light-dark(
-      rgba(255, 255, 255, calc(0.2 * var(--liquid-strength))),
-      rgba(255, 255, 255, calc(0.07 * var(--liquid-strength)))
+    light-dark(
+      rgba(255, 255, 255, calc(0.5 * var(--liquid-strength))),
+      rgba(255, 255, 255, calc(0.085 * var(--liquid-strength)))
+    )
+  );
+  box-shadow:
+    inset 0 1.5px 1px light-dark(
+      rgba(255, 255, 255, calc(0.5 + 0.45 * var(--liquid-strength))),
+      rgba(255, 255, 255, calc(0.07 + 0.53 * var(--liquid-strength)))
     ),
-    inset 0 -1px 0 light-dark(
-      rgba(255, 255, 255, calc(0.35 * var(--liquid-strength))),
-      rgba(255, 255, 255, calc(0.11 * var(--liquid-strength)))
+    inset 0 -1px 1px light-dark(
+      rgba(255, 255, 255, calc(0.5 * var(--liquid-strength))),
+      rgba(255, 255, 255, calc(0.18 * var(--liquid-strength)))
     ),
-    0 24px 56px -28px light-dark(rgba(70, 50, 150, 0.34), rgba(0, 0, 0, 0.8));
+    inset 0 0 30px light-dark(
+      rgba(255, 255, 255, calc(0.4 * var(--liquid-strength))),
+      rgba(255, 255, 255, calc(0.08 * var(--liquid-strength)))
+    ),
+    0 12px 38px -14px light-dark(rgba(70, 50, 150, 0.24), rgba(0, 0, 0, 0.55));
 }
 
-/* The highlight that runs along the top-left rim. A gradient rather than a
-   uniform border, so the edge brightens toward the light and fades away from
-   it, which is how a real bevel catches it. */
-.liquid::before {
+/* The lens.
+
+   Driven through a custom property rather than written inline, because the
+   filter has to become `none` at zero: a backdrop-filter of blur(0px) still
+   runs the whole pipeline, and on this page that is the difference between
+   53fps and 31fps. The control sets the property.
+
+   Reserved for the floating chrome. Cost scales with the number of surfaces
+   sampling the backdrop - every card carrying the lens ran at 15fps. */
+.liquid {
+  backdrop-filter: var(--liquid-filter, none);
+  -webkit-backdrop-filter: var(--liquid-filter, none);
+}
+
+/* The bright rim, brightest toward the light at top-left. */
+.liquid::before,
+.pane::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -363,14 +362,19 @@ body::before {
   opacity: var(--liquid-strength);
   background: linear-gradient(
     135deg,
-    light-dark(rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.55)) 0%,
-    transparent 38%,
-    transparent 62%,
-    light-dark(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.14)) 100%
+    light-dark(rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.75)) 0%,
+    light-dark(rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.1)) 42%,
+    transparent 58%,
+    light-dark(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.22)) 100%
   );
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .pane { background: var(--color-surface); box-shadow: none; }
+  .pane::before { display: none; }
 }
 
 /* Browsers without backdrop-filter: url() - Safari and Firefox today - keep

@@ -156,7 +156,7 @@ const ThemeSwitch = ({
       onClick={() => setThemeMode(next.mode)}
       title={`Theme: ${current.label} — switch to ${next.label}`}
       aria-label={`Theme: ${current.label}. Switch to ${next.label}.`}
-      className={`${pad} rounded-full bg-surface border border-white/10 text-gray-400 hover:text-white hover:border-white/30 active:scale-90 transition-all`}
+      className={`${pad} rounded-full liquid border border-white/10 text-gray-400 hover:text-white hover:border-white/30 active:scale-90 transition-all`}
     >
       <Icon size={size} className="transition-transform duration-300" key={current.mode} />
     </button>
@@ -253,7 +253,7 @@ const Header = ({
           <a
             href="#contact"
             onClick={(e) => handleNavClick(e, '#contact')}
-            className="ml-3 inline-flex items-center gap-2.5 px-4 py-2 rounded-lg bg-surface-accent border border-brand/45 text-white font-mono text-[12.5px] hover:border-brand hover:bg-brand/10 transition-all active:scale-95"
+            className="ml-3 inline-flex items-center gap-2.5 px-4 py-2 rounded-lg liquid border border-brand/45 text-white font-mono text-[12.5px] hover:border-brand transition-all active:scale-95"
           >
             <span className="relative flex h-1.5 w-1.5">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-ink opacity-75" />
@@ -322,7 +322,7 @@ const Header = ({
             className={`mt-auto pt-8 transition-all duration-500 ${isOpen ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}
             style={{ transitionDelay: `${navLinks.length * 45}ms` }}
           >
-            <div className="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-full bg-surface border border-white/10 text-[11px] font-mono mb-5">
+            <div className="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-full liquid border border-white/10 text-[11px] font-mono mb-5">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-ink opacity-75" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-accent-ink" />
@@ -341,7 +341,7 @@ const Header = ({
               <a
                 href="#contact"
                 onClick={(e) => handleNavClick(e, '#contact')}
-                className="inline-flex items-center gap-2 px-4 py-3 rounded-lg bg-surface-accent border border-brand/45 text-white font-mono text-[12.5px]"
+                className="inline-flex items-center gap-2 px-4 py-3 rounded-lg liquid border border-brand/45 text-white font-mono text-[12.5px]"
               >
                 say hi <ArrowRight size={14} />
               </a>
@@ -433,7 +433,7 @@ const Hero = () => (
       <div className="grid lg:grid-cols-[1.05fr_0.95fr] gap-12 lg:gap-16 items-center">
         {/* Left: the claim */}
         <div className="z-10">
-          <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-surface border border-white/10 text-[11px] font-mono mb-7">
+          <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full liquid border border-white/10 text-[11px] font-mono mb-7">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-ink opacity-75" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-accent-ink" />
@@ -468,7 +468,7 @@ const Hero = () => (
                 const el = document.getElementById('projects');
                 if (el) window.scrollTo({ top: el.offsetTop - 90, behavior: 'smooth' });
               }}
-              className="inline-flex items-center gap-2.5 px-5 py-3 rounded-lg bg-surface-accent border border-white/15 text-white font-mono text-[13px] hover:border-white/35 hover:bg-white/[0.06] transition-all group"
+              className="inline-flex items-center gap-2.5 px-5 py-3 rounded-lg liquid border border-white/15 text-white font-mono text-[13px] hover:border-white/35 transition-all group"
             >
               see my work <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
             </a>
@@ -516,7 +516,7 @@ const ApproachConsole = () => {
   const active = STRATEGY_SCENARIOS.find(i => i.id === scenarioId) ?? STRATEGY_SCENARIOS[0];
 
   return (
-    <div className="rounded-3xl bg-surface-accent border border-white/10 overflow-hidden h-full flex flex-col">
+    <div className="rounded-3xl pane border border-white/10 overflow-hidden h-full flex flex-col">
       <div className="flex items-center gap-2 px-5 py-3 border-b border-white/10">
         <Terminal size={13} className="text-accent-ink" />
         <span className="text-[11px] font-mono text-gray-400">how I approach a problem</span>
@@ -844,7 +844,7 @@ const App = () => {
               href="https://github.com/EmekaOlaraonye"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl border border-white/15 bg-surface hover:border-accent hover:bg-accent/10 text-gray-300 hover:text-white transition-all text-sm font-mono group"
+              className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl border border-white/15 liquid hover:border-accent text-gray-300 hover:text-white transition-all text-sm font-mono group"
             >
               <Github size={16} /> more on github
               <ArrowUpRight size={15} className="group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-transform" />
