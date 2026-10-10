@@ -2,10 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Droplets, X } from 'lucide-react';
 
 const KEY = 'glass-strength';
-const DEFAULT = 55;
+const DEFAULT = 60;
 /* How far the lens bends the backdrop at full strength, in px. Past roughly
    this the rim starts to smear rather than refract. */
-const MAX_DISPLACE = 46;
+const MAX_DISPLACE = 28;
 
 const readStored = (): number => {
   try {
@@ -44,8 +44,18 @@ const GlassControl = ({ compact = false }: { compact?: boolean }) => {
     const effective = reduced ? 0 : strength;
 
     document.documentElement.style.setProperty('--liquid-strength', String(effective / 100));
-    const node = document.getElementById('liquid-displace');
-    if (node) node.setAttribute('scale', String((effective / 100) * MAX_DISPLACE));
+
+    // Each channel refracts by a slightly different amount - that dispersion
+    // is what separates a lens from a smudge. Red bends most, blue least.
+    const base = (effective / 100) * MAX_DISPLACE;
+    const channels: [string, number][] = [
+      ['liquid-r', base * 1.10],
+      ['liquid-g', base],
+      ['liquid-b', base * 0.90]
+    ];
+    channels.forEach(([id, value]) => {
+      document.getElementById(id)?.setAttribute('scale', String(value));
+    });
 
     try {
       window.localStorage.setItem(KEY, String(strength));
