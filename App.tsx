@@ -485,7 +485,7 @@ const Hero = () => (
 
         {/* Right: the facts, scannable without reading a sentence */}
         <div className="z-10">
-          <div className="rounded-3xl liquid border border-white/10 overflow-hidden">
+          <div className="rounded-3xl liquid feature border border-white/10 overflow-hidden">
             <div className="flex items-center gap-2 px-6 py-3.5 border-b border-white/10 bg-surface-accent">
               <Zap size={13} className="text-accent-ink" />
               <span className="text-[11px] font-mono text-gray-400">at a glance</span>
@@ -582,6 +582,78 @@ const SectionHeading = ({
     </div>
     <h2 className="font-display text-4xl md:text-5xl font-bold mb-4 tracking-tight text-white leading-[1.02]">{title}</h2>
     {subtitle && <p className="text-gray-400 max-w-2xl text-lg leading-relaxed">{subtitle}</p>}
+  </div>
+);
+
+/*
+  Section 06 used to carry three different treatments side by side - Awards
+  as a bare timeline, Certifications as glass cards, Leadership as hairline
+  dividers - which read as unresolved rather than deliberate, and put the
+  weakest content (two online courses) in the heaviest boxes. One ledger
+  treatment for all three, so the column that matters is the one with the
+  best entries rather than the one with the most shadow.
+*/
+const Receipt = ({
+  meta,
+  aside,
+  title,
+  description,
+  badge,
+  details
+}: {
+  meta: string;
+  aside?: string;
+  title: string;
+  description: string;
+  badge?: string;
+  details?: string[];
+  /* This project has no @types/react, so TypeScript's fallback JSX typing
+     does not know `key` is reserved and rejects it on a custom component.
+     React strips it before props are passed, so declaring it is only to
+     satisfy the checker. */
+  key?: string | number;
+}) => (
+  <li className="py-5 group">
+    <div className="flex items-baseline gap-2.5 mb-1.5">
+      <span className="font-mono text-[10.5px] text-accent-ink">{meta}</span>
+      {badge && (
+        <span className="font-mono text-[9px] text-brand border border-brand/25 bg-brand/10 px-1.5 py-0.5 rounded-full">
+          {badge}
+        </span>
+      )}
+      {aside && <span className="font-mono text-[10px] text-gray-600 ml-auto shrink-0">{aside}</span>}
+    </div>
+    <h4 className="font-display font-bold text-white leading-snug mb-1.5 group-hover:text-brand transition-colors">
+      {title}
+    </h4>
+    <p className="text-gray-400 text-[13.5px] leading-relaxed">{description}</p>
+    {details && (
+      <ul className="mt-3 space-y-1.5">
+        {details.map(d => (
+          <li key={d} className="text-gray-500 text-[12.5px] leading-relaxed flex gap-2.5">
+            <span className="text-accent-ink font-mono shrink-0">-</span> {d}
+          </li>
+        ))}
+      </ul>
+    )}
+  </li>
+);
+
+const ReceiptColumn = ({
+  icon,
+  title,
+  children
+}: {
+  icon: React.ReactNode;
+  title: string;
+  children: React.ReactNode;
+}) => (
+  <div>
+    <div className="flex items-center gap-2.5 mb-5">
+      <span className="text-accent-ink">{icon}</span>
+      <h3 className="font-display text-lg font-bold text-white">{title}</h3>
+    </div>
+    <ol className="border-t border-white/10 divide-y divide-white/10">{children}</ol>
   </div>
 );
 
@@ -754,7 +826,7 @@ const App = () => {
             {PROJECTS.map((project, i) => (
               <div
                 key={project.title}
-                className={`group relative rounded-[2rem] border border-white/10 pane overflow-hidden transition-all duration-500 hover:border-brand/40 hover:shadow-[0_24px_60px_rgba(0,0,0,0.25)] ${
+                className={`group relative rounded-[2rem] border border-white/10 pane feature overflow-hidden transition-all duration-500 hover:border-brand/40 hover:shadow-[0_24px_60px_rgba(0,0,0,0.25)] ${
                   i % 2 === 1 ? 'lg:ml-12' : 'lg:mr-12'
                 }`}
               >
@@ -865,7 +937,7 @@ const App = () => {
             />
 
             <div className="grid lg:grid-cols-[1.45fr_1fr] gap-6 items-start">
-              <div className="rounded-[2rem] pane border border-white/10 p-7 md:p-9 relative overflow-hidden group hover:border-brand/40 transition-colors duration-500">
+              <div className="rounded-[2rem] pane feature border border-white/10 p-7 md:p-9 relative overflow-hidden group hover:border-brand/40 transition-colors duration-500">
                 <div className="absolute -top-24 -right-24 w-72 h-72 bg-brand/20 rounded-full blur-[100px] opacity-70 group-hover:opacity-100 transition-opacity duration-1000" />
                 <div className="relative z-10">
                   <div className="flex flex-wrap items-center gap-3 mb-7">
@@ -931,7 +1003,7 @@ const App = () => {
                   </div>
                 </div>
 
-                <div className="rounded-[2rem] pane border border-white/10 p-6">
+                <div className="rounded-[2rem] pane quiet border border-white/10 p-6">
                   <p className="text-[11px] font-mono text-gray-500 mb-3.5">// methods &amp; tooling</p>
                   <div className="flex flex-wrap gap-1.5">
                     {RESEARCH.methods.map(m => (
@@ -945,8 +1017,15 @@ const App = () => {
               </div>
             </div>
 
-            <div className="mt-8">
-              <RecommenderDemo />
+            {/* The one element that leaves the gutter. Ten screens all sharing
+                a single column width reads as one long scroll; letting the
+                demo run edge to edge breaks that at the midpoint of the page,
+                and it is the right thing to promote - it is the only part a
+                visitor can actually operate. */}
+            <div className="bleed mt-14 pane feature border-y border-white/10 py-12 md:py-16">
+              <div className="max-w-7xl mx-auto px-6">
+                <RecommenderDemo />
+              </div>
             </div>
           </div>
         </SectionWrapper>
@@ -994,7 +1073,7 @@ const App = () => {
                 </div>
                 <div className="space-y-5">
                   {EDUCATION_DATA.map((edu, idx) => (
-                    <div key={idx} className="p-6 rounded-3xl pane border border-white/10 hover:border-brand/40 transition-all duration-300 group">
+                    <div key={idx} className="p-6 rounded-3xl pane quiet border border-white/10 hover:border-brand/40 transition-all duration-300 group">
                       <div className="flex flex-col sm:flex-row justify-between items-start gap-3 mb-4">
                         <h4 className="font-display text-xl font-bold text-white group-hover:text-brand transition-colors leading-tight">{edu.degree}</h4>
                         <span className="px-3 py-1 bg-white/5 text-gray-500 text-[10px] font-mono rounded-full border border-white/10 shrink-0">{edu.period}</span>
@@ -1062,7 +1141,7 @@ const App = () => {
 
             <div className="grid sm:grid-cols-2 gap-3 mt-3">
               {TOOL_GROUPS.map(group => (
-                <div key={group.label} className="rounded-2xl border border-white/10 pane p-5 flex flex-wrap items-center gap-2">
+                <div key={group.label} className="rounded-2xl border border-white/10 pane quiet p-5 flex flex-wrap items-center gap-2">
                   <span className="font-mono text-[11px] text-brand mr-1">// {group.label}</span>
                   {group.items.map(item => (
                     <span
@@ -1082,87 +1161,41 @@ const App = () => {
         <SectionWrapper id="achievements" className="py-16 max-w-7xl mx-auto px-6">
           <SectionHeading num="06" kicker="receipts" title="Wins & community." />
 
-          <div className="grid md:grid-cols-3 gap-10">
-            <div>
-              <div className="flex items-center gap-3 mb-6">
-                <Trophy className="text-accent-ink" size={24} />
-                <h3 className="font-display text-xl font-bold text-white">Awards</h3>
-              </div>
-              <div className="space-y-7">
-                {ACHIEVEMENTS.map((award, i) => (
-                  <div key={i} className="group relative pl-6 border-l-2 border-white/10 hover:border-accent transition-colors">
-                    <div className="font-mono text-[11px] text-accent-ink mb-2">{award.year}</div>
-                    <h4 className="font-display font-bold text-white mb-2 leading-snug group-hover:text-brand transition-colors">{award.title}</h4>
-                    <p className="text-gray-400 text-sm leading-relaxed">{award.description}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
+          <div className="grid md:grid-cols-3 gap-x-10 gap-y-12 items-start">
+            <ReceiptColumn icon={<Trophy size={18} />} title="Awards">
+              {ACHIEVEMENTS.map((award, i) => (
+                <Receipt key={i} meta={award.year} title={award.title} description={award.description} />
+              ))}
+            </ReceiptColumn>
 
-            <div>
-              <div className="flex items-center gap-3 mb-6">
-                <BadgeCheck className="text-accent-ink" size={24} />
-                <h3 className="font-display text-xl font-bold text-white">Certifications</h3>
-              </div>
-              <div className="space-y-5">
-                {CERTIFICATIONS.map((cert, i) => (
-                  <div key={i} className="p-6 rounded-2xl pane border border-white/10 group hover:border-brand/40 transition-all">
-                    <div className="flex items-start justify-between gap-3 mb-2.5">
-                      <h4 className="font-display font-bold text-white leading-snug group-hover:text-brand transition-colors">{cert.title}</h4>
-                      <span className="text-[10px] font-mono text-gray-500 shrink-0 mt-1">{cert.date}</span>
-                    </div>
-                    <div className="flex flex-wrap items-center gap-2 mb-3">
-                      <p className="text-[11px] font-mono text-accent-ink">{cert.issuer}</p>
-                      {cert.status && (
-                        <span className="text-[9px] font-mono text-brand bg-brand/10 border border-brand/25 px-2 py-0.5 rounded-full">
-                          {cert.status}
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-gray-400 text-sm leading-relaxed">{cert.description}</p>
-                    {cert.details && (
-                      <ul className="mt-4 space-y-2 pt-4 border-t border-white/10">
-                        {cert.details.map(d => (
-                          <li key={d} className="text-gray-500 text-[13px] leading-relaxed flex gap-2.5">
-                            <span className="text-accent-ink font-mono shrink-0">-</span> {d}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
+            <ReceiptColumn icon={<BadgeCheck size={18} />} title="Certifications">
+              {CERTIFICATIONS.map((cert, i) => (
+                <Receipt
+                  key={i}
+                  meta={cert.issuer}
+                  badge={cert.status}
+                  aside={cert.date}
+                  title={cert.title}
+                  description={cert.description}
+                  details={cert.details}
+                />
+              ))}
+            </ReceiptColumn>
 
-            <div>
-              <div className="flex items-center gap-3 mb-6">
-                <Users className="text-accent-ink" size={24} />
-                <h3 className="font-display text-xl font-bold text-white">Leadership</h3>
-              </div>
-              <div className="space-y-7">
-                {LEADERSHIP.map((item, i) => (
-                  <div key={i} className="group">
-                    <h4 className="font-display font-bold text-white mb-1 group-hover:text-brand transition-colors">{item.role}</h4>
-                    <div className="font-mono text-[11px] text-accent-ink mb-2.5">{item.organization}</div>
-                    <p className="text-gray-400 text-sm leading-relaxed">{item.description}</p>
-                    <div className="w-8 h-px bg-white/15 mt-5 group-hover:w-full group-hover:bg-accent/50 transition-all duration-700" />
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-8 pt-8 border-t border-white/10">
-                <div className="flex items-center gap-2 mb-4">
-                  <Mic size={14} className="text-accent-ink animate-mic-pulse" />
-                  <p className="text-[11px] font-mono text-gray-500">// speaking</p>
-                </div>
-                {TALKS.map(talk => (
-                  <div key={talk.title}>
-                    <h4 className="font-display font-bold text-white leading-snug mb-1.5">{talk.title}</h4>
-                    <p className="text-[11px] font-mono text-accent-ink mb-2">{talk.venue} &middot; {talk.date}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <ReceiptColumn icon={<Users size={18} />} title="Leadership">
+              {LEADERSHIP.map((item, i) => (
+                <Receipt key={i} meta={item.organization} title={item.role} description={item.description} />
+              ))}
+              {TALKS.map(talk => (
+                <Receipt
+                  key={talk.title}
+                  meta="// speaking"
+                  aside={talk.date}
+                  title={talk.title}
+                  description={talk.venue}
+                />
+              ))}
+            </ReceiptColumn>
           </div>
         </SectionWrapper>
 
@@ -1183,7 +1216,7 @@ const App = () => {
 
           <div className="grid lg:grid-cols-[1.25fr_0.9fr] gap-5">
             {/* the form */}
-            <div className="pane p-7 md:p-9 rounded-[2rem] border border-white/10">
+            <div className="pane feature p-7 md:p-9 rounded-[2rem] border border-white/10">
               {formStatus === 'success' ? (
                 <div className="py-16 flex flex-col items-center gap-6 text-center">
                   <div className="w-20 h-20 bg-accent/15 rounded-full flex items-center justify-center text-accent-ink border border-accent/30">

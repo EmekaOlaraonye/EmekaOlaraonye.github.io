@@ -372,7 +372,32 @@ body::before {
       rgba(255, 255, 255, calc(0.4 * var(--liquid-strength))),
       rgba(255, 255, 255, calc(0.08 * var(--liquid-strength)))
     ),
-    0 12px 38px -14px light-dark(rgba(70, 50, 150, 0.24), rgba(0, 0, 0, 0.55));
+    var(--lift);
+}
+
+/*
+  Three weights.
+
+  Once every surface became glass, every surface also became equally
+  important - a certification card and the interactive demo carried the
+  same shadow, the same rim, the same radius. These two modifiers put the
+  hierarchy back: .feature for the handful of surfaces that carry the
+  argument, .quiet for the supporting material that should recede. Only
+  the lift and the rim change, so the material itself stays identical.
+*/
+.liquid,
+.pane {
+  --lift: 0 12px 38px -14px light-dark(rgba(70, 50, 150, 0.24), rgba(0, 0, 0, 0.55));
+  --rim: 1;
+}
+
+.feature {
+  --lift: 0 30px 72px -26px light-dark(rgba(70, 50, 150, 0.34), rgba(0, 0, 0, 0.78));
+}
+
+.quiet {
+  --lift: 0 0 0 0 transparent;
+  --rim: 0.45;
 }
 
 /*
@@ -417,7 +442,7 @@ body::before {
   border-radius: inherit;
   padding: 1px;
   pointer-events: none;
-  opacity: var(--liquid-strength);
+  opacity: calc(var(--liquid-strength) * var(--rim, 1));
   background: linear-gradient(
     135deg,
     light-dark(rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.75)) 0%,
@@ -442,6 +467,17 @@ body::before {
 /* Anyone who has asked their system to reduce transparency gets solid
    surfaces and a dimmed backdrop. Setting the two tokens is enough - the
    material, the rim and the ambient layer all derive from them. */
+/*
+  Full-bleed. Ten screens all sharing one gutter width reads as a single
+  long column; this lets one element escape it and run to the viewport
+  edges. Safe because html is overflow-x: clip rather than auto.
+*/
+.bleed {
+  width: 100vw;
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
+
 @media (prefers-reduced-transparency: reduce) {
   :root {
     --liquid-strength: 0;
