@@ -47,7 +47,6 @@ import {
 } from './constants';
 import { Project } from './types';
 import RecommenderDemo from './RecommenderDemo';
-import GlassControl from './GlassControl';
 import TicketyDiagram from './TicketyDiagram';
 import motoraShot from './project-shots/motora.jpg';
 import tsoo13Shot from './project-shots/tsoo13.jpg';
@@ -263,8 +262,7 @@ const Header = ({
           </a>
         </div>
 
-        <div className="hidden lg:flex items-center gap-2 ml-4">
-          <GlassControl />
+        <div className="hidden lg:block ml-4">
           <ThemeSwitch themeMode={themeMode} setThemeMode={setThemeMode} />
         </div>
 
@@ -353,10 +351,7 @@ const Header = ({
                 <a href="https://www.linkedin.com/in/chukwuemeka-olaraonye/" target="_blank" rel="noopener noreferrer" className="py-2.5 hover:text-white transition-colors">linkedin</a>
                 <a href="mailto:olaraonyemeka@gmail.com" className="py-2.5 hover:text-white transition-colors">email</a>
               </div>
-              <div className="flex items-center gap-2">
-                <GlassControl compact />
-                <ThemeSwitch themeMode={themeMode} setThemeMode={setThemeMode} size={16} pad="p-2.5" />
-              </div>
+              <ThemeSwitch themeMode={themeMode} setThemeMode={setThemeMode} size={16} pad="p-2.5" />
             </div>
           </div>
         </div>
