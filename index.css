@@ -94,12 +94,6 @@
   --color-accent: light-dark(#c8f751, #c8f751);
   --color-accent-ink: light-dark(#55730a, #c8f751);
 
-  /* Tied to the glass control: a lens needs structure behind it, so raising
-     the glass also raises what there is to refract. At 0 the page is calm. */
-  --amb-1: light-dark(rgba(100, 56, 232, 0.34), rgba(139, 109, 255, 0.50));
-  --amb-2: light-dark(rgba(150, 200, 40, 0.26), rgba(200, 247, 81, 0.28));
-  --amb-3: light-dark(rgba(100, 56, 232, 0.30), rgba(139, 109, 255, 0.42));
-  --amb-4: light-dark(rgba(60, 120, 230, 0.24), rgba(90, 150, 255, 0.32));
   --ambient-line: light-dark(
     rgba(70, 40, 160, calc(0.04 + 0.16 * var(--liquid-strength))),
     rgba(190, 170, 255, calc(0.03 + 0.17 * var(--liquid-strength)))
@@ -158,6 +152,10 @@ html {
   .scanline {
     animation: none !important;
   }
+  /* The light and the hue travel are both motion. The material stays. */
+  .lumen {
+    display: none;
+  }
 }
 
 /* Keyboard affordances. The skip link stays off-screen until focused, and
@@ -215,14 +213,26 @@ body::before {
 }
 
 /*
-  Colour fields, as elements rather than a gradient, so they can drift.
+  The colour fields.
 
   Apple's material sits over photographs and video - dense, high-contrast,
-  moving content. That is most of why its refraction reads so strongly. This
-  is the nearest honest equivalent on a page with no imagery: saturated
-  fields that keep moving, so the lens always has something to bend and the
-  bending keeps changing.
+  moving content. That is most of why its refraction reads so strongly.
+  This is the nearest honest equivalent on a page with no imagery:
+  saturated fields for the lens to bend, which change as you descend.
+
+  The hue the fields are currently rotated to. Registered so the
+  browser knows it is an angle, and declared `inherits: false` so that
+  writing it touches only this element: the four fields below are the only
+  thing that reads it, and every glass surface on the page samples this
+  layer. An inherited property would invalidate the whole tree on each
+  write instead.
 */
+@property --amb-shift {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
 .ambient {
   position: fixed;
   inset: 0;
@@ -230,6 +240,30 @@ body::before {
   pointer-events: none;
   opacity: calc(0.35 + 0.65 * var(--liquid-strength));
   transition: opacity 0.4s ease;
+  --amb-shift: 0deg;
+
+  /* Stated in OKLCH rather than sRGB so the hue is a term we can add to.
+     The coefficients are what give the page its journey: the violets carry
+     the full rotation, the blue slightly more so the fields separate as
+     they travel, and the citron only a third of it - it is the signature
+     accent and should still read as citron at the bottom of the page. */
+  --amb-1: light-dark(
+    oklch(0.512 0.244 calc(285.4deg + var(--amb-shift)) / 0.34),
+    oklch(0.638 0.208 calc(288.5deg + var(--amb-shift)) / 0.50)
+  );
+  --amb-2: light-dark(
+    oklch(0.770 0.185 calc(126.4deg + var(--amb-shift) * 0.3) / 0.26),
+    oklch(0.913 0.194 calc(123.9deg + var(--amb-shift) * 0.3) / 0.28)
+  );
+  --amb-3: light-dark(
+    oklch(0.512 0.244 calc(292.0deg + var(--amb-shift)) / 0.30),
+    oklch(0.638 0.208 calc(295.0deg + var(--amb-shift)) / 0.42)
+  );
+  --amb-4: light-dark(
+    oklch(0.592 0.179 calc(261.3deg + var(--amb-shift) * 1.25) / 0.24),
+    oklch(0.682 0.168 calc(260.8deg + var(--amb-shift) * 1.25) / 0.32)
+  );
+
   /* One layer, not five. Every glass surface samples this during a scroll,
      and each extra fixed layer multiplies that work: the same colour split
      across four child elements ran at 27fps against 47fps for a single one.
@@ -242,10 +276,52 @@ body::before {
     radial-gradient(40vw 40vw at 18% 88%, var(--amb-4) 0%, transparent 68%);
 }
 
-@keyframes drift-a { to { transform: translate3d(14vw, 10vh, 0) scale(1.18); } }
-@keyframes drift-b { to { transform: translate3d(-12vw, 16vh, 0) scale(0.86); } }
-@keyframes drift-c { to { transform: translate3d(-16vw, -12vh, 0) scale(1.14); } }
-@keyframes drift-d { to { transform: translate3d(18vw, -14vh, 0) scale(0.9); } }
+/*
+  The light source.
+
+  Everything above is a lens with nothing to look at but a static field.
+  This is the thing that moves: one soft pool of light that follows the
+  pointer, sitting BEHIND the glass rather than painted on top of it, so
+  the surfaces refract and brighten it through the same filter they apply
+  to everything else. One element and a GPU transform, because a light per
+  surface would multiply the backdrop sampling that already costs the most
+  here.
+
+  It is hidden until the pointer first moves, so a visitor who never moves
+  the mouse, or who is on a touch screen, is not shown a light with no
+  cause.
+*/
+.lumen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 44vmax;
+  height: 44vmax;
+  margin: -22vmax 0 0 -22vmax;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  will-change: transform;
+  transform: translate3d(var(--lx, 50vw), var(--ly, 50vh), 0);
+  /* Light mode is not the dark treatment turned down. On a pale ground a
+     white light has nowhere brighter to go, so it stops reading as light
+     and starts reading as a blown-out patch that eats the text under it.
+     It tints there instead - the same lamp, seen through paper. */
+  background: radial-gradient(
+    closest-side,
+    light-dark(rgba(138, 94, 250, 0.22), rgba(226, 214, 255, 0.34)) 0%,
+    light-dark(rgba(168, 220, 55, 0.13), rgba(200, 247, 81, 0.11)) 34%,
+    transparent 72%
+  );
+}
+
+/* Lit only once the pointer has actually moved: a light with no visible
+   cause, sitting in the middle of the screen on load, just looks like a
+   smudge. The page is designed to look complete without it. */
+:root[data-lit='1'] .lumen {
+  opacity: 1;
+}
 
 /*
   Glass.
@@ -270,7 +346,7 @@ body::before {
   position: relative;
   background-color: color-mix(
     in oklab,
-    var(--color-surface) calc(72% - 56% * var(--liquid-strength)),
+    var(--color-surface) calc(72% - 46% * var(--liquid-strength)),
     transparent
   );
   background-image: linear-gradient(
@@ -297,6 +373,25 @@ body::before {
       rgba(255, 255, 255, calc(0.08 * var(--liquid-strength)))
     ),
     0 12px 38px -14px light-dark(rgba(70, 50, 150, 0.24), rgba(0, 0, 0, 0.55));
+}
+
+/*
+  Small chrome - pills, buttons, the theme toggle - carries text on a
+  surface only a few hundred pixels wide, and the light behind the page
+  passes straight through a 16% fill and washes it out. Measured on the
+  hero's "open to 2026 roles" pill: against a 16% fill the light took its
+  citron from 5.16:1 down to 2.57:1, and raising the fill walked it back -
+  3.54 at 40%, 4.69 at 60%. These surfaces therefore sit much denser than
+  the cards. They still refract, which is what reads as glass; they are
+  simply not see-through.
+*/
+.liquid.chip,
+.pane.chip {
+  background-color: color-mix(
+    in oklab,
+    var(--color-surface) calc(72% - 10% * var(--liquid-strength)),
+    transparent
+  );
 }
 
 /* The lens.
@@ -358,4 +453,5 @@ body::before {
     box-shadow: none;
   }
   .ambient { opacity: 0.2; }
+  .lumen { display: none; }
 }
