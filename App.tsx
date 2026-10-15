@@ -48,6 +48,7 @@ import {
 } from './constants';
 import { Project } from './types';
 import RecommenderDemo from './RecommenderDemo';
+import SimilarityMatrix from './SimilarityMatrix';
 import TicketyDiagram from './TicketyDiagram';
 import motoraShot from './project-shots/motora.jpg';
 import tsoo13Shot from './project-shots/tsoo13.jpg';
@@ -1105,6 +1106,8 @@ const App = () => {
                 visitor can actually operate. */}
             <div className="bleed mt-14 pane feature border-y border-white/10 py-12 md:py-16">
               <div className="max-w-7xl mx-auto px-6">
+                <SimilarityMatrix />
+                <hr className="my-14 md:my-16 border-0 border-t border-white/10" />
                 <RecommenderDemo />
               </div>
             </div>
