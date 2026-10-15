@@ -1,35 +1,9 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { flushSync } from 'react-dom';
 import {
-  Github,
-  Linkedin,
-  Mail,
-  ExternalLink,
-  Download,
-  Menu,
-  X,
-  Trophy,
-  Mic,
-  Users,
-  GraduationCap,
-  Briefcase,
-  ArrowRight,
-  ArrowUpRight,
-  Send,
-  CheckCircle2,
-  AlertCircle,
-  Terminal,
-  Globe,
-  Sun,
-  Monitor,
-  Moon,
-  BrainCircuit,
-  Zap,
-  FlaskConical,
-  BadgeCheck,
-  Sparkles,
-  MapPin
+  Github, Linkedin, Mail, ExternalLink, Download, Menu, X, Trophy, Users, GraduationCap,
+  Briefcase, ArrowRight, ArrowUpRight, Send, CheckCircle2, AlertCircle, Terminal, Globe,
+  Zap, FlaskConical, BadgeCheck, Sparkles
 } from 'lucide-react';
 import {
   STACK_PIPELINE,
@@ -98,18 +72,6 @@ const SectionWrapper = ({ children, id, className = "" }: { children: React.Reac
   );
 };
 
-type ThemeMode = 'system' | 'light' | 'dark';
-
-const readStoredTheme = (): ThemeMode => {
-  try {
-    const saved = window.localStorage.getItem('theme-mode');
-    if (saved === 'system' || saved === 'light' || saved === 'dark') return saved;
-  } catch {
-    // Storage can be unavailable (private mode, blocked cookies) - fall through.
-  }
-  return 'system';
-};
-
 /* Citron marker pen behind a word or two.
 
    Painted as a gradient on the inline box rather than an absolutely positioned
@@ -125,80 +87,6 @@ const Mark = ({ children }: { children: React.ReactNode }) => (
     {children}
   </span>
 );
-
-const THEME_CYCLE: { mode: ThemeMode; label: string; Icon: typeof Monitor }[] = [
-  { mode: 'system', label: 'System', Icon: Monitor },
-  { mode: 'light', label: 'Light', Icon: Sun },
-  { mode: 'dark', label: 'Dark', Icon: Moon }
-];
-
-/* One button that cycles system -> light -> dark.
-
-   This is a three-state control, not a toggle, so aria-pressed does not apply;
-   the accessible name instead states where you are and what pressing does. The
-   only visual feedback is an icon swap, which a screen reader would otherwise
-   miss, so App also renders a polite live region naming the current theme. */
-const ThemeSwitch = ({
-  themeMode,
-  setThemeMode,
-  size = 16,
-  pad = 'p-2.5'
-}: {
-  themeMode: ThemeMode;
-  setThemeMode: React.Dispatch<React.SetStateAction<ThemeMode>>;
-  size?: number;
-  pad?: string;
-}) => {
-  const i = Math.max(0, THEME_CYCLE.findIndex(o => o.mode === themeMode));
-  const current = THEME_CYCLE[i];
-  const next = THEME_CYCLE[(i + 1) % THEME_CYCLE.length];
-  const Icon = current.Icon;
-
-  /* The flip used to be instantaneous - near-black to near-white inside a
-     single frame, which is a flash rather than a transition. This wipes the
-     new theme in as a circle growing from the button that was pressed.
-
-     Progressive enhancement throughout: without the View Transitions API, or
-     with reduced motion asked for, this is exactly the old setState. */
-  const switchTheme = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const doc = document as Document & {
-      startViewTransition?: (cb: () => void) => { ready: Promise<void> };
-    };
-    const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    if (!doc.startViewTransition || calm) {
-      setThemeMode(next.mode);
-      return;
-    }
-
-    const box = event.currentTarget.getBoundingClientRect();
-    const x = box.left + box.width / 2;
-    const y = box.top + box.height / 2;
-    /* Reach the furthest corner, or the circle stops short of the edge. */
-    const radius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
-
-    const root = document.documentElement;
-    root.style.setProperty('--vt-x', `${x}px`);
-    root.style.setProperty('--vt-y', `${y}px`);
-    root.style.setProperty('--vt-r', `${radius}px`);
-
-    /* flushSync so the DOM has already changed when the transition captures
-       its "after" snapshot - a React state update would otherwise land in a
-       later tick, after the snapshot was taken. */
-    doc.startViewTransition(() => flushSync(() => setThemeMode(next.mode)));
-  };
-
-  return (
-    <button
-      onClick={switchTheme}
-      title={`Theme: ${current.label} — switch to ${next.label}`}
-      aria-label={`Theme: ${current.label}. Switch to ${next.label}.`}
-      className={`${pad} rounded-full liquid chip border border-white/10 text-gray-400 hover:text-white hover:border-white/30 active:scale-90 transition-all`}
-    >
-      <Icon size={size} className="transition-transform duration-300" key={current.mode} />
-    </button>
-  );
-};
 
 /*
   Where you are, in ten screens.
@@ -262,13 +150,7 @@ const SectionRail = ({
   );
 };
 
-const Header = ({
-  themeMode,
-  setThemeMode
-}: {
-  themeMode: ThemeMode;
-  setThemeMode: React.Dispatch<React.SetStateAction<ThemeMode>>;
-}) => {
+const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('');
@@ -382,9 +264,6 @@ const Header = ({
           </a>
         </div>
 
-        <div className="hidden lg:block ml-4">
-          <ThemeSwitch themeMode={themeMode} setThemeMode={setThemeMode} />
-        </div>
 
         {/* Mobile Toggle */}
         <button
@@ -473,7 +352,6 @@ const Header = ({
                 <a href="https://www.linkedin.com/in/chukwuemeka-olaraonye/" target="_blank" rel="noopener noreferrer" className="py-2.5 hover:text-white transition-colors">linkedin</a>
                 <a href="mailto:olaraonyemeka@gmail.com" className="py-2.5 hover:text-white transition-colors">email</a>
               </div>
-              <ThemeSwitch themeMode={themeMode} setThemeMode={setThemeMode} size={16} pad="p-2.5" />
             </div>
           </div>
         </div>
@@ -826,20 +704,7 @@ const ReceiptColumn = ({
 const App = () => {
   const [formStatus, setFormStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [intent, setIntent] = useState<(typeof CONTACT_INTENTS)[number]>('a role');
-  // Read the saved preference during initialisation rather than in an effect:
-  // a separate read-effect would still be holding 'system' when the write-effect
-  // below first runs, which overwrites the stored choice before it is applied.
-  const [themeMode, setThemeMode] = useState<ThemeMode>(readStoredTheme);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', themeMode);
-    try {
-      window.localStorage.setItem('theme-mode', themeMode);
-    } catch {
-      // Preference simply will not persist if storage is unavailable.
-    }
-  }, [themeMode]);
 
   // The pointer light and the backdrop's hue travel. Outside React's tree
   // entirely - it writes two custom properties on <html> and one on the
@@ -898,8 +763,7 @@ const App = () => {
 
   return (
     <div className="text-white selection:bg-accent/40 selection:text-white relative z-10">
-      <Header themeMode={themeMode} setThemeMode={setThemeMode} />
-      <span aria-live="polite" className="sr-only">{`${themeMode} theme`}</span>
+      <Header />
 
       <main id="main" className="relative z-10">
         <Hero />

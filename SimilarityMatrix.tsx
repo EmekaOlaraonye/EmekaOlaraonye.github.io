@@ -14,10 +14,9 @@ import { REC_ITEMS, RecItem } from './recsysData';
   it the model thinks two items go together, below it that they actively do
   not. Violet and olive are the poles with neutral at zero - never a hue at the
   midpoint. Chrome reflects a cool light and a warm one, so the poles are
-  ice and copper. Both pairs were run through the palette validator rather
-  than eyeballed - the first attempt failed the lightness band and the
-  chroma floor in both modes - and now pass every check, worst pair dE 22.7
-  protan on the dark surface and 22.5 on the light.
+  ice and copper. The pair was run through the palette validator rather than
+  eyeballed - the first attempt failed both the lightness band and the chroma
+  floor - and passes every check at worst-pair dE 22.7 under protanopia.
 
   Drawn to a canvas rather than as 1,296 SVG rects, on a page that is already
   paying for a backdrop-filter on every surface. Hit-testing is arithmetic on
@@ -29,10 +28,7 @@ const GAP = 2; // between theme blocks, so the six groups read as groups
 const BLOCK = 6; // items per theme
 const DOMAIN = 0.8; // colour saturates here; the diagonal (1.0) clamps to the end
 
-const PALETTE = {
-  dark: { pos: '#488ed2', neg: '#be762c', mid: '#121824' },
-  light: { pos: '#286eb4', neg: '#9c5808', mid: '#e9eef5' }
-};
+const PALETTE = { pos: '#488ed2', neg: '#be762c', mid: '#121824' };
 
 type Lab = [number, number, number];
 
@@ -69,33 +65,10 @@ const oklabToCss = (lab: Lab) => {
 const mix = (a: Lab, b: Lab, t: number) =>
   oklabToCss([a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t]);
 
-/* Resolve 'system' against the OS, and follow the theme switch while mounted. */
-const useDarkMode = () => {
-  const [dark, setDark] = useState(true);
-  useEffect(() => {
-    const root = document.documentElement;
-    const mq = window.matchMedia('(prefers-color-scheme: dark)');
-    const read = () => {
-      const mode = root.getAttribute('data-theme');
-      setDark(mode === 'dark' || (mode !== 'light' && mq.matches));
-    };
-    read();
-    mq.addEventListener('change', read);
-    const observer = new MutationObserver(read);
-    observer.observe(root, { attributes: true, attributeFilter: ['data-theme'] });
-    return () => {
-      mq.removeEventListener('change', read);
-      observer.disconnect();
-    };
-  }, []);
-  return dark;
-};
-
 /* Pixel offset of row/column i, including the gaps between theme blocks. */
 const span = (i: number) => i * CELL + Math.floor(i / BLOCK) * GAP;
 
 const SimilarityMatrix = () => {
-  const dark = useDarkMode();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [hover, setHover] = useState<{ i: number; j: number; x: number; y: number } | null>(null);
 
@@ -147,10 +120,9 @@ const SimilarityMatrix = () => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const p = dark ? PALETTE.dark : PALETTE.light;
-    const mid = hexToOklab(p.mid);
-    const pos = hexToOklab(p.pos);
-    const neg = hexToOklab(p.neg);
+    const mid = hexToOklab(PALETTE.mid);
+    const pos = hexToOklab(PALETTE.pos);
+    const neg = hexToOklab(PALETTE.neg);
 
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     canvas.width = side * dpr;
@@ -165,7 +137,7 @@ const SimilarityMatrix = () => {
         ctx.fillRect(span(j), span(i), CELL, CELL);
       }
     }
-  }, [dark, items, matrix, side]);
+  }, [items, matrix, side]);
 
   const onMove = (event: React.PointerEvent<HTMLCanvasElement>) => {
     const rect = event.currentTarget.getBoundingClientRect();
@@ -184,10 +156,9 @@ const SimilarityMatrix = () => {
     );
   };
 
-  const p = dark ? PALETTE.dark : PALETTE.light;
-  const midLab = hexToOklab(p.mid);
-  const posLab = hexToOklab(p.pos);
-  const negLab = hexToOklab(p.neg);
+  const midLab = hexToOklab(PALETTE.mid);
+  const posLab = hexToOklab(PALETTE.pos);
+  const negLab = hexToOklab(PALETTE.neg);
   const swatch = (t: number) => (t >= 0 ? mix(midLab, posLab, t) : mix(midLab, negLab, -t));
 
   return (

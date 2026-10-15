@@ -25,25 +25,18 @@
 }
 
 /*
-  Palette: violet + citron on ink.
+  Palette: chrome and ice on a near-black ground.
 
-  Every themed token is declared exactly once, as light-dark(light, dark).
-  The CSS `color-scheme` property decides which half applies, so the three
-  theme modes are just three values of one property:
+  One theme. A near-monochrome scheme gets exactly one chromatic signal
+  before it stops being monochrome, so there is one: the cool cast on a
+  polished surface's speculars. Everything structural is neutral silver;
+  the ice blue carries the emphasis that violet and citron used to. Body
+  text stays neutral precisely so the ice reads as a different thing
+  rather than a brighter one.
 
-      data-theme="light"   -> color-scheme: light
-      data-theme="dark"    -> color-scheme: dark
-      data-theme="system"  -> color-scheme: light dark   (follows the OS)
-
-  The previous version spelled the light palette out twice - once in a
-  [data-theme='light'] block and again inside a prefers-color-scheme media
-  query - which meant every colour change had to be made in two places or the
-  two light paths would drift apart.
-
-  Each token is declared twice below on purpose, and that is not the same
-  duplication: the first line is a plain dark value for browsers that do not
-  support light-dark(), the second overrides it for those that do. Old
-  browsers therefore get a working dark theme rather than an unstyled page.
+  These live in @theme because Tailwind generates its utilities from them
+  (text-brand, bg-accent and so on) and emits them onto :root itself, so
+  there is no second copy to keep in step.
 */
 @theme {
   --color-dark: #04060c;
@@ -80,58 +73,13 @@
      as a token because the material, the rim and the backdrop all derive
      from it, and the reduced-transparency block below turns it down. */
   --liquid-strength: 1;
-  --star-opacity: 0;
+  --star-opacity: 1;
   --liquid-filter: url(#liquid-glass) blur(3px) saturate(1.8) brightness(1.16);
-  /*
-    Chrome on a starfield.
 
-    A near-monochrome scheme gets exactly one chromatic signal before it
-    stops being monochrome, so there is one: the cool cast on a polished
-    surface's speculars. Everything structural is neutral silver; the ice
-    blue is reserved for the things that used to be violet and citron, so
-    emphasis still has somewhere to live. Body text stays neutral precisely
-    so the ice reads as a different thing rather than a brighter one.
-
-    Light mode is the same material under a different light - polished
-    chrome on white - rather than this palette inverted, and it keeps the
-    stars off, because a starfield on a white ground is just dirt.
-  */
-  --color-dark: light-dark(#d8dee8, #04060c);
-  --color-surface: light-dark(#f5f8fc, #0c1119);
-  --color-surface-accent: light-dark(#e4eaf2, #151b26);
-
-  --color-brand: light-dark(#2a6194, #7aa9da);
-  /* Fill for solid brand surfaces carrying white text. Kept separate from
-     --color-brand, which must stay light enough to read as text on the dark
-     ground; white on #7aa9da is only 2.5:1, while #35699f is 5.4:1. */
-  --color-brand-deep: light-dark(#1f4f7d, #35699f);
-  --color-brand-glow: light-dark(#2a619433, #7aa9da44);
-  --color-accent: light-dark(#bcdcf5, #a8d8ff);
-  --color-accent-ink: light-dark(#1d567f, #a8d8ff);
-
-  --color-white: light-dark(#0a0e15, #e9eef6);
-  --color-gray-300: light-dark(#1d242e, #d7e0ec);
-  --color-gray-400: light-dark(#38414e, #b4c0d0);
-  --color-gray-500: light-dark(#58626f, #8f9aaa);
-  --color-gray-600: light-dark(#78828f, #5b6572);
-  --color-gray-700: light-dark(#a5adb8, #3c444f);
-  --color-gray-800: light-dark(#d3d9e1, #252b34);
+  /* One theme. color-scheme is still stated explicitly so form controls,
+     the caret and the scrollbars render dark rather than defaulting light. */
+  color-scheme: dark;
 }
-
-/* The theme switch is now a single property. The inline script in index.html
-   stamps data-theme before first paint, so there is no flash. */
-:root,
-:root[data-theme='system'] { color-scheme: light dark; }
-
-/* Stars are a dark-mode thing: on a white ground they read as dirt. This
-   cannot ride light-dark() the way the colour tokens do - that function
-   only accepts colours - so the theme is matched explicitly instead. */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) { --star-opacity: 1; }
-}
-:root[data-theme='dark'] { --star-opacity: 1; }
-:root[data-theme='light'] { color-scheme: light; }
-:root[data-theme='dark'] { color-scheme: dark; }
 
 /* Decorative blurred glows paint outside their layout box on purpose; keep
    them from widening the document on narrow screens.
@@ -271,44 +219,17 @@ body::before {
      the full rotation, the blue slightly more so the fields separate as
      they travel, and the citron only a third of it - it is the signature
      accent and should still read as citron at the bottom of the page. */
-  --amb-1: light-dark(
-    oklch(0.58 0.085 calc(248deg + var(--amb-shift)) / 0.22),
-    oklch(0.55 0.092 calc(250deg + var(--amb-shift)) / 0.40)
-  );
-  --amb-2: light-dark(
-    oklch(0.86 0.028 calc(232deg + var(--amb-shift) * 0.3) / 0.18),
-    oklch(0.84 0.030 calc(232deg + var(--amb-shift) * 0.3) / 0.16)
-  );
-  --amb-3: light-dark(
-    oklch(0.52 0.090 calc(272deg + var(--amb-shift)) / 0.20),
-    oklch(0.47 0.098 calc(272deg + var(--amb-shift)) / 0.36)
-  );
-  --amb-4: light-dark(
-    oklch(0.62 0.070 calc(214deg + var(--amb-shift) * 1.25) / 0.16),
-    oklch(0.60 0.072 calc(214deg + var(--amb-shift) * 1.25) / 0.26)
-  );
+  --amb-1: oklch(0.55 0.092 calc(250deg + var(--amb-shift)) / 0.40);
+  --amb-2: oklch(0.84 0.030 calc(232deg + var(--amb-shift) * 0.3) / 0.16);
+  --amb-3: oklch(0.47 0.098 calc(272deg + var(--amb-shift)) / 0.36);
+  --amb-4: oklch(0.60 0.072 calc(214deg + var(--amb-shift) * 1.25) / 0.26);
 
   /* One layer, not five. Every glass surface samples this during a scroll,
      and each extra fixed layer multiplies that work: the same colour split
      across four child elements ran at 27fps against 47fps for a single one.
      Softness comes from the gradients themselves - filter: blur() on large
      elements costs another ~34fps on top. */
-  /* Chrome only reads as chrome if the light moves across it. In light mode
-     this is a set of soft bands running off-axis over the silver ground; in
-     dark it resolves to transparent and the starfield does that job instead.
-     light-dark() is fine inside a gradient because its arms are colours. */
   background:
-    linear-gradient(
-      107deg,
-      light-dark(rgba(255, 255, 255, 0.92), transparent) 0%,
-      light-dark(rgba(255, 255, 255, 0.1), transparent) 17%,
-      light-dark(rgba(255, 255, 255, 0.78), transparent) 31%,
-      light-dark(rgba(214, 223, 235, 0.5), transparent) 44%,
-      light-dark(rgba(255, 255, 255, 0.86), transparent) 58%,
-      light-dark(rgba(205, 215, 229, 0.55), transparent) 71%,
-      light-dark(rgba(255, 255, 255, 0.7), transparent) 86%,
-      light-dark(rgba(220, 228, 240, 0.6), transparent) 100%
-    ),
     radial-gradient(52vw 52vw at 14% 6%, var(--amb-1) 0%, transparent 68%),
     radial-gradient(42vw 42vw at 88% 12%, var(--amb-2) 0%, transparent 66%),
     radial-gradient(56vw 56vw at 78% 74%, var(--amb-3) 0%, transparent 70%),
@@ -349,8 +270,8 @@ body::before {
      It tints there instead - the same lamp, seen through paper. */
   background: radial-gradient(
     closest-side,
-    light-dark(rgba(90, 130, 190, 0.20), rgba(228, 240, 255, 0.34)) 0%,
-    light-dark(rgba(140, 180, 225, 0.12), rgba(150, 200, 255, 0.12)) 34%,
+    rgba(228, 240, 255, 0.34) 0%,
+    rgba(150, 200, 255, 0.12) 34%,
     transparent 72%
   );
 }
@@ -389,28 +310,13 @@ body::before {
     transparent
   );
   background-image: linear-gradient(
-    light-dark(
-      rgba(255, 255, 255, calc(0.5 * var(--liquid-strength))),
-      rgba(255, 255, 255, calc(0.085 * var(--liquid-strength)))
-    ),
-    light-dark(
-      rgba(255, 255, 255, calc(0.5 * var(--liquid-strength))),
-      rgba(255, 255, 255, calc(0.085 * var(--liquid-strength)))
-    )
+    rgba(255, 255, 255, calc(0.085 * var(--liquid-strength))),
+    rgba(255, 255, 255, calc(0.085 * var(--liquid-strength)))
   );
   box-shadow:
-    inset 0 1.5px 1px light-dark(
-      rgba(255, 255, 255, calc(0.5 + 0.45 * var(--liquid-strength))),
-      rgba(255, 255, 255, calc(0.07 + 0.53 * var(--liquid-strength)))
-    ),
-    inset 0 -1px 1px light-dark(
-      rgba(255, 255, 255, calc(0.5 * var(--liquid-strength))),
-      rgba(255, 255, 255, calc(0.18 * var(--liquid-strength)))
-    ),
-    inset 0 0 30px light-dark(
-      rgba(255, 255, 255, calc(0.4 * var(--liquid-strength))),
-      rgba(255, 255, 255, calc(0.08 * var(--liquid-strength)))
-    ),
+    inset 0 1.5px 1px rgba(255, 255, 255, calc(0.07 + 0.53 * var(--liquid-strength))),
+    inset 0 -1px 1px rgba(255, 255, 255, calc(0.18 * var(--liquid-strength))),
+    inset 0 0 30px rgba(255, 255, 255, calc(0.08 * var(--liquid-strength))),
     var(--lift);
 }
 
@@ -426,12 +332,12 @@ body::before {
 */
 .liquid,
 .pane {
-  --lift: 0 12px 38px -14px light-dark(rgba(70, 50, 150, 0.24), rgba(0, 0, 0, 0.55));
+  --lift: 0 12px 38px -14px rgba(0, 0, 0, 0.55);
   --rim: 1;
 }
 
 .feature {
-  --lift: 0 30px 72px -26px light-dark(rgba(70, 50, 150, 0.34), rgba(0, 0, 0, 0.78));
+  --lift: 0 30px 72px -26px rgba(0, 0, 0, 0.78);
 }
 
 .quiet {
@@ -484,10 +390,10 @@ body::before {
   opacity: calc(var(--liquid-strength) * var(--rim, 1));
   background: linear-gradient(
     135deg,
-    light-dark(rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.75)) 0%,
-    light-dark(rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.1)) 42%,
+    rgba(255, 255, 255, 0.75) 0%,
+    rgba(255, 255, 255, 0.1) 42%,
     transparent 58%,
-    light-dark(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.22)) 100%
+    rgba(255, 255, 255, 0.22) 100%
   );
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
@@ -506,119 +412,6 @@ body::before {
 /* Anyone who has asked their system to reduce transparency gets solid
    surfaces and a dimmed backdrop. Setting the two tokens is enough - the
    material, the rim and the ambient layer all derive from them. */
-/*
-  The theme wipe.
-
-  Both snapshots are pinned and their default cross-fade is cancelled: the
-  old theme simply sits there while the new one is revealed over it by a
-  circle growing from the button that was pressed. Cross-fading as well
-  would wash the midpoint out to grey.
-
-  The origin and radius are written onto :root by the button at click time,
-  so the circle starts where the pointer actually was. The fallbacks matter
-  - a keyboard activation still has a sensible centre.
-*/
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation: none;
-  mix-blend-mode: normal;
-}
-
-::view-transition-old(root) {
-  z-index: 1;
-}
-
-::view-transition-new(root) {
-  z-index: 2;
-  animation: theme-wipe 520ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-@keyframes theme-wipe {
-  from {
-    clip-path: circle(0 at var(--vt-x, 50vw) var(--vt-y, 0));
-  }
-  to {
-    clip-path: circle(var(--vt-r, 150vmax) at var(--vt-x, 50vw) var(--vt-y, 0));
-  }
-}
-
-/* Asking for less motion should not mean a 520ms wipe at a different
-   easing - it should mean no wipe. The switch skips the transition
-   entirely, and this is the belt-and-braces for anything that still
-   starts one. */
-@media (prefers-reduced-motion: reduce) {
-  ::view-transition-new(root) {
-    animation: none;
-  }
-}
-
-/*
-  Staged arrival.
-
-  Every section used to fade up as one block, which meant a row of three
-  project cards arrived as a single slab - the same gesture whether it
-  carried one element or nine. Children of a .stagger container now arrive
-  in sequence instead, a few frames apart, which is the difference between
-  a page appearing and a page being dealt out.
-
-  Delays stop at the eighth child: past roughly half a second of lead-in
-  the last item reads as broken rather than choreographed, so everything
-  beyond that arrives with the eighth.
-
-  Only transform and opacity, both compositor properties, and neither
-  affects layout - so this cannot move anything and CLS stays at zero.
-*/
-.stagger > * {
-  transition:
-    opacity 620ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-[data-visible='false'] .stagger > * {
-  opacity: 0;
-  transform: translateY(14px);
-}
-
-.stagger > *:nth-child(2) { transition-delay: 65ms; }
-.stagger > *:nth-child(3) { transition-delay: 130ms; }
-.stagger > *:nth-child(4) { transition-delay: 195ms; }
-.stagger > *:nth-child(5) { transition-delay: 260ms; }
-.stagger > *:nth-child(6) { transition-delay: 325ms; }
-.stagger > *:nth-child(7) { transition-delay: 390ms; }
-.stagger > *:nth-child(n + 8) { transition-delay: 455ms; }
-
-/*
-  The hero cannot wait for a scroll - it is already on screen. It deals
-  itself out on load instead, and deliberately animates transform only:
-  the headline is this page's largest contentful paint, and an element
-  that starts at opacity 0 is not painted, which would push LCP out by the
-  length of the animation.
-*/
-.hero-rise > * {
-  animation: hero-rise 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.hero-rise > *:nth-child(2) { animation-delay: 80ms; }
-.hero-rise > *:nth-child(3) { animation-delay: 160ms; }
-.hero-rise > *:nth-child(4) { animation-delay: 240ms; }
-.hero-rise > *:nth-child(n + 5) { animation-delay: 320ms; }
-
-@keyframes hero-rise {
-  from { transform: translateY(16px); }
-  to { transform: none; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  [data-visible] .stagger > *,
-  .stagger > *,
-  .hero-rise > * {
-    transition: none;
-    animation: none;
-    opacity: 1;
-    transform: none;
-  }
-}
-
 /*
   Full-bleed. Ten screens all sharing one gutter width reads as a single
   long column; this lets one element escape it and run to the viewport

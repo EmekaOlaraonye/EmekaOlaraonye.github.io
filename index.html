@@ -156,17 +156,6 @@
             }
         }
     </style>
-    <script>
-        (function () {
-            try {
-                var mode = localStorage.getItem('theme-mode');
-                if (mode !== 'light' && mode !== 'system' && mode !== 'dark') mode = 'system';
-                document.documentElement.setAttribute('data-theme', mode);
-            } catch (_) {
-                document.documentElement.setAttribute('data-theme', 'system');
-            }
-        })();
-    </script>
 
     <script type="application/ld+json">
     {
