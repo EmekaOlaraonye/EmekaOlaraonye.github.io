@@ -422,7 +422,7 @@ const NOW_BUILDING = [
 
   Leave DATE_OF_BIRTH empty and the row simply does not render.
 */
-const DATE_OF_BIRTH = ''; // 'YYYY-MM-DD'
+const DATE_OF_BIRTH = '2004-02-20';
 
 const yearsSince = (iso: string) => {
   const born = new Date(`${iso}T00:00:00`);
