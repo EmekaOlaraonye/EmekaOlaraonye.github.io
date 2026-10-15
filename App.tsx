@@ -88,6 +88,7 @@ const SectionWrapper = ({ children, id, className = "" }: { children: React.Reac
     <section
       id={id}
       ref={sectionRef}
+      data-visible={isVisible ? 'true' : 'false'}
       className={`transition-all duration-1000 ease-[cubic-bezier(0.23,1,0.32,1)] scroll-mt-24 ${className} ${
         isVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-16 scale-[0.97] pointer-events-none'
       }`}
@@ -199,6 +200,68 @@ const ThemeSwitch = ({
   );
 };
 
+/*
+  Where you are, in ten screens.
+
+  The header already says which section is active; this says how far down
+  the page that section sits, which the header cannot. It lives in the
+  gutter - the container's own 24px of padding - so it never overlaps the
+  column at any width, and it is hidden below lg where that gutter is the
+  only horizontal breathing room there is.
+
+  Links rather than decoration, because an orientation control you cannot
+  use is a tease; the accessible name carries the section, since a 20px
+  dash has no text of its own.
+*/
+const SectionRail = ({
+  links,
+  active,
+  onJump
+}: {
+  links: { name: string; href: string; num: string }[];
+  active: string;
+  onJump: (e: React.MouseEvent<HTMLAnchorElement>, href: string) => void;
+}) => {
+  const current = links.find(l => l.href.substring(1) === active);
+
+  return (
+    <nav
+      aria-label="Page sections"
+      className="hidden lg:block fixed left-1.5 top-1/2 -translate-y-1/2 z-40"
+    >
+      <ul className="flex flex-col items-center gap-3.5">
+        {links.map(link => {
+          const on = link.href.substring(1) === active;
+          return (
+            <li key={link.href}>
+              <a
+                href={link.href}
+                onClick={e => onJump(e, link.href)}
+                aria-label={link.name}
+                aria-current={on ? 'true' : undefined}
+                className="group flex h-3 w-5 items-center justify-center"
+              >
+                <span
+                  className={`block h-px transition-all duration-500 ${
+                    on ? 'w-5 bg-accent-ink' : 'w-2.5 bg-white/25 group-hover:w-4 group-hover:bg-white/60'
+                  }`}
+                />
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+      <p
+        aria-hidden="true"
+        className="mt-3.5 text-center font-mono text-[9px] text-accent-ink tabular-nums transition-opacity duration-500"
+        style={{ opacity: current ? 1 : 0 }}
+      >
+        {current ? current.num : '00'}
+      </p>
+    </nav>
+  );
+};
+
 const Header = ({
   themeMode,
   setThemeMode
@@ -251,6 +314,8 @@ const Header = ({
   };
 
   return (
+    <>
+      <SectionRail links={navLinks} active={activeSection} onJump={handleNavClick} />
     <nav className={`sticky top-0 w-full z-50 transition-all duration-500 ${scrolled ? 'bg-dark/95 md:bg-dark/85 md:backdrop-blur-xl border-b border-white/10 py-3' : 'bg-transparent py-6'}`}>
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center gap-4">
         <a
@@ -394,6 +459,7 @@ const Header = ({
         </div>
       </div>
     </nav>
+    </>
   );
 };
 
@@ -464,7 +530,7 @@ const Hero = () => (
     <div className="relative max-w-7xl mx-auto px-6 w-full">
       <div className="grid lg:grid-cols-[1.05fr_0.95fr] gap-12 lg:gap-16 items-center">
         {/* Left: the claim */}
-        <div className="z-10">
+        <div className="hero-rise z-10">
           <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full liquid chip border border-white/10 text-[11px] font-mono mb-7">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-ink opacity-75" />
@@ -827,7 +893,7 @@ const App = () => {
             title="Researcher by day, shipper by night."
           />
 
-          <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-5 auto-rows-[minmax(0,auto)]">
+          <div className="stagger grid md:grid-cols-3 lg:grid-cols-4 gap-5 auto-rows-[minmax(0,auto)]">
             {/* Portrait */}
             <div className="md:col-span-1 lg:row-span-2 relative rounded-3xl overflow-hidden bg-surface border border-white/10 aspect-[4/5] md:aspect-auto md:min-h-[340px] group">
               <img
@@ -903,7 +969,7 @@ const App = () => {
             subtitle="Three projects and the decisions behind them. Every link goes to real code."
           />
 
-          <div className="space-y-6">
+          <div className="stagger space-y-6">
             {PROJECTS.map((project, i) => (
               <div
                 key={project.title}
@@ -1188,7 +1254,7 @@ const App = () => {
               subtitle="Laid out as the path a model actually takes to reach a user — which is the order I tend to work in."
             />
 
-            <div className="flex flex-col lg:flex-row items-stretch gap-3">
+            <div className="stagger flex flex-col lg:flex-row items-stretch gap-3">
               {STACK_PIPELINE.map((stage, i) => (
                 <React.Fragment key={stage.name}>
                   <div
@@ -1246,7 +1312,7 @@ const App = () => {
         <SectionWrapper id="achievements" className="py-16 max-w-7xl mx-auto px-6">
           <SectionHeading num="06" tier="support" kicker="receipts" title="Wins & community." />
 
-          <div className="grid md:grid-cols-3 gap-x-10 gap-y-12 items-start">
+          <div className="stagger grid md:grid-cols-3 gap-x-10 gap-y-12 items-start">
             <ReceiptColumn icon={<Trophy size={18} />} title="Awards">
               {ACHIEVEMENTS.map((award, i) => (
                 <Receipt key={i} meta={award.year} title={award.title} description={award.description} />
