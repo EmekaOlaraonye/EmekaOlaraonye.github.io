@@ -120,7 +120,7 @@ const readStoredTheme = (): ThemeMode => {
 const Mark = ({ children }: { children: React.ReactNode }) => (
   <span
     className="bg-no-repeat px-[0.08em]"
-    style={{ backgroundImage: 'linear-gradient(to top, rgba(200,247,81,0.85) 0.48em, transparent 0.48em)' }}
+    style={{ backgroundImage: 'linear-gradient(to top, rgba(168,216,255,0.85) 0.48em, transparent 0.48em)' }}
   >
     {children}
   </span>
@@ -555,7 +555,7 @@ const Hero = () => (
             <a
               href={cvPdf}
               download="Chukwuemeka_Olaraonye_CV.pdf"
-              className="inline-flex items-center gap-2.5 px-5 py-3 rounded-lg bg-brand-deep text-on-brand font-mono text-[13px] hover:shadow-[0_8px_30px_rgba(139,109,255,0.4)] hover:-translate-y-0.5 transition-all group"
+              className="inline-flex items-center gap-2.5 px-5 py-3 rounded-lg bg-brand-deep text-on-brand font-mono text-[13px] hover:shadow-[0_8px_30px_rgba(122,169,218,0.38)] hover:-translate-y-0.5 transition-all group"
             >
               download cv <Download size={15} className="group-hover:translate-y-0.5 transition-transform" />
             </a>
@@ -1454,7 +1454,7 @@ const App = () => {
                   <button
                     disabled={formStatus === 'loading'}
                     className={`inline-flex items-center gap-2.5 px-6 py-3.5 rounded-lg bg-brand-deep text-on-brand font-mono text-[13px] transition-all active:scale-95 ${
-                      formStatus === 'loading' ? 'opacity-70 cursor-not-allowed' : 'hover:shadow-[0_8px_30px_rgba(116,80,242,0.45)]'
+                      formStatus === 'loading' ? 'opacity-70 cursor-not-allowed' : 'hover:shadow-[0_8px_30px_rgba(122,169,218,0.42)]'
                     }`}
                   >
                     {formStatus === 'loading' ? (
@@ -1593,7 +1593,7 @@ const App = () => {
                   href={selectedProject.repo}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-6 py-3 bg-brand-deep text-on-brand font-bold rounded-xl hover:shadow-[0_8px_30px_rgba(139,109,255,0.4)] transition-all inline-flex items-center gap-2"
+                  className="px-6 py-3 bg-brand-deep text-on-brand font-bold rounded-xl hover:shadow-[0_8px_30px_rgba(122,169,218,0.38)] transition-all inline-flex items-center gap-2"
                 >
                   View the code <Github size={15} />
                 </a>

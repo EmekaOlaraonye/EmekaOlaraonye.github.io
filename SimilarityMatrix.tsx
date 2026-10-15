@@ -13,8 +13,11 @@ import { REC_ITEMS, RecItem } from './recsysData';
   Diverging rather than sequential, because cosine has a meaningful zero: above
   it the model thinks two items go together, below it that they actively do
   not. Violet and olive are the poles with neutral at zero - never a hue at the
-  midpoint. Both pairs were checked for colour-vision separation rather than
-  eyeballed: worst pair dE 31.3 deutan on the dark surface, 31.8 on the light.
+  midpoint. Chrome reflects a cool light and a warm one, so the poles are
+  ice and copper. Both pairs were run through the palette validator rather
+  than eyeballed - the first attempt failed the lightness band and the
+  chroma floor in both modes - and now pass every check, worst pair dE 22.7
+  protan on the dark surface and 22.5 on the light.
 
   Drawn to a canvas rather than as 1,296 SVG rects, on a page that is already
   paying for a backdrop-filter on every surface. Hit-testing is arithmetic on
@@ -27,8 +30,8 @@ const BLOCK = 6; // items per theme
 const DOMAIN = 0.8; // colour saturates here; the diagonal (1.0) clamps to the end
 
 const PALETTE = {
-  dark: { pos: '#8b6dff', neg: '#7a9824', mid: '#171d2d' },
-  light: { pos: '#6438e8', neg: '#55730a', mid: '#eceaf4' }
+  dark: { pos: '#488ed2', neg: '#be762c', mid: '#121824' },
+  light: { pos: '#286eb4', neg: '#9c5808', mid: '#e9eef5' }
 };
 
 type Lab = [number, number, number];

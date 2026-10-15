@@ -46,26 +46,26 @@
   browsers therefore get a working dark theme rather than an unstyled page.
 */
 @theme {
-  --color-dark: #0b0f1a;
-  --color-surface: #151b2b;
-  --color-surface-accent: #1e2739;
-  --color-brand: #8b6dff;
-  --color-brand-deep: #6438e8;
-  --color-brand-glow: #8b6dff44;
-  --color-accent: #c8f751;
-  --color-accent-ink: #c8f751;
-  --color-white: #f4f6fb;
-  --color-gray-300: #cbd5e6;
-  --color-gray-400: #a3afc7;
-  --color-gray-500: #7d8aa5;
-  --color-gray-600: #5d6980;
-  --color-gray-700: #414b5e;
-  --color-gray-800: #2a3244;
+  --color-dark: #04060c;
+  --color-surface: #0c1119;
+  --color-surface-accent: #151b26;
+  --color-brand: #7aa9da;
+  --color-brand-deep: #35699f;
+  --color-brand-glow: #7aa9da44;
+  --color-accent: #a8d8ff;
+  --color-accent-ink: #a8d8ff;
+  --color-white: #e9eef6;
+  --color-gray-300: #c4cedd;
+  --color-gray-400: #98a4b5;
+  --color-gray-500: #7a8595;
+  --color-gray-600: #5b6572;
+  --color-gray-700: #3c444f;
+  --color-gray-800: #252b34;
 
-  /* Text on a filled violet/citron surface. Constant across themes, because
+  /* Text on a filled brand/accent surface. Constant across themes, because
      --color-white flips to near-black in light mode. */
   --color-on-brand: #ffffff;
-  --color-on-accent: #16210a;
+  --color-on-accent: #04060c;
 
   --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
@@ -80,38 +80,56 @@
      as a token because the material, the rim and the backdrop all derive
      from it, and the reduced-transparency block below turns it down. */
   --liquid-strength: 1;
+  --star-opacity: 0;
   --liquid-filter: url(#liquid-glass) blur(3px) saturate(1.8) brightness(1.16);
-  --color-dark: light-dark(#fafaff, #0b0f1a);
-  --color-surface: light-dark(#ffffff, #151b2b);
-  --color-surface-accent: light-dark(#f2f1fb, #1e2739);
+  /*
+    Chrome on a starfield.
 
-  --color-brand: light-dark(#6438e8, #8b6dff);
-  /* Fill for solid violet surfaces carrying white text. Kept separate from
+    A near-monochrome scheme gets exactly one chromatic signal before it
+    stops being monochrome, so there is one: the cool cast on a polished
+    surface's speculars. Everything structural is neutral silver; the ice
+    blue is reserved for the things that used to be violet and citron, so
+    emphasis still has somewhere to live. Body text stays neutral precisely
+    so the ice reads as a different thing rather than a brighter one.
+
+    Light mode is the same material under a different light - polished
+    chrome on white - rather than this palette inverted, and it keeps the
+    stars off, because a starfield on a white ground is just dirt.
+  */
+  --color-dark: light-dark(#f6f8fc, #04060c);
+  --color-surface: light-dark(#ffffff, #0c1119);
+  --color-surface-accent: light-dark(#eef2f8, #151b26);
+
+  --color-brand: light-dark(#2a6194, #7aa9da);
+  /* Fill for solid brand surfaces carrying white text. Kept separate from
      --color-brand, which must stay light enough to read as text on the dark
-     ground; white on #8b6dff is only 3.67:1, while #7450f2 is 5.03:1. */
-  --color-brand-deep: light-dark(#5a2fd6, #7450f2);
-  --color-brand-glow: light-dark(#6438e833, #8b6dff44);
-  --color-accent: light-dark(#c8f751, #c8f751);
-  --color-accent-ink: light-dark(#55730a, #c8f751);
+     ground; white on #7aa9da is only 2.5:1, while #35699f is 5.4:1. */
+  --color-brand-deep: light-dark(#1f4f7d, #35699f);
+  --color-brand-glow: light-dark(#2a619433, #7aa9da44);
+  --color-accent: light-dark(#bcdcf5, #a8d8ff);
+  --color-accent-ink: light-dark(#1d567f, #a8d8ff);
 
-  --ambient-line: light-dark(
-    rgba(70, 40, 160, calc(0.04 + 0.16 * var(--liquid-strength))),
-    rgba(190, 170, 255, calc(0.03 + 0.17 * var(--liquid-strength)))
-  );
-
-  --color-white: light-dark(#0b0f1a, #f4f6fb);
-  --color-gray-300: light-dark(#1f2937, #cbd5e6);
-  --color-gray-400: light-dark(#374151, #a3afc7);
-  --color-gray-500: light-dark(#4b5563, #7d8aa5);
-  --color-gray-600: light-dark(#6b7280, #5d6980);
-  --color-gray-700: light-dark(#9ca3af, #414b5e);
-  --color-gray-800: light-dark(#d1d5db, #2a3244);
+  --color-white: light-dark(#0a0e15, #e9eef6);
+  --color-gray-300: light-dark(#1d242e, #c4cedd);
+  --color-gray-400: light-dark(#38414e, #98a4b5);
+  --color-gray-500: light-dark(#58626f, #7a8595);
+  --color-gray-600: light-dark(#78828f, #5b6572);
+  --color-gray-700: light-dark(#a5adb8, #3c444f);
+  --color-gray-800: light-dark(#d3d9e1, #252b34);
 }
 
 /* The theme switch is now a single property. The inline script in index.html
    stamps data-theme before first paint, so there is no flash. */
 :root,
 :root[data-theme='system'] { color-scheme: light dark; }
+
+/* Stars are a dark-mode thing: on a white ground they read as dirt. This
+   cannot ride light-dark() the way the colour tokens do - that function
+   only accepts colours - so the theme is matched explicitly instead. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) { --star-opacity: 1; }
+}
+:root[data-theme='dark'] { --star-opacity: 1; }
 :root[data-theme='light'] { color-scheme: light; }
 :root[data-theme='dark'] { color-scheme: dark; }
 
@@ -205,12 +223,18 @@ body::before {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  /* The lattice is not decoration: a lens is only visible if there is
-     structure behind it to bend. Its contrast rides the glass control. */
-  background:
-    linear-gradient(var(--ambient-line) 1px, transparent 1px) 0 0 / 46px 46px,
-    linear-gradient(90deg, var(--ambient-line) 1px, transparent 1px) 0 0 / 46px 46px;
+  opacity: var(--star-opacity);
+  /* The lattice used to live here. A lens is only visible if there is
+     structure behind it to bend, and a field of pinpricks bends far more
+     legibly than a grid did - a star crossing a glass edge smears, which
+     is the whole effect. Two tiles at different sizes and offsets, because
+     one repeating tile is obvious at this scale. */
+  background-image: url('/stars-a.png'), url('/stars-b.png');
+  background-size: 620px 620px, 380px 380px;
+  background-position: 0 0, 170px 90px;
+  background-repeat: repeat, repeat;
 }
+
 
 /*
   The colour fields.
@@ -248,20 +272,20 @@ body::before {
      they travel, and the citron only a third of it - it is the signature
      accent and should still read as citron at the bottom of the page. */
   --amb-1: light-dark(
-    oklch(0.512 0.244 calc(285.4deg + var(--amb-shift)) / 0.34),
-    oklch(0.638 0.208 calc(288.5deg + var(--amb-shift)) / 0.50)
+    oklch(0.58 0.085 calc(248deg + var(--amb-shift)) / 0.22),
+    oklch(0.55 0.092 calc(250deg + var(--amb-shift)) / 0.40)
   );
   --amb-2: light-dark(
-    oklch(0.770 0.185 calc(126.4deg + var(--amb-shift) * 0.3) / 0.26),
-    oklch(0.913 0.194 calc(123.9deg + var(--amb-shift) * 0.3) / 0.28)
+    oklch(0.86 0.028 calc(232deg + var(--amb-shift) * 0.3) / 0.18),
+    oklch(0.84 0.030 calc(232deg + var(--amb-shift) * 0.3) / 0.16)
   );
   --amb-3: light-dark(
-    oklch(0.512 0.244 calc(292.0deg + var(--amb-shift)) / 0.30),
-    oklch(0.638 0.208 calc(295.0deg + var(--amb-shift)) / 0.42)
+    oklch(0.52 0.090 calc(272deg + var(--amb-shift)) / 0.20),
+    oklch(0.47 0.098 calc(272deg + var(--amb-shift)) / 0.36)
   );
   --amb-4: light-dark(
-    oklch(0.592 0.179 calc(261.3deg + var(--amb-shift) * 1.25) / 0.24),
-    oklch(0.682 0.168 calc(260.8deg + var(--amb-shift) * 1.25) / 0.32)
+    oklch(0.62 0.070 calc(214deg + var(--amb-shift) * 1.25) / 0.16),
+    oklch(0.60 0.072 calc(214deg + var(--amb-shift) * 1.25) / 0.26)
   );
 
   /* One layer, not five. Every glass surface samples this during a scroll,
@@ -310,8 +334,8 @@ body::before {
      It tints there instead - the same lamp, seen through paper. */
   background: radial-gradient(
     closest-side,
-    light-dark(rgba(138, 94, 250, 0.22), rgba(226, 214, 255, 0.34)) 0%,
-    light-dark(rgba(168, 220, 55, 0.13), rgba(200, 247, 81, 0.11)) 34%,
+    light-dark(rgba(90, 130, 190, 0.20), rgba(228, 240, 255, 0.34)) 0%,
+    light-dark(rgba(140, 180, 225, 0.12), rgba(150, 200, 255, 0.12)) 34%,
     transparent 72%
   );
 }
