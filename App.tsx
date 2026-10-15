@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
+import { flushSync } from 'react-dom';
 import {
   Github,
   Linkedin,
@@ -151,9 +152,43 @@ const ThemeSwitch = ({
   const next = THEME_CYCLE[(i + 1) % THEME_CYCLE.length];
   const Icon = current.Icon;
 
+  /* The flip used to be instantaneous - near-black to near-white inside a
+     single frame, which is a flash rather than a transition. This wipes the
+     new theme in as a circle growing from the button that was pressed.
+
+     Progressive enhancement throughout: without the View Transitions API, or
+     with reduced motion asked for, this is exactly the old setState. */
+  const switchTheme = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const doc = document as Document & {
+      startViewTransition?: (cb: () => void) => { ready: Promise<void> };
+    };
+    const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!doc.startViewTransition || calm) {
+      setThemeMode(next.mode);
+      return;
+    }
+
+    const box = event.currentTarget.getBoundingClientRect();
+    const x = box.left + box.width / 2;
+    const y = box.top + box.height / 2;
+    /* Reach the furthest corner, or the circle stops short of the edge. */
+    const radius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
+
+    const root = document.documentElement;
+    root.style.setProperty('--vt-x', `${x}px`);
+    root.style.setProperty('--vt-y', `${y}px`);
+    root.style.setProperty('--vt-r', `${radius}px`);
+
+    /* flushSync so the DOM has already changed when the transition captures
+       its "after" snapshot - a React state update would otherwise land in a
+       later tick, after the snapshot was taken. */
+    doc.startViewTransition(() => flushSync(() => setThemeMode(next.mode)));
+  };
+
   return (
     <button
-      onClick={() => setThemeMode(next.mode)}
+      onClick={switchTheme}
       title={`Theme: ${current.label} — switch to ${next.label}`}
       aria-label={`Theme: ${current.label}. Switch to ${next.label}.`}
       className={`${pad} rounded-full liquid chip border border-white/10 text-gray-400 hover:text-white hover:border-white/30 active:scale-90 transition-all`}
@@ -563,27 +598,71 @@ const AffiliationsBar = () => (
   </div>
 );
 
+/*
+  Every section heading used to render at exactly 48px/700, which meant the
+  research - the thing that actually separates this person from another
+  graduate - was typographically indistinguishable from the awards list.
+  Three tiers instead, so the page has an argument about what matters:
+
+    pillar   the work and the research, the two things worth reading
+    base     the opening statement
+    support  the material that backs them up
+
+  Size is the obvious lever; the quieter one is the meta row above the
+  title, which tightens as the tier drops so a support heading reads as a
+  different class of thing rather than just a smaller version of a pillar.
+*/
+type HeadingTier = 'pillar' | 'base' | 'support';
+
+const HEADING_TIERS: Record<HeadingTier, { title: string; rule: string; gap: string; sub: string }> = {
+  pillar: {
+    title: 'text-5xl md:text-6xl lg:text-[4.25rem]',
+    rule: 'w-16',
+    gap: 'mb-5',
+    sub: 'text-lg md:text-xl'
+  },
+  base: {
+    title: 'text-4xl md:text-5xl',
+    rule: 'w-10',
+    gap: 'mb-4',
+    sub: 'text-lg'
+  },
+  support: {
+    title: 'text-[1.75rem] md:text-[2.125rem]',
+    rule: 'w-6',
+    gap: 'mb-3',
+    sub: 'text-base'
+  }
+};
+
 const SectionHeading = ({
   num,
   title,
   subtitle,
-  kicker
+  kicker,
+  tier = 'base'
 }: {
   num: string;
   title: string;
   subtitle?: string;
   kicker?: string;
-}) => (
-  <div className="mb-10">
-    <div className="flex items-center gap-4 mb-4">
-      <span className="font-mono text-sm text-accent-ink font-medium">{num}</span>
-      <span className="w-10 h-px bg-white/20" />
-      {kicker && <span className="font-mono text-xs text-gray-500 lowercase tracking-wide">{kicker}</span>}
+  tier?: HeadingTier;
+}) => {
+  const t = HEADING_TIERS[tier];
+  return (
+    <div className={tier === 'support' ? 'mb-7' : 'mb-10'}>
+      <div className={`flex items-center gap-4 ${t.gap}`}>
+        <span className="font-mono text-sm text-accent-ink font-medium">{num}</span>
+        <span className={`${t.rule} h-px bg-white/20`} />
+        {kicker && <span className="font-mono text-xs text-gray-500 lowercase tracking-wide">{kicker}</span>}
+      </div>
+      <h2 className={`font-display ${t.title} font-bold mb-4 tracking-tight text-white leading-[1.02]`}>
+        {title}
+      </h2>
+      {subtitle && <p className={`text-gray-400 max-w-2xl ${t.sub} leading-relaxed`}>{subtitle}</p>}
     </div>
-    <h2 className="font-display text-4xl md:text-5xl font-bold mb-4 tracking-tight text-white leading-[1.02]">{title}</h2>
-    {subtitle && <p className="text-gray-400 max-w-2xl text-lg leading-relaxed">{subtitle}</p>}
-  </div>
-);
+  );
+};
 
 /*
   Section 06 used to carry three different treatments side by side - Awards
@@ -817,6 +896,7 @@ const App = () => {
         <SectionWrapper id="projects" className="py-16 max-w-7xl mx-auto px-6">
           <SectionHeading
             num="02"
+            tier="pillar"
             kicker="things I built"
             title="Selected work."
             subtitle="Three projects and the decisions behind them. Every link goes to real code."
@@ -931,6 +1011,7 @@ const App = () => {
           <div className="max-w-7xl mx-auto px-6 relative z-10">
             <SectionHeading
               num="03"
+              tier="pillar"
               kicker="ai / machine learning"
               title="The research."
               subtitle="My MSc work sits on recommender systems — the part of machine learning that decides what a million people see next."
@@ -1033,7 +1114,7 @@ const App = () => {
         {/* ============ EXPERIENCE + EDUCATION ============ */}
         <SectionWrapper id="experience" className="py-16 relative">
           <div className="max-w-7xl mx-auto px-6">
-            <SectionHeading num="04" kicker="how I got here" title="The path so far." />
+            <SectionHeading num="04" tier="support" kicker="how I got here" title="The path so far." />
 
             <div className="grid lg:grid-cols-2 gap-12">
               <div>
@@ -1098,6 +1179,7 @@ const App = () => {
           <div className="max-w-7xl mx-auto px-6 relative z-10">
             <SectionHeading
               num="05"
+              tier="support"
               kicker="the toolkit"
               title="What I reach for."
               subtitle="Laid out as the path a model actually takes to reach a user — which is the order I tend to work in."
@@ -1159,7 +1241,7 @@ const App = () => {
 
         {/* ============ AWARDS / CERTS / LEADERSHIP ============ */}
         <SectionWrapper id="achievements" className="py-16 max-w-7xl mx-auto px-6">
-          <SectionHeading num="06" kicker="receipts" title="Wins & community." />
+          <SectionHeading num="06" tier="support" kicker="receipts" title="Wins & community." />
 
           <div className="grid md:grid-cols-3 gap-x-10 gap-y-12 items-start">
             <ReceiptColumn icon={<Trophy size={18} />} title="Awards">

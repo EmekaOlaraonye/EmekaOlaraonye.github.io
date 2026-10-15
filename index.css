@@ -468,6 +468,52 @@ body::before {
    surfaces and a dimmed backdrop. Setting the two tokens is enough - the
    material, the rim and the ambient layer all derive from them. */
 /*
+  The theme wipe.
+
+  Both snapshots are pinned and their default cross-fade is cancelled: the
+  old theme simply sits there while the new one is revealed over it by a
+  circle growing from the button that was pressed. Cross-fading as well
+  would wash the midpoint out to grey.
+
+  The origin and radius are written onto :root by the button at click time,
+  so the circle starts where the pointer actually was. The fallbacks matter
+  - a keyboard activation still has a sensible centre.
+*/
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 2;
+  animation: theme-wipe 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes theme-wipe {
+  from {
+    clip-path: circle(0 at var(--vt-x, 50vw) var(--vt-y, 0));
+  }
+  to {
+    clip-path: circle(var(--vt-r, 150vmax) at var(--vt-x, 50vw) var(--vt-y, 0));
+  }
+}
+
+/* Asking for less motion should not mean a 520ms wipe at a different
+   easing - it should mean no wipe. The switch skips the transition
+   entirely, and this is the belt-and-braces for anything that still
+   starts one. */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}
+
+/*
   Full-bleed. Ten screens all sharing one gutter width reads as a single
   long column; this lets one element escape it and run to the viewport
   edges. Safe because html is overflow-x: clip rather than auto.
