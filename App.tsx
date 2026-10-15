@@ -789,7 +789,7 @@ const App = () => {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/20 to-transparent" />
               <div className="absolute bottom-5 left-5 right-5">
-                <p className="font-mono text-[10px] text-accent-ink mb-1">// gaborone, botswana</p>
+                <p className="font-mono text-[10px] text-accent-ink mb-1">// palapye, botswana</p>
                 <p className="font-display font-bold text-white text-lg leading-tight">
                   &ldquo;Be the change that you want to see in the world.&rdquo;
                 </p>
