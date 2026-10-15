@@ -55,9 +55,9 @@
   --color-accent: #a8d8ff;
   --color-accent-ink: #a8d8ff;
   --color-white: #e9eef6;
-  --color-gray-300: #c4cedd;
-  --color-gray-400: #98a4b5;
-  --color-gray-500: #7a8595;
+  --color-gray-300: #d7e0ec;
+  --color-gray-400: #b4c0d0;
+  --color-gray-500: #8f9aaa;
   --color-gray-600: #5b6572;
   --color-gray-700: #3c444f;
   --color-gray-800: #252b34;
@@ -96,9 +96,9 @@
     chrome on white - rather than this palette inverted, and it keeps the
     stars off, because a starfield on a white ground is just dirt.
   */
-  --color-dark: light-dark(#f6f8fc, #04060c);
-  --color-surface: light-dark(#ffffff, #0c1119);
-  --color-surface-accent: light-dark(#eef2f8, #151b26);
+  --color-dark: light-dark(#d8dee8, #04060c);
+  --color-surface: light-dark(#f5f8fc, #0c1119);
+  --color-surface-accent: light-dark(#e4eaf2, #151b26);
 
   --color-brand: light-dark(#2a6194, #7aa9da);
   /* Fill for solid brand surfaces carrying white text. Kept separate from
@@ -110,9 +110,9 @@
   --color-accent-ink: light-dark(#1d567f, #a8d8ff);
 
   --color-white: light-dark(#0a0e15, #e9eef6);
-  --color-gray-300: light-dark(#1d242e, #c4cedd);
-  --color-gray-400: light-dark(#38414e, #98a4b5);
-  --color-gray-500: light-dark(#58626f, #7a8595);
+  --color-gray-300: light-dark(#1d242e, #d7e0ec);
+  --color-gray-400: light-dark(#38414e, #b4c0d0);
+  --color-gray-500: light-dark(#58626f, #8f9aaa);
   --color-gray-600: light-dark(#78828f, #5b6572);
   --color-gray-700: light-dark(#a5adb8, #3c444f);
   --color-gray-800: light-dark(#d3d9e1, #252b34);
@@ -293,7 +293,22 @@ body::before {
      across four child elements ran at 27fps against 47fps for a single one.
      Softness comes from the gradients themselves - filter: blur() on large
      elements costs another ~34fps on top. */
+  /* Chrome only reads as chrome if the light moves across it. In light mode
+     this is a set of soft bands running off-axis over the silver ground; in
+     dark it resolves to transparent and the starfield does that job instead.
+     light-dark() is fine inside a gradient because its arms are colours. */
   background:
+    linear-gradient(
+      107deg,
+      light-dark(rgba(255, 255, 255, 0.92), transparent) 0%,
+      light-dark(rgba(255, 255, 255, 0.1), transparent) 17%,
+      light-dark(rgba(255, 255, 255, 0.78), transparent) 31%,
+      light-dark(rgba(214, 223, 235, 0.5), transparent) 44%,
+      light-dark(rgba(255, 255, 255, 0.86), transparent) 58%,
+      light-dark(rgba(205, 215, 229, 0.55), transparent) 71%,
+      light-dark(rgba(255, 255, 255, 0.7), transparent) 86%,
+      light-dark(rgba(220, 228, 240, 0.6), transparent) 100%
+    ),
     radial-gradient(52vw 52vw at 14% 6%, var(--amb-1) 0%, transparent 68%),
     radial-gradient(42vw 42vw at 88% 12%, var(--amb-2) 0%, transparent 66%),
     radial-gradient(56vw 56vw at 78% 74%, var(--amb-3) 0%, transparent 70%),

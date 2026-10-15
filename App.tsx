@@ -120,7 +120,7 @@ const readStoredTheme = (): ThemeMode => {
 const Mark = ({ children }: { children: React.ReactNode }) => (
   <span
     className="bg-no-repeat px-[0.08em]"
-    style={{ backgroundImage: 'linear-gradient(to top, rgba(168,216,255,0.85) 0.48em, transparent 0.48em)' }}
+    style={{ backgroundImage: 'linear-gradient(to top, rgba(168,216,255,0.88) 0.3em, transparent 0.3em)' }}
   >
     {children}
   </span>
@@ -294,6 +294,24 @@ const Header = ({
     };
   }, []);
 
+  /* The menu is a full-screen overlay, so the page behind it has to stop
+     moving - without this it scrolls under the panel, which is most of why
+     the mobile nav felt broken. Escape closes it, as any dialog should. */
+  useEffect(() => {
+    if (!isOpen) return;
+    const root = document.documentElement;
+    const previous = root.style.overflowY;
+    root.style.overflowY = 'hidden';
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setIsOpen(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => {
+      root.style.overflowY = previous;
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [isOpen]);
+
   const navLinks = [
     { name: 'About', href: '#about', num: '01', kicker: "who's writing" },
     { name: 'Projects', href: '#projects', num: '02', kicker: 'things I built' },
@@ -317,7 +335,7 @@ const Header = ({
     <>
       <SectionRail links={navLinks} active={activeSection} onJump={handleNavClick} />
     <nav className={`sticky top-0 w-full z-50 transition-all duration-500 ${scrolled ? 'bg-dark/95 md:bg-dark/85 md:backdrop-blur-xl border-b border-white/10 py-3' : 'bg-transparent py-6'}`}>
-      <div className="max-w-7xl mx-auto px-6 flex justify-between items-center gap-4">
+      <div className="relative z-50 max-w-7xl mx-auto px-6 flex justify-between items-center gap-4">
         <a
           href="#"
           onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
@@ -380,6 +398,8 @@ const Header = ({
 
       {/* Mobile Nav Overlay - an index of the page, not a list of words */}
       <div
+        inert={!isOpen}
+        aria-hidden={!isOpen}
         className={`fixed inset-0 z-40 lg:hidden transition-opacity duration-300 ${
           isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
