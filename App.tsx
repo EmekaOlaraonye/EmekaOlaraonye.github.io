@@ -410,11 +410,38 @@ const NOW_BUILDING = [
 ];
 
 /* The facts an employer needs inside five seconds, in scan order. */
+/*
+  Age, computed rather than written down, so it cannot go stale - a hardcoded
+  number is wrong from the next birthday onward and nobody ever remembers to
+  change it.
+
+  Only the age is shown, not the date. On a CV sent to a named employer a full
+  date of birth is ordinary; on a public page indexed by search engines it is
+  a piece of identity material sitting next to a full name and a city, and it
+  buys nothing the age does not.
+
+  Leave DATE_OF_BIRTH empty and the row simply does not render.
+*/
+const DATE_OF_BIRTH = ''; // 'YYYY-MM-DD'
+
+const yearsSince = (iso: string) => {
+  const born = new Date(`${iso}T00:00:00`);
+  const now = new Date();
+  const age = now.getFullYear() - born.getFullYear();
+  const beforeBirthday =
+    now.getMonth() < born.getMonth() ||
+    (now.getMonth() === born.getMonth() && now.getDate() < born.getDate());
+  return beforeBirthday ? age - 1 : age;
+};
+
 const AT_A_GLANCE: [string, React.ReactNode][] = [
   ['role', <>MSc Computer Science researcher &middot; Teaching Assistant, BIUST</>],
   ['focus', <>Recommender systems &mdash; neural collaborative filtering for e-commerce</>],
   ['building', <>Tickety, a ticketing backend on Cloud Run &middot; Motora, a used-car marketplace</>],
   ['stack', <>Python &middot; TypeScript &middot; React &middot; Node/Fastify &middot; Firestore &middot; Docker</>],
+  ...(DATE_OF_BIRTH
+    ? ([['age', <>{yearsSince(DATE_OF_BIRTH)}</>]] as [string, React.ReactNode][])
+    : []),
   ['based', <>Gaborone, Botswana &middot; open to remote</>],
   ['available', <>2026 roles &amp; research collaborations</>]
 ];

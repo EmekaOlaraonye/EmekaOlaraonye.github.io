@@ -9,30 +9,30 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     width: 1200px; height: 630px;
-    background: #0b0f1a;
+    background: #04060c;
     font-family: 'Inter', sans-serif;
-    color: #f4f6fb;
+    color: #e9eef6;
     position: relative;
     overflow: hidden;
   }
   .grid {
     position: absolute; inset: 0;
     background-image:
-      linear-gradient(#8b6dff14 1px, transparent 1px),
-      linear-gradient(90deg, #8b6dff14 1px, transparent 1px);
+      linear-gradient(#9fb6d00e 1px, transparent 1px),
+      linear-gradient(90deg, #9fb6d00e 1px, transparent 1px);
     background-size: 54px 54px;
     mask-image: radial-gradient(ellipse 90% 80% at 30% 40%, black, transparent 75%);
   }
   .glow-a {
     position: absolute; width: 620px; height: 620px;
     left: -160px; top: -260px;
-    background: radial-gradient(circle, #8b6dff55 0%, transparent 65%);
+    background: radial-gradient(circle, #5c82b455 0%, transparent 65%);
     filter: blur(40px);
   }
   .glow-b {
     position: absolute; width: 520px; height: 520px;
     right: -120px; bottom: -240px;
-    background: radial-gradient(circle, #c8f75130 0%, transparent 65%);
+    background: radial-gradient(circle, #cfe2f826 0%, transparent 65%);
     filter: blur(40px);
   }
   .inner {
@@ -46,23 +46,24 @@
   .top { display: flex; align-items: center; justify-content: space-between; }
   .brandmark { display: flex; align-items: center; gap: 16px; }
   .logo {
-    width: 60px; height: 60px; border-radius: 17px;
-    background: #8b6dff;
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Space Grotesk'; font-weight: 700; font-size: 32px; color: #fff;
+    width: 60px; height: 60px;
+    background:
+      radial-gradient(circle at 36% 28%, #ffffff 0%, #eaf2fd 16%, #9db1c9 44%, #4a596f 71%, #171f2c 100%);
+    box-shadow: inset -6px -8px 14px #0a0f1799, inset 5px 6px 12px #ffffff3d;
+    border-radius: 999px;
   }
   .who { font-family: 'Space Grotesk'; font-weight: 700; font-size: 27px; letter-spacing: -0.01em; }
   .where { font-family: 'JetBrains Mono'; font-size: 14px; color: #7d8aa5; margin-top: 4px; }
 
   .pill {
     font-family: 'JetBrains Mono'; font-size: 14px;
-    color: #c8f751;
-    border: 1px solid #c8f75140;
-    background: #c8f75114;
+    color: #a8d8ff;
+    border: 1px solid #a8d8ff40;
+    background: #a8d8ff14;
     padding: 10px 18px; border-radius: 999px;
     display: flex; align-items: center; gap: 10px;
   }
-  .dot { width: 8px; height: 8px; border-radius: 999px; background: #c8f751; }
+  .dot { width: 8px; height: 8px; border-radius: 999px; background: #a8d8ff; }
 
   h1 {
     font-family: 'Space Grotesk'; font-weight: 700;
@@ -73,27 +74,27 @@
   .mark::before {
     content: ''; position: absolute;
     left: -6px; right: -6px; bottom: 14px; height: 17px;
-    background: #c8f751; opacity: .85; border-radius: 3px;
+    background: #a8d8ff; opacity: .88; border-radius: 3px;
     transform: rotate(-0.6deg);
   }
   .mark span { position: relative; }
 
   .sub {
-    font-size: 25px; color: #a3afc7; line-height: 1.45;
+    font-size: 25px; color: #b4c0d0; line-height: 1.45;
     max-width: 860px; margin-top: 26px;
   }
-  .sub b { color: #f4f6fb; font-weight: 600; }
+  .sub b { color: #e9eef6; font-weight: 600; }
 
   .bottom { display: flex; align-items: flex-end; justify-content: space-between; }
   .chips { display: flex; gap: 10px; flex-wrap: wrap; max-width: 830px; }
   .chip {
     font-family: 'JetBrains Mono'; font-size: 14px;
-    color: #a3afc7;
-    border: 1px solid #ffffff1f; background: #151b2b;
+    color: #b4c0d0;
+    border: 1px solid #ffffff1f; background: #0c1119;
     padding: 9px 15px; border-radius: 10px;
   }
   .url {
-    font-family: 'JetBrains Mono'; font-size: 19px; color: #8b6dff;
+    font-family: 'JetBrains Mono'; font-size: 19px; color: #7aa9da;
     white-space: nowrap; padding-bottom: 4px;
   }
 </style>
@@ -106,7 +107,7 @@
   <div class="inner">
     <div class="top">
       <div class="brandmark">
-        <div class="logo">C</div>
+        <div class="logo"></div>
         <div>
           <div class="who">Chukwuemeka Olaraonye</div>
           <div class="where">MSc Computer Science &middot; Gaborone, Botswana</div>

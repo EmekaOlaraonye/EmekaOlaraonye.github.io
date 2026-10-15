@@ -1,9 +1,38 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Chukwuemeka Olaraonye">
   <title>Chukwuemeka Olaraonye</title>
-  <!-- The C is a stroked arc rather than <text>: a favicon renders outside the
-       page, so Space Grotesk would not be available and the glyph would fall
-       back to whatever sans the OS picks. A path looks identical everywhere. -->
-  <rect width="64" height="64" rx="15" fill="#8b6dff"/>
-  <path d="M40.6 19.71 A15 15 0 1 0 40.6 44.29"
-        fill="none" stroke="#ffffff" stroke-width="8.5" stroke-linecap="butt"/>
+  <!-- A polished sphere over a starfield, to match the site. Deliberately not
+       a figure on a board: a favicon is read at 16px, where anything with
+       limbs collapses into noise. A sphere survives the size because it is
+       carried entirely by its gradient. -->
+  <defs>
+    <radialGradient id="chrome" cx="36%" cy="28%" r="80%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="16%" stop-color="#eaf2fd"/>
+      <stop offset="44%" stop-color="#9db1c9"/>
+      <stop offset="71%" stop-color="#4a596f"/>
+      <stop offset="100%" stop-color="#171f2c"/>
+    </radialGradient>
+    <!-- Light bouncing back up the lower edge. This is the part that makes a
+         sphere read as polished metal rather than as a matte ball. -->
+    <radialGradient id="bounce" cx="63%" cy="89%" r="46%">
+      <stop offset="0%" stop-color="#d2e2f6" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#d2e2f6" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="64" height="64" rx="15" fill="#04060c"/>
+
+  <g fill="#dce7f7">
+    <circle cx="10.5" cy="12" r="1.15" opacity="0.9"/>
+    <circle cx="54" cy="17" r="0.9" opacity="0.75"/>
+    <circle cx="17" cy="51" r="0.85" opacity="0.7"/>
+    <circle cx="50" cy="52" r="1.05" opacity="0.8"/>
+    <circle cx="33" cy="8" r="0.7" opacity="0.6"/>
+    <circle cx="7" cy="33" r="0.75" opacity="0.6"/>
+  </g>
+
+  <circle cx="32" cy="33" r="19" fill="url(#chrome)"/>
+  <circle cx="32" cy="33" r="19" fill="url(#bounce)"/>
+  <ellipse cx="25.2" cy="24.4" rx="5.6" ry="3.5" fill="#ffffff" opacity="0.92"
+           transform="rotate(-30 25.2 24.4)"/>
 </svg>
