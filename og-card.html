@@ -46,7 +46,11 @@
   .top { display: flex; align-items: center; justify-content: space-between; }
   .brandmark { display: flex; align-items: center; gap: 16px; }
   .logo {
-    width: 60px; height: 60px; line-height: 0;
+    width: 60px; height: 60px;
+    background:
+      radial-gradient(circle at 36% 28%, #ffffff 0%, #eaf2fd 16%, #9db1c9 44%, #4a596f 71%, #171f2c 100%);
+    box-shadow: inset -6px -8px 14px #0a0f1799, inset 5px 6px 12px #ffffff3d;
+    border-radius: 999px;
   }
   .who { font-family: 'Space Grotesk'; font-weight: 700; font-size: 27px; letter-spacing: -0.01em; }
   .where { font-family: 'JetBrains Mono'; font-size: 14px; color: #7d8aa5; margin-top: 4px; }
@@ -103,67 +107,7 @@
   <div class="inner">
     <div class="top">
       <div class="brandmark">
-        <div class="logo"><svg viewBox="0 0 64 64" width="60" height="60" aria-hidden="true">
-  <title>Chukwuemeka Olaraonye</title>
-  <defs>
-    <radialGradient id="og-chrome" cx="31%" cy="24%" r="86%">
-      <stop offset="0%" stop-color="#ffffff"/>
-      <stop offset="19%" stop-color="#e4eefb"/>
-      <stop offset="47%" stop-color="#9fb4ce"/>
-      <stop offset="73%" stop-color="#495872"/>
-      <stop offset="100%" stop-color="#161d2a"/>
-    </radialGradient>
-    <linearGradient id="og-rim" x1="0.15" y1="1" x2="0.95" y2="0.2">
-      <stop offset="0%" stop-color="#d9e8fb" stop-opacity="0.95"/>
-      <stop offset="42%" stop-color="#d9e8fb" stop-opacity="0"/>
-    </linearGradient>
-    <clipPath id="og-tile"><rect width="64" height="64" rx="15"/></clipPath>
-  </defs>
-
-  <rect width="64" height="64" rx="15" fill="#04060c"/>
-
-  <g clip-path="url(#og-tile)">
-    <g fill="#dce7f7">
-      <circle cx="9" cy="13" r="1.1" opacity="0.85"/>
-      <circle cx="55.5" cy="12" r="0.95" opacity="0.7"/>
-      <circle cx="7.5" cy="38" r="0.8" opacity="0.55"/>
-      <circle cx="57" cy="41" r="1" opacity="0.7"/>
-    </g>
-
-    <!-- A profile rather than the reference's three-quarter view: in
-         silhouette a three-quarter head has no readable outline and
-         collapses to an oval. Built on real proportions - brow at 0.35 of
-         head height, nose base at 0.68, chin at 1.0, nose projecting past
-         the brow line. The skull is flattened across the crown and the
-         occiput drops before it turns into the neck; a perfectly domed
-         cranium is what made the first attempts read as an egg. -->
-    <g>
-      <path id="og-bust" d="
-        M 9,64
-        C 11,56 16,51.5 22,49.4
-        C 21.4,47 21,44.5 19.6,42.2
-        C 16.4,37.6 14.6,33.2 14.6,28.4
-        C 14.6,17 22.6,9 32.6,9
-        C 39,9 43.4,12.4 45,18
-        C 45.5,19.8 45.4,21.6 45.3,23.2
-        C 46.8,26.2 49,29.8 50.6,32.9
-        C 51.4,34.4 50.2,35.4 47.6,35.8
-        L 45.9,36.1
-        C 46,37.2 46.4,37.9 45.6,38.7
-        C 46.9,39.6 46.9,40.8 45.4,42
-        C 45.3,44.2 44.6,46.2 42,47.6
-        C 38.4,49.4 34,49.2 31.2,47.8
-        L 31.2,52.6
-        C 38.6,54.8 46.6,58.6 50,64
-        Z"/>
-      <use href="#og-bust" fill="url(#og-chrome)"/>
-      <use href="#og-bust" fill="url(#og-rim)"/>
-    </g>
-
-    <ellipse cx="26.8" cy="19.6" rx="5.2" ry="3.2" fill="#ffffff" opacity="0.62"
-             transform="rotate(-32 26.8 19.6)"/>
-  </g>
-</svg></div>
+        <div class="logo"></div>
         <div>
           <div class="who">Chukwuemeka Olaraonye</div>
           <div class="where">MSc Computer Science &middot; Gaborone, Botswana</div>

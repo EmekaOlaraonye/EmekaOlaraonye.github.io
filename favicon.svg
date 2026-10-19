@@ -1,61 +1,38 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Chukwuemeka Olaraonye">
   <title>Chukwuemeka Olaraonye</title>
+  <!-- A polished sphere over a starfield, to match the site. Deliberately not
+       a figure on a board: a favicon is read at 16px, where anything with
+       limbs collapses into noise. A sphere survives the size because it is
+       carried entirely by its gradient. -->
   <defs>
-    <radialGradient id="chrome" cx="31%" cy="24%" r="86%">
+    <radialGradient id="chrome" cx="36%" cy="28%" r="80%">
       <stop offset="0%" stop-color="#ffffff"/>
-      <stop offset="19%" stop-color="#e4eefb"/>
-      <stop offset="47%" stop-color="#9fb4ce"/>
-      <stop offset="73%" stop-color="#495872"/>
-      <stop offset="100%" stop-color="#161d2a"/>
+      <stop offset="16%" stop-color="#eaf2fd"/>
+      <stop offset="44%" stop-color="#9db1c9"/>
+      <stop offset="71%" stop-color="#4a596f"/>
+      <stop offset="100%" stop-color="#171f2c"/>
     </radialGradient>
-    <linearGradient id="rim" x1="0.15" y1="1" x2="0.95" y2="0.2">
-      <stop offset="0%" stop-color="#d9e8fb" stop-opacity="0.95"/>
-      <stop offset="42%" stop-color="#d9e8fb" stop-opacity="0"/>
-    </linearGradient>
-    <clipPath id="tile"><rect width="64" height="64" rx="15"/></clipPath>
+    <!-- Light bouncing back up the lower edge. This is the part that makes a
+         sphere read as polished metal rather than as a matte ball. -->
+    <radialGradient id="bounce" cx="63%" cy="89%" r="46%">
+      <stop offset="0%" stop-color="#d2e2f6" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#d2e2f6" stop-opacity="0"/>
+    </radialGradient>
   </defs>
 
   <rect width="64" height="64" rx="15" fill="#04060c"/>
 
-  <g clip-path="url(#tile)">
-    <g fill="#dce7f7">
-      <circle cx="9" cy="13" r="1.1" opacity="0.85"/>
-      <circle cx="55.5" cy="12" r="0.95" opacity="0.7"/>
-      <circle cx="7.5" cy="38" r="0.8" opacity="0.55"/>
-      <circle cx="57" cy="41" r="1" opacity="0.7"/>
-    </g>
-
-    <!-- A profile rather than the reference's three-quarter view: in
-         silhouette a three-quarter head has no readable outline and
-         collapses to an oval. Built on real proportions - brow at 0.35 of
-         head height, nose base at 0.68, chin at 1.0, nose projecting past
-         the brow line. The skull is flattened across the crown and the
-         occiput drops before it turns into the neck; a perfectly domed
-         cranium is what made the first attempts read as an egg. -->
-    <g>
-      <path id="bust" d="
-        M 9,64
-        C 11,56 16,51.5 22,49.4
-        C 21.4,47 21,44.5 19.6,42.2
-        C 16.4,37.6 14.6,33.2 14.6,28.4
-        C 14.6,17 22.6,9 32.6,9
-        C 39,9 43.4,12.4 45,18
-        C 45.5,19.8 45.4,21.6 45.3,23.2
-        C 46.8,26.2 49,29.8 50.6,32.9
-        C 51.4,34.4 50.2,35.4 47.6,35.8
-        L 45.9,36.1
-        C 46,37.2 46.4,37.9 45.6,38.7
-        C 46.9,39.6 46.9,40.8 45.4,42
-        C 45.3,44.2 44.6,46.2 42,47.6
-        C 38.4,49.4 34,49.2 31.2,47.8
-        L 31.2,52.6
-        C 38.6,54.8 46.6,58.6 50,64
-        Z"/>
-      <use href="#bust" fill="url(#chrome)"/>
-      <use href="#bust" fill="url(#rim)"/>
-    </g>
-
-    <ellipse cx="26.8" cy="19.6" rx="5.2" ry="3.2" fill="#ffffff" opacity="0.62"
-             transform="rotate(-32 26.8 19.6)"/>
+  <g fill="#dce7f7">
+    <circle cx="10.5" cy="12" r="1.15" opacity="0.9"/>
+    <circle cx="54" cy="17" r="0.9" opacity="0.75"/>
+    <circle cx="17" cy="51" r="0.85" opacity="0.7"/>
+    <circle cx="50" cy="52" r="1.05" opacity="0.8"/>
+    <circle cx="33" cy="8" r="0.7" opacity="0.6"/>
+    <circle cx="7" cy="33" r="0.75" opacity="0.6"/>
   </g>
+
+  <circle cx="32" cy="33" r="19" fill="url(#chrome)"/>
+  <circle cx="32" cy="33" r="19" fill="url(#bounce)"/>
+  <ellipse cx="25.2" cy="24.4" rx="5.6" ry="3.5" fill="#ffffff" opacity="0.92"
+           transform="rotate(-30 25.2 24.4)"/>
 </svg>
