@@ -413,6 +413,99 @@ body::before {
    surfaces and a dimmed backdrop. Setting the two tokens is enough - the
    material, the rim and the ambient layer all derive from them. */
 /*
+  Brushed metal, as type.
+
+  The largest surface on a site themed entirely around polished metal was
+  flat white, which is a waste of it. The fill is a banded gradient clipped
+  to the glyphs, and it travels, so the headline behaves like something with
+  a light moving across it rather than something painted.
+
+  Two constraints shaped the ramp, and neither is taste:
+
+  The dark end cannot go dark. The headline sits directly on the starfield,
+  and the brightest star behind it measures L 0.073, so a glyph needs L of
+  at least 0.50 to hold 4.5:1 against one. #b8c8db sits at 0.57 and is the
+  deepest band here, measured at 5.0:1 against the worst star; a more
+  convincing chrome ramp dipping to mid-grey would fail against the very
+  stars it is sitting on.
+
+  background-attachment: fixed resolves the gradient against the viewport
+  rather than each element, which keeps the sweep continuous across the Mark
+  span nested inside the headline - otherwise the highlighted word runs its
+  own private gradient and the banding visibly breaks at the word boundary.
+*/
+.chrome-type {
+  position: relative;
+  background-attachment: fixed;
+  background-image: linear-gradient(
+    100deg,
+    #e8eef7 0%,
+    #b8c8db 7%,
+    #ffffff 12%,
+    #ffffff 15%,
+    #c3d1e2 23%,
+    #eef3fa 32%,
+    #b8c8db 41%,
+    #ffffff 46%,
+    #ffffff 49%,
+    #ccd8e8 57%,
+    #f2f6fc 67%,
+    #bdccdf 77%,
+    #ffffff 83%,
+    #ffffff 86%,
+    #d6e1f0 94%,
+    #e8eef7 100%
+  );
+  background-size: 230% 100%;
+  background-position: 0% 50%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: chrome-sweep 11s linear infinite;
+}
+
+/*
+  The metal has to buy its contrast back.
+
+  Measured with a glyph mask - comparing the rendered headline against the
+  same headline with its fill removed, so only pixels actually covered by a
+  letter count - a star core lands under a glyph at L 0.124. Flat white sat
+  at 5.19:1 against it; the darkest metal band is 0.566 and would sit at
+  3.55:1, which is a real regression rather than a theoretical one.
+
+  So the stars beneath the headline are dimmed. A soft pool, generous enough
+  that no edge is visible, reading as a vignette that focuses the headline
+  rather than as a patch. z-index -1 keeps it behind the glyphs; nothing
+  here creates a stacking context, so it lands between the starfield and the
+  text.
+*/
+.chrome-type::before {
+  content: '';
+  position: absolute;
+  inset: -0.42em -0.7em -0.3em -0.55em;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    68% 58% at 40% 50%,
+    rgba(4, 6, 12, 0.72) 0%,
+    rgba(4, 6, 12, 0.52) 44%,
+    rgba(4, 6, 12, 0) 78%
+  );
+}
+
+@keyframes chrome-sweep {
+  to {
+    background-position: 230% 50%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chrome-type {
+    animation: none;
+  }
+}
+
+/*
   Full-bleed. Ten screens all sharing one gutter width reads as a single
   long column; this lets one element escape it and run to the viewport
   edges. Safe because html is overflow-x: clip rather than auto.

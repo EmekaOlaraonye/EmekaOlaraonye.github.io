@@ -84,7 +84,10 @@ const Mark = ({ children }: { children: React.ReactNode }) => (
     className="bg-no-repeat px-[0.08em]"
     style={{ backgroundImage: 'linear-gradient(to top, rgba(168,216,255,0.88) 0.3em, transparent 0.3em)' }}
   >
-    {children}
+    {/* The bar is this span's own background, so the word needs a nested fill
+        of its own - it would otherwise inherit the headline's transparent
+        colour with nothing clipped behind it and vanish. */}
+    <span className="chrome-type">{children}</span>
   </span>
 );
 
@@ -466,7 +469,7 @@ const Hero = () => (
 
           {/* Rendered immediately - a typewriter here cost ~2.3s of a visitor's
               first five seconds before the main claim could even be read. */}
-          <h1 className="font-display text-5xl sm:text-6xl lg:text-[4.2rem] font-bold leading-[0.98] tracking-tight mb-6 text-white">
+          <h1 className="chrome-type font-display text-5xl sm:text-6xl lg:text-[4.2rem] font-bold leading-[0.98] tracking-tight mb-6">
             I build systems that <Mark>learn</Mark>.
           </h1>
 
@@ -1267,7 +1270,7 @@ const App = () => {
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/15 border border-accent/30 rounded-full text-accent-ink text-[11px] font-mono mb-6">
               <Sparkles size={13} /> open to opportunities
             </div>
-            <h2 className="font-display text-5xl md:text-6xl font-bold tracking-tight mb-5 text-white leading-[1.02]">
+            <h2 className="chrome-type font-display text-5xl md:text-6xl font-bold tracking-tight mb-5 leading-[1.02]">
               Let&rsquo;s build <Mark>something</Mark>.
             </h2>
             <p className="text-gray-400 text-lg leading-relaxed">
