@@ -61,6 +61,14 @@ export function initLiquidLight(): () => void {
         shift = next;
         ambient.style.setProperty('--amb-shift', `${next.toFixed(1)}deg`);
       }
+
+      /* Parallax. The two star tiles drift at different rates, so the field
+         has depth rather than being a texture pinned to the glass. Set on
+         body rather than :root: body::before is the only thing that reads
+         them, and writing to :root would invalidate the whole tree. */
+      const y = window.scrollY;
+      document.body.style.setProperty('--star-a', `${(-y * 0.06).toFixed(1)}px`);
+      document.body.style.setProperty('--star-b', `${(90 - y * 0.15).toFixed(1)}px`);
     }
 
     const dx = targetX - lightX;

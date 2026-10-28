@@ -179,7 +179,7 @@ body::before {
      one repeating tile is obvious at this scale. */
   background-image: url('/stars-a.png'), url('/stars-b.png');
   background-size: 620px 620px, 380px 380px;
-  background-position: 0 0, 170px 90px;
+  background-position: 0 var(--star-a, 0px), 170px var(--star-b, 90px);
   background-repeat: repeat, repeat;
 }
 
@@ -412,6 +412,64 @@ body::before {
 /* Anyone who has asked their system to reduce transparency gets solid
    surfaces and a dimmed backdrop. Setting the two tokens is enough - the
    material, the rim and the ambient layer all derive from them. */
+/*
+  Rims that catch a moving light.
+
+  Polished metal reads as metal because its highlight moves when you do.
+  The trick is background-attachment: fixed - the rim gradient is locked to
+  the viewport, so it does not move, and what changes is which slice of it
+  the card's edge happens to overlap. Scrolling therefore walks a bright
+  band along the rim for free: no JavaScript, no per-frame writes, nothing
+  measuring element positions.
+
+  Restricted to .feature. A fixed background has to repaint on every scroll,
+  which is exactly what made a per-surface specular cost 3.9fps of 23.9
+  across all thirty-one surfaces earlier. Six is affordable, and they are
+  the six anyone actually looks at.
+*/
+.feature::before {
+  background-attachment: fixed;
+  background-image: linear-gradient(
+    166deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.95) 14%,
+    rgba(255, 255, 255, 0.26) 27%,
+    rgba(255, 255, 255, 0.06) 45%,
+    rgba(255, 255, 255, 0.62) 63%,
+    rgba(255, 255, 255, 0.14) 78%,
+    rgba(255, 255, 255, 0.4) 92%,
+    rgba(255, 255, 255, 0.08) 100%
+  );
+  background-size: 100% 190vh;
+}
+
+/*
+  Input wells.
+
+  The fields were opaque bg-dark boxes sitting on a glass panel - the most
+  interactive part of the page opting out of the material entirely. They
+  are cut into it now rather than laid on top: the rim is inverted against
+  every other surface on the site, shadow along the top edge and a catch
+  light along the bottom, which is what reads as recessed rather than
+  raised. Everything else here is a raised pane; these are the only holes.
+*/
+.well {
+  background-color: color-mix(in oklab, var(--color-dark) 72%, transparent);
+  box-shadow:
+    inset 0 2px 3px rgba(0, 0, 0, 0.55),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.075),
+    inset 0 0 22px rgba(0, 0, 0, 0.3);
+  transition: box-shadow 0.25s ease, border-color 0.25s ease, background-color 0.25s ease;
+}
+
+.well:focus {
+  background-color: color-mix(in oklab, var(--color-dark) 58%, transparent);
+  box-shadow:
+    inset 0 2px 3px rgba(0, 0, 0, 0.45),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.12),
+    0 0 0 3px color-mix(in oklab, var(--color-brand) 32%, transparent);
+}
+
 /*
   Brushed metal, as type.
 

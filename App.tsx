@@ -1312,7 +1312,7 @@ const App = () => {
                           className={`px-3.5 py-2.5 rounded-lg text-[12.5px] font-mono border transition-all ${
                             intent === option
                               ? 'bg-brand-deep text-on-brand border-brand'
-                              : 'bg-dark border-white/10 text-gray-400 hover:text-white hover:border-white/30'
+                              : 'pane chip border-white/10 text-gray-400 hover:text-white hover:border-white/30'
                           }`}
                         >
                           {option}
@@ -1330,7 +1330,7 @@ const App = () => {
                         name="name"
                         type="text"
                         placeholder="Jane Doe"
-                        className="w-full px-5 py-3.5 bg-dark border border-white/10 rounded-2xl text-white placeholder:text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand/40 focus:border-brand transition-all"
+                        className="w-full px-5 py-3.5 well border border-white/10 rounded-2xl text-white placeholder:text-gray-500 focus:outline-none focus:border-brand/60"
                       />
                     </div>
                     <div className="space-y-2.5">
@@ -1341,7 +1341,7 @@ const App = () => {
                         name="email"
                         type="email"
                         placeholder="jane@company.com"
-                        className="w-full px-5 py-3.5 bg-dark border border-white/10 rounded-2xl text-white placeholder:text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand/40 focus:border-brand transition-all"
+                        className="w-full px-5 py-3.5 well border border-white/10 rounded-2xl text-white placeholder:text-gray-500 focus:outline-none focus:border-brand/60"
                       />
                     </div>
                   </div>
@@ -1354,7 +1354,7 @@ const App = () => {
                       name="message"
                       rows={5}
                       placeholder="Tell me what you have in mind..."
-                      className="w-full px-5 py-3.5 bg-dark border border-white/10 rounded-2xl text-white placeholder:text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand/40 focus:border-brand transition-all resize-none"
+                      className="w-full px-5 py-3.5 well border border-white/10 rounded-2xl text-white placeholder:text-gray-500 focus:outline-none focus:border-brand/60 resize-none"
                     />
                   </div>
 
