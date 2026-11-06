@@ -79,6 +79,24 @@ const SectionWrapper = ({ children, id, className = "" }: { children: React.Reac
    large heading dragged the bar up over the glyphs and it read as a
    strikethrough. A background hugs the text's own content box, so the stripe
    sits at the baseline at every size and line-height. */
+/*
+  One word of the headline, set against the grotesque.
+
+  Separate from Mark rather than replacing it. Mark highlights a whole
+  phrase in running body copy, where a bar is right and an italic serif
+  would be wrong; this swaps a single word of a display headline, where the
+  reverse is true. Two devices, two jobs.
+
+  It carries chrome-type of its own because background-clip only clips an
+  element's own background - a child inheriting transparent colour with
+  nothing behind it disappears.
+*/
+const Accent = ({ children }: { children: React.ReactNode }) => (
+  <em className="chrome-type font-accent italic font-normal tracking-normal">
+    {children}
+  </em>
+);
+
 const Mark = ({ children }: { children: React.ReactNode }) => (
   <span
     className="bg-no-repeat px-[0.08em]"
@@ -470,7 +488,7 @@ const Hero = () => (
           {/* Rendered immediately - a typewriter here cost ~2.3s of a visitor's
               first five seconds before the main claim could even be read. */}
           <h1 className="chrome-type font-display text-5xl sm:text-6xl lg:text-[4.2rem] font-bold leading-[0.98] tracking-tight mb-6">
-            I build systems that <Mark>learn</Mark>.
+            I build systems that <Accent>learn</Accent>.
           </h1>
 
           <p className="text-gray-300 text-lg md:text-xl leading-relaxed mb-8 max-w-xl">
@@ -1271,7 +1289,7 @@ const App = () => {
               <Sparkles size={13} /> open to opportunities
             </div>
             <h2 className="chrome-type font-display text-5xl md:text-6xl font-bold tracking-tight mb-5 leading-[1.02]">
-              Let&rsquo;s build <Mark>something</Mark>.
+              Let&rsquo;s build <Accent>something</Accent>.
             </h2>
             <p className="text-gray-400 text-lg leading-relaxed">
               Hiring, collaborating on research, or want to argue about recommender systems? Pick what it is about
