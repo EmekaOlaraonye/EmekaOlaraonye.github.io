@@ -865,10 +865,10 @@ const App = () => {
             {/* Stats */}
             <div className="md:col-span-2 lg:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-5">
             <div className="rounded-3xl bg-brand-deep p-5 sm:p-6 flex flex-col justify-between gap-2 sm:gap-0 sm:min-h-[140px]">
-              <span className="font-mono text-[10px] text-on-brand/70">bsc gpa</span>
+              <span className="font-mono text-[10px] text-on-brand">bsc gpa</span>
               <div className="flex items-baseline gap-3 sm:block">
                 <div className="font-display text-3xl sm:text-4xl font-bold text-on-brand tracking-tight">4.42</div>
-                <div className="font-mono text-[11px] text-on-brand/70 sm:mt-1">out of 5.00 · first class</div>
+                <div className="font-mono text-[11px] text-on-brand sm:mt-1">out of 5.00 · first class</div>
               </div>
             </div>
 
@@ -932,8 +932,10 @@ const App = () => {
                   </div>
 
                   <div className="flex gap-5 md:gap-6 min-w-0">
-                  {/* Big index */}
-                  <div className="font-display text-4xl md:text-5xl font-bold text-white/10 leading-none select-none shrink-0 group-hover:text-brand/30 transition-colors duration-500">
+                  {/* Big index. Decorative: the order is already carried by the
+                      sequence and the title, and at 10% opacity this is texture,
+                      not text - so it is hidden rather than announced. */}
+                  <div aria-hidden="true" className="font-display text-4xl md:text-5xl font-bold text-white/10 leading-none select-none shrink-0 group-hover:text-brand/30 transition-colors duration-500">
                     0{i + 1}
                   </div>
 
@@ -1087,7 +1089,7 @@ const App = () => {
                   <p className="text-[11px] font-mono text-gray-500 mb-3.5">// methods &amp; tooling</p>
                   <div className="flex flex-wrap gap-1.5">
                     {RESEARCH.methods.map(m => (
-                      <span key={m} className="px-3 py-1.5 rounded-full bg-brand/10 border border-brand/25 text-brand text-[11px] font-mono">
+                      <span key={m} className="px-3 py-1.5 rounded-full bg-brand/10 border border-brand/25 text-accent-ink text-[11px] font-mono">
                         {m}
                       </span>
                     ))}
@@ -1225,7 +1227,7 @@ const App = () => {
             <div className="grid sm:grid-cols-2 gap-3 mt-3">
               {TOOL_GROUPS.map(group => (
                 <div key={group.label} className="rounded-2xl border border-white/10 pane quiet p-5 flex flex-wrap items-center gap-2">
-                  <span className="font-mono text-[11px] text-brand mr-1">// {group.label}</span>
+                  <span className="font-mono text-[11px] text-accent-ink mr-1">// {group.label}</span>
                   {group.items.map(item => (
                     <span
                       key={item}

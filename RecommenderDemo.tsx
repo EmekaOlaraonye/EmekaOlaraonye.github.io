@@ -153,7 +153,7 @@ const RecommenderDemo = () => {
         </p>
         <button
           onClick={() => setPicked([])}
-          className="inline-flex items-center gap-1.5 py-2 text-[11px] font-mono text-gray-500 hover:text-white transition-colors"
+          className="inline-flex items-center gap-1.5 py-2 text-[11px] font-mono text-gray-300 hover:text-white transition-colors"
         >
           <RotateCcw size={11} /> clear
         </button>
@@ -229,7 +229,7 @@ const RecommenderDemo = () => {
         </>
       )}
 
-      <div className="mt-6 flex gap-2.5 text-[11px] text-gray-500 leading-relaxed">
+      <div className="mt-6 flex gap-2.5 text-[11px] text-gray-400 leading-relaxed">
         <Info size={13} className="shrink-0 mt-0.5" />
         <p>
           Illustrates the idea behind my research; it is not a result from it. The vectors come from a BPR
