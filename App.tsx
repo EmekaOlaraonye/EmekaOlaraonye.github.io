@@ -676,10 +676,14 @@ const SectionHeading = ({
       <div className={`flex items-center gap-4 ${t.gap}`}>
         <span className="font-mono text-sm text-accent-ink font-medium">{num}</span>
         <span className={`${t.rule} h-px bg-white/20`} />
-        {kicker && <span className="font-mono text-xs text-gray-500 lowercase tracking-wide">{kicker}</span>}
       </div>
       <h2 className={`font-display ${t.title} font-bold mb-4 tracking-tight text-white leading-[1.02]`}>
         {title}
+        {kicker && (
+          <span className="ml-3 md:ml-4 font-mono text-[10px] md:text-[11px] font-normal tracking-[0.2em] uppercase text-gray-500 align-baseline whitespace-nowrap">
+            {kicker}
+          </span>
+        )}
       </h2>
       {subtitle && <p className={`text-gray-400 max-w-2xl ${t.sub} leading-relaxed`}>{subtitle}</p>}
     </div>
