@@ -468,6 +468,59 @@ body::before {
 }
 
 /*
+  The name, at display scale.
+
+  Taken from kagisosec.com: the surname set as outline only, overlapping a
+  solid first name, so the two read as one mark rather than two words. Here
+  the solid half is the chrome fill the headlines already use and the
+  outline half is an engraved stroke, which is what the device becomes on a
+  starfield rather than on paper.
+
+  The stroke is in em, not px, so it thins and thickens with the clamped
+  font size instead of turning into a heavy marker at phone widths.
+
+  paint-order: stroke fill keeps the stroke behind the glyph body, so the
+  letterform stays the right weight rather than being eaten from inside.
+*/
+.name-solid,
+.name-outline {
+  position: relative;
+  text-transform: uppercase;
+  font-size: clamp(2.35rem, 12.4vw, 10.75rem);
+  line-height: 0.82;
+  letter-spacing: -0.035em;
+  display: block;
+}
+
+.name-outline {
+  color: transparent;
+  -webkit-text-stroke: 0.017em rgba(214, 226, 241, 0.95);
+  paint-order: stroke fill;
+  /* Tucked up against the line above rather than through it. The first pass
+     overlapped by 0.085em, which on a phone put a 0.6px stroke straight
+     across the bright chrome of the word above: 1.77:1 where the two met.
+     Tight enough to read as one mark, clear of the glyphs. */
+  margin-top: -0.02em;
+}
+
+/* Thin strokes over a starfield need the same protection the metal fill
+   gets; without it a star sitting inside a counter reads as a hole. */
+.name-outline::before,
+.name-solid::before {
+  content: '';
+  position: absolute;
+  inset: -0.18em -0.3em;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    64% 58% at 42% 50%,
+    rgba(4, 6, 12, 0.74) 0%,
+    rgba(4, 6, 12, 0.5) 46%,
+    rgba(4, 6, 12, 0) 78%
+  );
+}
+
+/*
   Input wells.
 
   The fields were opaque bg-dark boxes sitting on a glass panel - the most

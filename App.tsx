@@ -474,10 +474,8 @@ const Hero = () => (
     <div className="scanline" />
 
     <div className="relative max-w-7xl mx-auto px-6 w-full">
-      <div className="grid lg:grid-cols-[1.05fr_0.95fr] gap-12 lg:gap-16 items-center">
-        {/* Left: the claim */}
-        <div className="hero-rise z-10">
-          <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full liquid chip border border-white/10 text-[11px] font-mono mb-7">
+      <div className="hero-rise">
+        <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full liquid chip border border-white/10 text-[11px] font-mono mb-7">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-ink opacity-75" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-accent-ink" />
@@ -485,13 +483,23 @@ const Hero = () => (
             <span className="text-gray-300">open to 2026 roles &amp; research collabs</span>
           </div>
 
+        {/* The name carries the hero, the way kagisosec.com does it: one word
+            solid, one in outline, overlapping so they read as a single mark.
+            It is the h1 because on a portfolio the person is the page. */}
+        <h1 className="font-display font-bold mb-9">
+          <span className="name-solid chrome-type">Chukwuemeka</span>
+          <span className="name-outline">Olaraonye</span>
+        </h1>
+
+        <div className="grid lg:grid-cols-[1.05fr_0.95fr] gap-12 lg:gap-16 items-start">
+          <div className="z-10">
           {/* Rendered immediately - a typewriter here cost ~2.3s of a visitor's
               first five seconds before the main claim could even be read. */}
-          <h1 className="chrome-type font-display text-5xl sm:text-6xl lg:text-[4.2rem] font-bold leading-[0.98] tracking-tight mb-6">
+          <p className="chrome-type font-display text-3xl md:text-[2.15rem] font-bold leading-[1.05] tracking-tight mb-5">
             I build systems that <Accent>learn</Accent>.
-          </h1>
+          </p>
 
-          <p className="text-gray-300 text-lg md:text-xl leading-relaxed mb-8 max-w-xl">
+          <p className="text-gray-300 text-base md:text-lg leading-relaxed mb-8 max-w-xl">
             <span className="text-white font-semibold">Chukwuemeka Olaraonye</span> &mdash; MSc Computer Science
             researcher in recommender systems, and a full-stack engineer who ships the backends and interfaces
             that put models in front of real users.
@@ -547,6 +555,7 @@ const Hero = () => (
               ))}
             </dl>
           </div>
+        </div>
         </div>
       </div>
     </div>
