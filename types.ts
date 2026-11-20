@@ -44,6 +44,8 @@ export interface Certification {
   description: string;
   /** Optional longer breakdown, rendered as bullets when present. */
   details?: string[];
+  /** Verification page for the credential. Renders a "view" link when set. */
+  url?: string;
 }
 
 export interface Achievement {

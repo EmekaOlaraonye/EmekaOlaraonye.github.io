@@ -467,6 +467,20 @@ body::before {
   background-size: 100% 190vh;
 }
 
+/* The window chrome is the same brushed metal as the headlines, which is
+   what makes a window frame belong on this page rather than read as a
+   borrowed macOS motif. */
+.browser-chrome {
+  background-image: linear-gradient(
+    177deg,
+    rgba(228, 236, 247, 0.17) 0%,
+    rgba(150, 167, 190, 0.1) 32%,
+    rgba(226, 234, 246, 0.14) 56%,
+    rgba(140, 158, 182, 0.08) 78%,
+    rgba(205, 217, 233, 0.12) 100%
+  );
+}
+
 /*
   Brand marks sit in the page's own silver, not in brand colour. Twenty
   logos at full saturation would turn a stack list into a sticker sheet and

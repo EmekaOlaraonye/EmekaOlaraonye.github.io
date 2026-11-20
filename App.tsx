@@ -24,6 +24,8 @@ import { Project } from './types';
 import RecommenderDemo from './RecommenderDemo';
 import SimilarityMatrix from './SimilarityMatrix';
 import BrandIcon from './BrandIcon';
+import BrowserFrame from './BrowserFrame';
+import CoreIdeaDiagram from './CoreIdeaDiagram';
 import TicketyDiagram from './TicketyDiagram';
 import motoraShot from './project-shots/motora.jpg';
 import tsoo13Shot from './project-shots/tsoo13.jpg';
@@ -709,13 +711,38 @@ const SectionHeading = ({
   treatment for all three, so the column that matters is the one with the
   best entries rather than the one with the most shadow.
 */
+/* Two letters in a chrome square, standing where kagisosec puts the
+   issuer's logo. Infnova, MCW Global and BIUST are not in Simple Icons and
+   I will not draw an approximation of someone's trademark, so these are
+   initials - which is a stand-in that says so, rather than a fake that
+   does not. Awards carry their year instead; they have no issuer. */
+const RowMark = ({ text }: { text: string }) => (
+  <span
+    aria-hidden="true"
+    className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-lg pane chip border border-white/10 font-mono text-[10px] text-gray-400"
+  >
+    {text}
+  </span>
+);
+
+const initials = (source: string) =>
+  source
+    .replace(/[^A-Za-z ]/g, ' ')
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map(w => w[0].toUpperCase())
+    .join('') || '·';
+
 const Receipt = ({
   meta,
   aside,
   title,
   description,
   badge,
-  details
+  details,
+  mark,
+  href
 }: {
   meta: string;
   aside?: string;
@@ -723,13 +750,17 @@ const Receipt = ({
   description: string;
   badge?: string;
   details?: string[];
+  mark?: string;
+  href?: string;
   /* This project has no @types/react, so TypeScript's fallback JSX typing
      does not know `key` is reserved and rejects it on a custom component.
      React strips it before props are passed, so declaring it is only to
      satisfy the checker. */
   key?: string | number;
 }) => (
-  <li className="py-5 group">
+  <li className="py-5 group flex gap-3.5">
+    {mark && <RowMark text={mark} />}
+    <div className="min-w-0 flex-1">
     <div className="flex items-baseline gap-2.5 mb-1.5">
       <span className="font-mono text-[10.5px] text-accent-ink">{meta}</span>
       {badge && (
@@ -752,6 +783,19 @@ const Receipt = ({
         ))}
       </ul>
     )}
+    {/* Only where a credential can actually be checked. An affordance that
+        goes nowhere is worse than none. */}
+    {href && (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-3 inline-flex items-center gap-1.5 py-1 font-mono text-[10px] tracking-[0.18em] uppercase text-gray-400 hover:text-accent-ink transition-colors"
+      >
+        view <ArrowUpRight size={12} />
+      </a>
+    )}
+    </div>
   </li>
 );
 
@@ -937,19 +981,24 @@ const App = () => {
                   {/* Visual: a screenshot where there is an interface, the
                       architecture where there is not. Ordered first on phones
                       so the work is the first thing seen. */}
-                  <div className="order-first lg:order-last rounded-xl overflow-hidden border border-white/10 bg-dark">
+                  <div className="order-first lg:order-last">
                     {project.image ? (
-                      <img
-                        src={PROJECT_SHOTS[project.image]}
-                        alt={`${project.title} interface`}
-                        width={1000}
-                        height={625}
-                        loading="lazy"
-                        decoding="async"
-                        className="w-full h-auto group-hover:scale-[1.03] transition-transform duration-700"
-                      />
+                      <BrowserFrame host={project.demo ? new URL(project.demo).host : undefined}>
+                        <img
+                          src={PROJECT_SHOTS[project.image]}
+                          alt={`${project.title} interface`}
+                          width={1000}
+                          height={625}
+                          loading="lazy"
+                          decoding="async"
+                          className="w-full h-auto group-hover:scale-[1.03] transition-transform duration-700"
+                        />
+                      </BrowserFrame>
                     ) : (
-                      <div className="p-3">
+                      /* Tickety has no interface to show - it is an API - so the
+                         architecture stands in, and a browser frame around a
+                         diagram would be claiming something that is not true. */
+                      <div className="rounded-xl overflow-hidden border border-white/10 bg-dark p-3">
                         <TicketyDiagram />
                       </div>
                     )}
@@ -1079,35 +1128,7 @@ const App = () => {
                 <div className="rounded-[2rem] pane border border-white/10 p-7">
                   <p className="text-[11px] font-mono text-gray-500 mb-4">// the core idea, in one picture</p>
 
-                  <div className="space-y-3">
-                    <div className="rounded-2xl border border-white/10 bg-dark/60 p-4">
-                      <p className="text-[10px] font-mono text-gray-500 mb-3">matrix factorization</p>
-                      <div className="flex items-center gap-2 flex-wrap text-[11px] font-mono">
-                        <span className="px-2.5 py-1.5 rounded-lg bg-white/5 border border-white/10 text-gray-300">user</span>
-                        <span className="text-gray-600">·</span>
-                        <span className="px-2.5 py-1.5 rounded-lg bg-white/5 border border-white/10 text-gray-300">item</span>
-                        <ArrowRight size={12} className="text-gray-600" />
-                        <span className="px-2.5 py-1.5 rounded-lg bg-white/5 border border-white/10 text-gray-400">score</span>
-                      </div>
-                      <p className="text-[12px] text-gray-500 mt-3 leading-relaxed">A fixed inner product. The interaction is assumed, never learned.</p>
-                    </div>
-
-                    <div className="rounded-2xl border border-accent/40 bg-accent/10 p-4 relative overflow-hidden">
-                      <p className="text-[10px] font-mono text-accent-ink mb-3">neural collaborative filtering</p>
-                      <div className="flex items-center gap-2 flex-wrap text-[11px] font-mono">
-                        <span className="px-2.5 py-1.5 rounded-lg bg-dark/60 border border-white/10 text-gray-300">user</span>
-                        <span className="text-gray-500">+</span>
-                        <span className="px-2.5 py-1.5 rounded-lg bg-dark/60 border border-white/10 text-gray-300">item</span>
-                        <ArrowRight size={12} className="text-brand" />
-                        <span className="px-2.5 py-1.5 rounded-lg bg-brand-deep text-on-brand font-semibold">learned f()</span>
-                        <ArrowRight size={12} className="text-brand" />
-                        <span className="px-2.5 py-1.5 rounded-lg bg-dark/60 border border-white/10 text-gray-300">score</span>
-                      </div>
-                      <p className="text-[12px] text-gray-400 mt-3 leading-relaxed">
-                        The network learns the interaction function itself — free to model relationships a dot product cannot express.
-                      </p>
-                    </div>
-                  </div>
+                  <CoreIdeaDiagram />
                 </div>
 
                 <div className="rounded-[2rem] pane quiet border border-white/10 p-6">
@@ -1276,7 +1297,7 @@ const App = () => {
           <div className="stagger grid md:grid-cols-3 gap-x-10 gap-y-12 items-start">
             <ReceiptColumn icon={<Trophy size={18} />} title="Awards">
               {ACHIEVEMENTS.map((award, i) => (
-                <Receipt key={i} meta={award.year} title={award.title} description={award.description} />
+                <Receipt key={i} mark={`’${award.year.slice(-2)}`} meta={award.year} title={award.title} description={award.description} />
               ))}
             </ReceiptColumn>
 
@@ -1284,6 +1305,8 @@ const App = () => {
               {CERTIFICATIONS.map((cert, i) => (
                 <Receipt
                   key={i}
+                  mark={initials(cert.issuer)}
+                  href={cert.url}
                   meta={cert.issuer}
                   badge={cert.status}
                   aside={cert.date}
@@ -1296,11 +1319,12 @@ const App = () => {
 
             <ReceiptColumn icon={<Users size={18} />} title="Leadership">
               {LEADERSHIP.map((item, i) => (
-                <Receipt key={i} meta={item.organization} title={item.role} description={item.description} />
+                <Receipt key={i} mark={initials(item.organization)} meta={item.organization} title={item.role} description={item.description} />
               ))}
               {TALKS.map(talk => (
                 <Receipt
                   key={talk.title}
+                  mark={initials(talk.venue)}
                   meta="// speaking"
                   aside={talk.date}
                   title={talk.title}
