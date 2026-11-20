@@ -23,6 +23,7 @@ import {
 import { Project } from './types';
 import RecommenderDemo from './RecommenderDemo';
 import SimilarityMatrix from './SimilarityMatrix';
+import BrandIcon from './BrandIcon';
 import TicketyDiagram from './TicketyDiagram';
 import motoraShot from './project-shots/motora.jpg';
 import tsoo13Shot from './project-shots/tsoo13.jpg';
@@ -459,7 +460,17 @@ const AT_A_GLANCE: [string, React.ReactNode][] = [
   ['role', <>MSc Computer Science researcher &middot; Teaching Assistant, BIUST</>],
   ['focus', <>Recommender systems &mdash; neural collaborative filtering for e-commerce</>],
   ['building', <>Tickety, a ticketing backend on Cloud Run &middot; Motora, a used-car marketplace</>],
-  ['stack', <>Python &middot; TypeScript &middot; React &middot; Node/Fastify &middot; Firestore &middot; Docker</>],
+  [
+    'stack',
+    <span className="inline-flex flex-wrap items-center gap-x-3 gap-y-1.5">
+      {['Python', 'TypeScript', 'React', 'Node.js', 'Fastify', 'Firestore', 'Docker'].map(t => (
+        <span key={t} className="inline-flex items-center gap-1.5">
+          <BrandIcon name={t} size={13} />
+          {t}
+        </span>
+      ))}
+    </span>
+  ],
   ...(DATE_OF_BIRTH
     ? ([['age', <>{yearsSince(DATE_OF_BIRTH)}</>]] as [string, React.ReactNode][])
     : []),
@@ -974,7 +985,8 @@ const App = () => {
 
                     <div className="flex flex-wrap gap-1.5 mb-5">
                       {project.stack.map(tech => (
-                        <span key={tech} className="px-2.5 py-1 rounded-md bg-dark border border-white/10 text-[10px] font-mono text-gray-500">
+                        <span key={tech} className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md pane quiet border border-white/10 text-[10px] font-mono text-gray-400">
+                          <BrandIcon name={tech} size={12} />
                           {tech}
                         </span>
                       ))}
@@ -1220,8 +1232,9 @@ const App = () => {
                       {stage.tools.map(tool => (
                         <span
                           key={tool}
-                          className="px-2.5 py-1 rounded-md bg-dark border border-white/10 text-[11px] font-mono text-gray-400"
+                          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md pane quiet border border-white/10 text-[11px] font-mono text-gray-400"
                         >
+                          <BrandIcon name={tool} />
                           {tool}
                         </span>
                       ))}
@@ -1244,8 +1257,9 @@ const App = () => {
                   {group.items.map(item => (
                     <span
                       key={item}
-                      className="px-2.5 py-1 rounded-md bg-dark border border-white/10 text-[11px] font-mono text-gray-400"
+                      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md pane quiet border border-white/10 text-[11px] font-mono text-gray-400"
                     >
+                      <BrandIcon name={item} />
                       {item}
                     </span>
                   ))}

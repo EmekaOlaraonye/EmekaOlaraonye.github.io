@@ -468,6 +468,29 @@ body::before {
 }
 
 /*
+  Brand marks sit in the page's own silver, not in brand colour. Twenty
+  logos at full saturation would turn a stack list into a sticker sheet and
+  pull against a palette that is deliberately almost monochrome. The real
+  colour is there on hover, which is where a reader is asking about one
+  specific thing rather than scanning the row.
+*/
+.brand-mark {
+  color: inherit;
+  opacity: 0.75;
+  transition: color 0.25s ease, opacity 0.25s ease;
+}
+
+*:hover > .brand-mark,
+.brand-mark:hover {
+  color: var(--tint);
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-mark { transition: none; }
+}
+
+/*
   The name, at display scale.
 
   Taken from kagisosec.com: the surname set as outline only, overlapping a
