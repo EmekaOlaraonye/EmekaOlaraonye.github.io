@@ -467,6 +467,78 @@ body::before {
   background-size: 100% 190vh;
 }
 
+/*
+  Inverted bands.
+
+  Twelve screens of near-black with glass on it read as one surface no
+  matter how good the material is: laid out as a contact sheet, every
+  frame after the hero was interchangeable. Two sections invert to a pale
+  brushed chrome, so the page has light and dark in it rather than one
+  continuous tone, and the eye gets a landmark instead of a metronome.
+
+  It is a scoped token flip, not a second stylesheet. Every colour on the
+  page already resolves through a custom property, so redefining fifteen
+  of them on one element re-themes everything inside it - the glass, the
+  rims, the borders, the chips - without a single component knowing a band
+  exists. These are the light values the site used to ship before it went
+  single-theme; they were already measured against this type.
+*/
+.invert-band {
+  width: 100vw;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  color-scheme: light;
+
+  --color-dark: #e9edf4;
+  --color-surface: #f7f9fd;
+  --color-surface-accent: #e4eaf2;
+  --color-brand: #2a6194;
+  --color-brand-deep: #1f4f7d;
+  --color-brand-glow: #2a619433;
+  --color-accent: #bcdcf5;
+  --color-accent-ink: #1d567f;
+  --color-white: #0a0e15;
+  --color-gray-300: #1d242e;
+  --color-gray-400: #38414e;
+  --color-gray-500: #4d5765;
+  --color-gray-600: #58616f;
+  --color-gray-700: #a5adb8;
+  --color-gray-800: #d3d9e1;
+
+  /* The same off-axis sheen the light theme used, so the ground reads as
+     brushed metal rather than as a grey rectangle. */
+  background-color: #e9edf4;
+  background-image: linear-gradient(
+    107deg,
+    rgba(255, 255, 255, 0.92) 0%,
+    rgba(255, 255, 255, 0.1) 17%,
+    rgba(255, 255, 255, 0.78) 31%,
+    rgba(214, 223, 235, 0.5) 44%,
+    rgba(255, 255, 255, 0.86) 58%,
+    rgba(205, 215, 229, 0.55) 71%,
+    rgba(255, 255, 255, 0.7) 86%,
+    rgba(220, 228, 240, 0.6) 100%
+  );
+}
+
+/* The band is opaque, so the starfield and the pointer light stop at its
+   edge; a lens with nothing behind it would just be a grey box. The glass
+   keeps its tint and rim and loses only the refraction. */
+.invert-band .liquid {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* Hairlines inside the band are drawn from white at low alpha everywhere
+   else, which is invisible on a pale ground. */
+.invert-band :is(.border-white\/10, .border-white\/\[0\.07\], .divide-white\/10, .divide-white\/5) {
+  border-color: rgba(10, 14, 21, 0.14);
+}
+
+.invert-band .divide-y > * + * {
+  border-top-color: rgba(10, 14, 21, 0.12);
+}
+
 /* The window chrome is the same brushed metal as the headlines, which is
    what makes a window frame belong on this page rather than read as a
    borrowed macOS motif. */

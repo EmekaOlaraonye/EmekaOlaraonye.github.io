@@ -1161,7 +1161,7 @@ const App = () => {
         </SectionWrapper>
 
         {/* ============ EXPERIENCE + EDUCATION ============ */}
-        <SectionWrapper id="experience" className="py-16 relative">
+        <SectionWrapper id="experience" className="invert-band py-20 relative">
           <div className="max-w-7xl mx-auto px-6">
             <SectionHeading num="04" tier="support" kicker="how I got here" title="The path so far." />
 
@@ -1291,7 +1291,8 @@ const App = () => {
         </SectionWrapper>
 
         {/* ============ AWARDS / CERTS / LEADERSHIP ============ */}
-        <SectionWrapper id="achievements" className="py-16 max-w-7xl mx-auto px-6">
+        <SectionWrapper id="achievements" className="invert-band py-20">
+          <div className="max-w-7xl mx-auto px-6">
           <SectionHeading num="06" tier="support" kicker="receipts" title="Wins & community." />
 
           <div className="stagger grid md:grid-cols-3 gap-x-10 gap-y-12 items-start">
@@ -1332,6 +1333,7 @@ const App = () => {
                 />
               ))}
             </ReceiptColumn>
+          </div>
           </div>
         </SectionWrapper>
 
