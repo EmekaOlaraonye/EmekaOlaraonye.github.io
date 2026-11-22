@@ -41,9 +41,12 @@ const PROJECT_SHOTS: Record<string, string> = {
 };
 
 // Reveals each section as it scrolls into view.
-const SectionWrapper = ({ children, id, className = "" }: { children: React.ReactNode, id: string, className?: string }) => {
+/* Reveal-on-scroll, shared by the sections and the statements between
+   them. It only ever resets when the element leaves upward, so scrolling
+   back up replays it and scrolling down past it does not. */
+const useReveal = <T extends HTMLElement,>() => {
   const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
+  const ref = useRef<T>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -57,9 +60,15 @@ const SectionWrapper = ({ children, id, className = "" }: { children: React.Reac
       { threshold: 0.1, rootMargin: "0px 0px -10% 0px" }
     );
 
-    if (sectionRef.current) observer.observe(sectionRef.current);
+    if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
   }, []);
+
+  return [ref, isVisible] as const;
+};
+
+const SectionWrapper = ({ children, id, className = "" }: { children: React.ReactNode, id: string, className?: string }) => {
+  const [sectionRef, isVisible] = useReveal<HTMLElement>();
 
   return (
     <section
@@ -99,6 +108,51 @@ const Accent = ({ children }: { children: React.ReactNode }) => (
     {children}
   </em>
 );
+
+/*
+  One sentence, loud.
+
+  The page used to hold a single typographic register the whole way down -
+  heading, body, heading, body - so no idea was ever allowed to be bigger
+  than the section it sat in. A statement takes a line that was buried in
+  a paragraph and gives it a screen of its own.
+
+  Each line here is moved rather than copied: the sentence no longer
+  appears in the section it came from. A display-size restatement of
+  something the reader just read is an advertisement for itself.
+
+  It is an <aside> because it is genuinely beside the argument - the
+  sections either side still make sense with it removed, which is the
+  test. Alignment is a prop because flipping the second one to the right
+  edge is most of what stops the two from reading as a template.
+*/
+const Statement = ({
+  label,
+  align = 'left',
+  children
+}: {
+  label: string;
+  align?: 'left' | 'right';
+  children: React.ReactNode;
+}) => {
+  const [ref, isVisible] = useReveal<HTMLElement>();
+
+  return (
+    <aside
+      ref={ref}
+      data-visible={isVisible ? 'true' : 'false'}
+      data-align={align}
+      className="statement py-24 md:py-36"
+    >
+      <div className={`max-w-7xl mx-auto px-6 ${align === 'right' ? 'text-right' : ''}`}>
+        <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-gray-500 mb-7">
+          {label}
+        </p>
+        <p className="statement-line chrome-type font-display font-bold">{children}</p>
+      </div>
+    </aside>
+  );
+};
 
 const Mark = ({ children }: { children: React.ReactNode }) => (
   <span
@@ -920,8 +974,7 @@ const App = () => {
               </p>
               <p className="text-gray-400 leading-relaxed">
                 The other half is shipping — a Fastify authorization service on Cloud Run, a TypeScript marketplace where no
-                component knows where its data comes from. I care about the machine learning that{' '}
-                <Mark><span className="text-white font-semibold">survives contact with production</span></Mark>.
+                component knows where its data comes from.
               </p>
             </div>
 
@@ -958,6 +1011,10 @@ const App = () => {
             </div>
           </div>
         </SectionWrapper>
+
+        <Statement label="the through-line">
+          Machine learning that <Accent>survives</Accent> contact with production.
+        </Statement>
 
         {/* ============ PROJECTS (staggered rows) ============ */}
         <SectionWrapper id="projects" className="py-16 max-w-7xl mx-auto px-6">
@@ -1089,7 +1146,7 @@ const App = () => {
               tier="pillar"
               kicker="ai / machine learning"
               title="The research."
-              subtitle="My MSc work sits on recommender systems — the part of machine learning that decides what a million people see next."
+              subtitle="My MSc work sits on recommender systems — on what a model learns once you stop assuming how a person and an item combine."
             />
 
             <div className="grid lg:grid-cols-[1.45fr_1fr] gap-6 items-start">
@@ -1161,6 +1218,10 @@ const App = () => {
         </SectionWrapper>
 
         {/* ============ EXPERIENCE + EDUCATION ============ */}
+        <Statement label="the stake" align="right">
+          A recommender decides what a million people <Accent>see next</Accent>.
+        </Statement>
+
         <SectionWrapper id="experience" className="invert-band py-20 relative">
           <div className="max-w-7xl mx-auto px-6">
             <SectionHeading num="04" tier="support" kicker="how I got here" title="The path so far." />

@@ -773,3 +773,88 @@ body::before {
   .ambient { opacity: 0.2; }
   .lumen { display: none; }
 }
+
+/*
+  Scale moments.
+
+  Between the hero and the footer the page had exactly one typographic
+  register: a heading at one size, body copy at another, repeated eleven
+  times. Nothing ever got loud. These are the interruptions - a single
+  sentence set at display size on bare ground, with no card, no rim and a
+  great deal of air around it.
+
+  They are deliberately not sections. A section is a container of things;
+  this is one line, and the only job it has is to change the reader's
+  pace. The oversized measure (17ch) is what makes it break into two or
+  three short lines instead of running as a wide banner - a wall of
+  display type at full container width reads as a header, not a pause.
+*/
+.statement {
+  position: relative;
+  width: 100vw;
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Hairlines that fade out before the viewport edge, so the interruption
+   is bracketed without drawing two hard rules across the page. */
+.statement::before,
+.statement::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(214, 226, 241, 0.16) 16%,
+    rgba(214, 226, 241, 0.16) 84%,
+    transparent
+  );
+}
+
+.statement::before { top: 0; }
+.statement::after { bottom: 0; }
+
+.statement-line {
+  font-size: clamp(2.05rem, 6.5vw, 5.3rem);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  max-width: 17ch;
+}
+
+.statement[data-align='right'] .statement-line {
+  margin-left: auto;
+}
+
+/* The serif italic is drawn on a steep slope, so at 85px its entry stroke
+   runs back under the roman word before it and the two words touch. A
+   grotesque at body size never shows this; a 17ch display measure does. */
+.statement-line em {
+  padding-inline: 0.045em;
+}
+
+/*
+  The line is wiped up from its own baseline rather than faded in. A fade
+  is the same motion every other block on the page already uses; a wipe
+  reads as type being set, which is the right gesture for the one element
+  here that is purely typographic.
+
+  clip-path is inset past the edges on both sides at rest so the chrome
+  gradient and the descenders are never shaved by a rounding error.
+*/
+@media (prefers-reduced-motion: no-preference) {
+  .statement-line {
+    clip-path: inset(-0.25em -0.25em 100% -0.25em);
+    transform: translateY(0.12em);
+    transition:
+      clip-path 1.15s cubic-bezier(0.22, 0.85, 0.2, 1),
+      transform 1.15s cubic-bezier(0.22, 0.85, 0.2, 1);
+  }
+
+  .statement[data-visible='true'] .statement-line {
+    clip-path: inset(-0.25em -0.25em -0.25em -0.25em);
+    transform: none;
+  }
+}
