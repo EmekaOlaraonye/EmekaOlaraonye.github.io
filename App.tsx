@@ -304,7 +304,7 @@ const Header = () => {
           {/* The first name is dropped on narrow screens rather than the whole
               wordmark, so the surname always identifies the page. */}
           <span className="font-display text-base sm:text-lg tracking-tight whitespace-nowrap">
-            <span className="hidden sm:inline font-medium text-gray-500 group-hover:text-gray-400 transition-colors">
+            <span className="hidden sm:inline font-medium text-gray-400 group-hover:text-gray-300 transition-colors">
               Chukwuemeka{' '}
             </span>
             <span className="font-bold text-white group-hover:text-brand transition-colors">
@@ -1101,7 +1101,7 @@ const App = () => {
                     <div className="flex flex-wrap items-center gap-6">
                       <button
                         onClick={() => setSelectedProject(project)}
-                        className="inline-flex items-center gap-2 py-2 -my-2 text-brand text-sm font-bold hover:gap-3.5 transition-all"
+                        className="inline-flex items-center gap-2 py-2 -my-2 text-accent text-sm font-bold hover:gap-3.5 transition-all"
                       >
                         Read the case study <ArrowRight size={15} />
                       </button>
@@ -1285,68 +1285,123 @@ const App = () => {
         </SectionWrapper>
 
         {/* ============ SKILLS (pipeline) ============ */}
-        <SectionWrapper id="skills" className="py-16 relative overflow-hidden">
+        {/* overflow-x-clip, not overflow-hidden: `hidden` makes this element a
+            scroll container, and a sticky child cannot stick inside one. The
+            clip is still needed so nothing here widens the page. */}
+        <SectionWrapper id="skills" className="py-16 relative overflow-x-clip">
           <div className="max-w-7xl mx-auto px-6 relative z-10">
-            <SectionHeading
-              num="05"
-              tier="support"
-              kicker="the toolkit"
-              title="What I reach for."
-              subtitle="Laid out as the path a model actually takes to reach a user — which is the order I tend to work in."
-            />
+            {/*
+              The one section that is not a column of cards.
 
-            <div className="stagger flex flex-col lg:flex-row items-stretch gap-3">
-              {STACK_PIPELINE.map((stage, i) => (
-                <React.Fragment key={stage.name}>
-                  <div
-                    className={`flex-1 min-w-0 rounded-2xl p-5 border transition-colors duration-300 ${
-                      stage.highlight
-                        ? 'border-accent/45 bg-accent/[0.06]'
-                        : 'border-white/10 pane hover:border-brand/40'
-                    }`}
-                  >
-                    <div className={`font-mono text-[10px] mb-2.5 ${stage.highlight ? 'text-accent-ink' : 'text-gray-600'}`}>
-                      {stage.num}
-                    </div>
-                    <h3 className="font-display text-lg font-bold text-white mb-1.5">{stage.name}</h3>
-                    <p className="text-[12px] text-gray-500 leading-relaxed mb-4 lg:min-h-[48px]">{stage.what}</p>
-                    <div className="flex flex-wrap gap-1.5">
-                      {stage.tools.map(tool => (
-                        <span
-                          key={tool}
-                          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md pane quiet border border-white/10 text-[11px] font-mono text-gray-400"
-                        >
-                          <BrandIcon name={tool} />
-                          {tool}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
+              Everything else on this page is a heading with blocks under
+              it at one width. Here the heading stays put in a narrow rail
+              while the stack scrolls past it, so the two halves move at
+              different rates and the section has depth rather than only
+              order. It is also the densest thing on the page by design -
+              a toolkit is a list, and setting a list as fourteen separate
+              rounded boxes makes it look longer than it is and harder to
+              scan than it should be.
+            */}
+            {/* No items-start here: it would collapse the rail's grid cell to
+                the height of the heading, and a sticky element can only travel
+                as far as its own containing block goes. The cell has to stretch
+                to the ledger's height for the rail to stay pinned through it. */}
+            <div className="grid lg:grid-cols-[minmax(0,17rem)_1fr] gap-10 lg:gap-16">
+              {/* The sticky element is the inner div, not the grid cell. A
+                  sticky box travels inside its containing block, so if the
+                  cell itself is sticky it has exactly nowhere to go: stretched
+                  it fills the row, and with self-start it is the row. The cell
+                  stretches, and the heading slides within it. */}
+              <div>
+                <div className="lg:sticky lg:top-28">
+                  <SectionHeading
+                    num="05"
+                    tier="support"
+                    kicker="the toolkit"
+                    title="What I reach for."
+                  />
+                  <p className="text-[13.5px] text-gray-500 leading-relaxed -mt-2">
+                    Laid out as the path a model actually takes to reach a user &mdash; which is the
+                    order I tend to work in.
+                  </p>
+                </div>
+              </div>
 
-                  {i < STACK_PIPELINE.length - 1 && (
-                    <div className="flex items-center justify-center shrink-0 text-gray-700" aria-hidden="true">
-                      <ArrowRight size={16} className="rotate-90 lg:rotate-0" />
-                    </div>
-                  )}
-                </React.Fragment>
-              ))}
-            </div>
-
-            <div className="grid sm:grid-cols-2 gap-3 mt-3">
-              {TOOL_GROUPS.map(group => (
-                <div key={group.label} className="rounded-2xl border border-white/10 pane quiet p-5 flex flex-wrap items-center gap-2">
-                  <span className="font-mono text-[11px] text-accent-ink mr-1">// {group.label}</span>
-                  {group.items.map(item => (
-                    <span
-                      key={item}
-                      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md pane quiet border border-white/10 text-[11px] font-mono text-gray-400"
+              {/* The stages are rows on a spine, not cards. The marks line
+                  up in a column of their own at this density, which is the
+                  point: you can see the whole stack at once. */}
+              <div className="stagger min-w-0">
+                <ol className="border-t border-white/10">
+                  {STACK_PIPELINE.map(stage => (
+                    <li
+                      key={stage.name}
+                      className={`relative grid grid-cols-[2.75rem_1fr] gap-x-4 py-6 border-b border-white/10 ${
+                        stage.highlight ? 'bg-accent/[0.04]' : ''
+                      }`}
                     >
-                      <BrandIcon name={item} />
-                      {item}
-                    </span>
+                      {/* The spine. It replaces the arrows the stages used to
+                          sit between, and unlike them it survives the wrap to
+                          a single column on a phone. */}
+                      <span
+                        aria-hidden="true"
+                        className={`absolute left-[1.3rem] top-0 bottom-0 w-px ${
+                          stage.highlight ? 'bg-accent/50' : 'bg-white/10'
+                        }`}
+                      />
+                      <div className="relative">
+                        <span
+                          className={`relative z-10 block w-[2.1rem] text-center font-mono text-[10px] py-1 rounded-full border ${
+                            stage.highlight
+                              ? 'text-accent-ink border-accent/45 bg-dark'
+                              : 'text-gray-600 border-white/12 bg-dark'
+                          }`}
+                        >
+                          {stage.num}
+                        </span>
+                      </div>
+
+                      <div className="min-w-0">
+                        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-3">
+                          <h3 className="font-display text-[1.05rem] font-bold text-white leading-tight">
+                            {stage.name}
+                          </h3>
+                          <p className="text-[12px] text-gray-500 leading-snug min-w-0">{stage.what}</p>
+                        </div>
+                        <div className="flex flex-wrap gap-x-5 gap-y-2">
+                          {stage.tools.map(tool => (
+                            <span
+                              key={tool}
+                              className="inline-flex items-center gap-1.5 text-[11.5px] font-mono text-gray-400"
+                            >
+                              <BrandIcon name={tool} />
+                              {tool}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+
+                <div className="mt-9 grid sm:grid-cols-2 gap-x-10 gap-y-6">
+                  {TOOL_GROUPS.map(group => (
+                    <div key={group.label}>
+                      <p className="font-mono text-[11px] text-accent-ink mb-2.5">// {group.label}</p>
+                      <div className="flex flex-wrap gap-x-5 gap-y-2">
+                        {group.items.map(item => (
+                          <span
+                            key={item}
+                            className="inline-flex items-center gap-1.5 text-[11.5px] font-mono text-gray-400"
+                          >
+                            <BrandIcon name={item} />
+                            {item}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
                   ))}
                 </div>
-              ))}
+              </div>
             </div>
           </div>
         </SectionWrapper>
