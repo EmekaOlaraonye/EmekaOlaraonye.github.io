@@ -53,7 +53,9 @@ const ResultList = ({
       <span className={tone === 'brand' ? 'text-accent-ink' : 'text-gray-500'}>{icon}</span>
       <p className={`text-[11px] font-mono ${tone === 'brand' ? 'text-accent-ink' : 'text-gray-500'}`}>{label}</p>
     </div>
-    <p className="text-[11px] text-gray-500 mb-4 leading-relaxed">{note}</p>
+    {/* gray-400, not gray-500: at 11px this note measured 4.44 against the
+        brightest star under its own glyphs, a hair short of AA. */}
+    <p className="text-[11px] text-gray-400 mb-4 leading-relaxed">{note}</p>
 
     <ol className="space-y-2">
       {items.map((item, i) => (
