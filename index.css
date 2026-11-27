@@ -991,3 +991,37 @@ body::before {
     will-change: transform;
   }
 }
+
+/*
+  The scroll line.
+
+  Sits on the header's bottom edge and grows left to right. scaleX rather
+  than width so it never lays out, and at the top of the page it is scaled
+  to nothing, which is its own way of being invisible until it matters.
+
+  The gradient compresses rather than reveals as the bar shortens, which
+  is the right way round here: the bright end stays at the leading edge,
+  so the thing your eye follows is the point the page has reached.
+*/
+.nav-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  transform: scaleX(var(--progress, 0));
+  transform-origin: left center;
+  background-image: linear-gradient(
+    90deg,
+    rgba(214, 226, 241, 0.18) 0%,
+    rgba(214, 226, 241, 0.55) 45%,
+    #e8f1ff 100%
+  );
+  pointer-events: none;
+}
+
+@media print {
+  .nav-progress {
+    display: none;
+  }
+}

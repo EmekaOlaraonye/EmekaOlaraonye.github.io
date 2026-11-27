@@ -45,6 +45,7 @@ export function initLiquidLight(): () => void {
   const root = document.documentElement;
   const ambient = document.querySelector<HTMLElement>('.ambient');
   const bead = document.querySelector<HTMLElement>('.cursor-bead');
+  const progress = document.querySelector<HTMLElement>('.nav-progress');
 
   const fine = window.matchMedia('(hover: hover) and (pointer: fine)');
   const calm = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -58,12 +59,29 @@ export function initLiquidLight(): () => void {
   let frame = 0;
   let scrollPending = false;
   let beadPending = false;
+  let progressPending = false;
+  let travelled = -1;
 
   const live = () => fine.matches && !calm.matches && !plain.matches;
 
   const tick = () => {
     frame = 0;
     let again = false;
+
+    /* How far down the page we are. Outside the live() gate on purpose:
+       this is information, not decoration, and someone on reduced motion
+       still wants to know a thirteen-screen page is thirteen screens. */
+    if (progressPending) {
+      progressPending = false;
+      const travel = root.scrollHeight - window.innerHeight;
+      const next = travel > 0 ? Math.min(1, Math.max(0, window.scrollY / travel)) : 0;
+      /* A line 1400px wide cannot show a change of under a thousandth, and
+         writing anyway would invalidate it on every frame of a slow scroll. */
+      if (progress && Math.abs(next - travelled) > 0.001) {
+        travelled = next;
+        progress.style.setProperty('--progress', next.toFixed(4));
+      }
+    }
 
     if (scrollPending && ambient) {
       scrollPending = false;
@@ -142,8 +160,8 @@ export function initLiquidLight(): () => void {
   };
 
   const onScroll = () => {
-    if (!live()) return;
-    scrollPending = true;
+    progressPending = true;
+    if (live()) scrollPending = true;
     schedule();
   };
 
@@ -159,6 +177,9 @@ export function initLiquidLight(): () => void {
       schedule();
     }
   };
+
+  progressPending = true;
+  schedule();
 
   if (live()) {
     /* Only now is the system cursor hidden. Until this line runs the page

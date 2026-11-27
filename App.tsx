@@ -297,6 +297,12 @@ const Header = () => {
     <>
       <SectionRail links={navLinks} active={activeSection} onJump={handleNavClick} />
     <nav className={`sticky top-0 w-full z-50 transition-all duration-500 ${scrolled ? 'bg-dark/95 md:bg-dark/85 md:backdrop-blur-xl border-b border-white/10 py-3' : 'bg-transparent py-6'}`}>
+      {/* How far through the page you are. The rail in the gutter says which
+          section you are in, which is not the same question - thirteen
+          screens is long enough that a reader wants to know whether they are
+          a third of the way down or nearly out. Decorative to a screen
+          reader: the headings already carry the structure. */}
+      <span className="nav-progress" aria-hidden="true" />
       <div className="relative z-50 max-w-7xl mx-auto px-6 flex justify-between items-center gap-4">
         <a
           href="#"
