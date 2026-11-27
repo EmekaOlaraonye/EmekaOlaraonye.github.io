@@ -28,7 +28,11 @@ export const STACK_PIPELINE: PipelineStage[] = [
     num: '02',
     name: 'Model',
     what: 'Learn the interaction, then prove it beats the baseline.',
-    tools: ['Neural Collaborative Filtering', 'Recommender Systems', 'Embedding Models', 'HR@K / NDCG@K'],
+    /* The frameworks belong here. This stage named no tool at all - it
+       listed the field, the architecture and an evaluation metric - so the
+       one stage a research employer reads first was the only one that did
+       not say what the work is actually done in. */
+    tools: ['PyTorch', 'TensorFlow', 'scikit-learn', 'Neural Collaborative Filtering', 'Embedding Models'],
     highlight: true
   },
   {
@@ -88,13 +92,20 @@ export const RESEARCH: Research = {
     'Replace the fixed inner product with a neural interaction function over learned user and item embeddings, then benchmark it against matrix factorization baselines on implicit feedback using top-N ranking metrics.',
   why:
     'E-commerce catalogues are long-tailed and feedback is overwhelmingly implicit — clicks and purchases, not ratings. Gains in ranking quality at the top of the list translate directly into discovery for items that classical methods bury.',
+  /* What this study is, stated at the level the title commits to. The
+     named metrics that used to sit here - HR@K and NDCG@K - were inferred
+     from what the NCF literature conventionally reports, not taken from
+     the work itself, and a specific instrument is exactly the detail an
+     interviewer asks about first. The approach above still says top-N
+     ranking, which the title does entail. */
   methods: [
     'Neural Collaborative Filtering',
-    'Matrix Factorization baselines',
+    'Matrix factorization baselines',
     'Implicit feedback modelling',
     'User / item embedding learning',
-    'Top-N ranking evaluation (HR@K, NDCG@K)',
-    'Python data stack'
+    'Top-N ranking evaluation',
+    'PyTorch',
+    'scikit-learn'
   ]
 };
 

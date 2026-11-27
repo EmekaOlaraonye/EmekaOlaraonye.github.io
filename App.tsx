@@ -520,7 +520,11 @@ const AT_A_GLANCE: [string, React.ReactNode][] = [
   [
     'stack',
     <span className="inline-flex flex-wrap items-center gap-x-3 gap-y-1.5">
-      {['Python', 'TypeScript', 'React', 'Node.js', 'Fastify', 'Firestore', 'Docker'].map(t => (
+      {/* PyTorch in place of Firestore: the first line of this list says
+          researcher, and the stack under it named nothing anyone would
+          train a model with. Firestore is still in the Serve stage, where
+          it belongs. */}
+      {['Python', 'PyTorch', 'TypeScript', 'React', 'Node.js', 'Fastify', 'Docker'].map(t => (
         <span key={t} className="inline-flex items-center gap-1.5">
           <BrandIcon name={t} size={13} />
           {t}
@@ -1192,8 +1196,13 @@ const App = () => {
                 <div className="rounded-[2rem] pane quiet border border-white/10 p-6">
                   <p className="text-[11px] font-mono text-gray-500 mb-3.5">// methods &amp; tooling</p>
                   <div className="flex flex-wrap gap-1.5">
+                    {/* The list mixes methods with the frameworks they are
+                        carried out in, so the frameworks get their marks here
+                        the same as anywhere else; the methods have no logo and
+                        BrandIcon renders nothing for them. */}
                     {RESEARCH.methods.map(m => (
-                      <span key={m} className="px-3 py-1.5 rounded-full bg-brand/10 border border-brand/25 text-accent-ink text-[11px] font-mono">
+                      <span key={m} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-brand/10 border border-brand/25 text-accent-ink text-[11px] font-mono">
+                        <BrandIcon name={m} size={12} />
                         {m}
                       </span>
                     ))}
