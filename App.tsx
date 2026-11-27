@@ -33,6 +33,7 @@ import tsoo13Shot from './project-shots/tsoo13.jpg';
 import portfolioPic from './portfolio-pic.JPG';
 import cvPdf from './Chukwuemeka_Olaraonye_CV.pdf';
 import { initLiquidLight } from './liquidLight';
+import { initTilt } from './tilt';
 
 /* Vite needs a static import per asset, so constants.tsx carries a key and the
    bundled URL is looked up here. */
@@ -864,6 +865,7 @@ const App = () => {
   // entirely - it writes two custom properties on <html> and one on the
   // ambient layer, and touches no component state.
   useEffect(() => initLiquidLight(), []);
+  useEffect(() => initTilt(), []);
 
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
@@ -1022,7 +1024,15 @@ const App = () => {
                   {/* Visual: a screenshot where there is an interface, the
                       architecture where there is not. Ordered first on phones
                       so the work is the first thing seen. */}
-                  <div className="order-first lg:order-last">
+                  {/* The tilt lives on the visual, not on the card. Tipping
+                      the whole card meant re-filtering every glass surface
+                      inside it each frame - measured at 4.5fps of a 25fps
+                      budget - and a backdrop-filter in a moving, preserve-3d
+                      subtree cannot be cached. The screenshot and the diagram
+                      are the only things here with no glass in them, so they
+                      are the only things that can turn cheaply, and they are
+                      where the eye already is. */}
+                  <div data-tilt className="order-first lg:order-last">
                     {project.image ? (
                       <BrowserFrame host={project.demo ? new URL(project.demo).host : undefined}>
                         <img

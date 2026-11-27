@@ -7,7 +7,10 @@
       painted onto it, so the surfaces refract it through the filter they
       already apply to everything else;
     - a slow rotation of the backdrop's hue as you descend, so ten screens of
-      glass are not ten screens of the same colour.
+      glass are not ten screens of the same colour;
+    - the cursor, which is the same two numbers drawn twice: a bead at the
+      raw pointer position and a ring at the eased one, so the trail behind
+      it is the light's own weight rather than a second effect imitating it.
 
   Both are driven from a single animation frame. Writing CSS custom properties
   is the whole of the work here - no element is measured, and no element is
@@ -28,9 +31,20 @@ const EASE = 0.13;
 /* Pixels. Under this the light has arrived and the frame loop can stop. */
 const SETTLED = 0.35;
 
+/* What the ring opens over. Text fields are tested first and win, because an
+   input matches both and should keep its caret. */
+const TEXTUAL =
+  'input:not([type=button]):not([type=submit]):not([type=reset])' +
+  ':not([type=checkbox]):not([type=radio]), textarea, [contenteditable="true"]';
+
+const ACTIONABLE =
+  'a[href], button, input, select, summary, label[for], canvas,' +
+  '[role="button"], [tabindex]:not([tabindex="-1"])';
+
 export function initLiquidLight(): () => void {
   const root = document.documentElement;
   const ambient = document.querySelector<HTMLElement>('.ambient');
+  const bead = document.querySelector<HTMLElement>('.cursor-bead');
 
   const fine = window.matchMedia('(hover: hover) and (pointer: fine)');
   const calm = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -43,6 +57,7 @@ export function initLiquidLight(): () => void {
   let shift = 0;
   let frame = 0;
   let scrollPending = false;
+  let beadPending = false;
 
   const live = () => fine.matches && !calm.matches && !plain.matches;
 
@@ -71,6 +86,18 @@ export function initLiquidLight(): () => void {
       document.body.style.setProperty('--star-b', `${(90 - y * 0.15).toFixed(1)}px`);
     }
 
+    /* The bead sits on the pointer itself. Written here rather than in the
+       event so a burst of pointermoves still costs one write, and written
+       onto the bead rather than onto :root - a custom property set on the
+       root invalidates every element that could inherit it, which is the
+       whole tree, twice a frame, to move one 7px dot. The ring keeps
+       reading --lx/--ly because the light pays for those already. */
+    if (beadPending && bead) {
+      beadPending = false;
+      bead.style.setProperty('--x', `${targetX}px`);
+      bead.style.setProperty('--y', `${targetY}px`);
+    }
+
     const dx = targetX - lightX;
     const dy = targetY - lightY;
     if (Math.abs(dx) > SETTLED || Math.abs(dy) > SETTLED) {
@@ -92,6 +119,7 @@ export function initLiquidLight(): () => void {
     if (!live()) return;
     targetX = event.clientX;
     targetY = event.clientY;
+    beadPending = true;
     root.setAttribute('data-lit', '1');
     schedule();
   };
@@ -99,6 +127,19 @@ export function initLiquidLight(): () => void {
   /* Leaving the window should put the light out rather than strand it at the
      edge of the screen. */
   const onPointerLeave = () => root.removeAttribute('data-lit');
+
+  /* One delegated listener rather than a handler per control, so adding a
+     button anywhere on the page needs nothing here. */
+  const onPointerOver = (event: PointerEvent) => {
+    if (!live()) return;
+    const target = event.target as Element | null;
+    if (!target || typeof target.closest !== 'function') return;
+    root.dataset.cursor = target.closest(TEXTUAL)
+      ? 'text'
+      : target.closest(ACTIONABLE)
+        ? 'act'
+        : 'on';
+  };
 
   const onScroll = () => {
     if (!live()) return;
@@ -108,21 +149,28 @@ export function initLiquidLight(): () => void {
 
   const onPreferenceChange = () => {
     if (!live()) {
+      root.removeAttribute('data-cursor');
       root.removeAttribute('data-lit');
       ambient?.style.removeProperty('--amb-shift');
       shift = 0;
     } else {
+      root.dataset.cursor = 'on';
       scrollPending = true;
       schedule();
     }
   };
 
   if (live()) {
+    /* Only now is the system cursor hidden. Until this line runs the page
+       has an ordinary arrow, which is what a visitor with no JavaScript,
+       a touchscreen or reduced motion keeps. */
+    root.dataset.cursor = 'on';
     scrollPending = true;
     schedule();
   }
 
   window.addEventListener('pointermove', onPointerMove, { passive: true });
+  document.addEventListener('pointerover', onPointerOver, { passive: true });
   document.addEventListener('pointerleave', onPointerLeave);
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll, { passive: true });
@@ -133,6 +181,7 @@ export function initLiquidLight(): () => void {
   return () => {
     if (frame) cancelAnimationFrame(frame);
     window.removeEventListener('pointermove', onPointerMove);
+    document.removeEventListener('pointerover', onPointerOver);
     document.removeEventListener('pointerleave', onPointerLeave);
     window.removeEventListener('scroll', onScroll);
     window.removeEventListener('resize', onScroll);
@@ -140,5 +189,6 @@ export function initLiquidLight(): () => void {
     calm.removeEventListener('change', onPreferenceChange);
     plain.removeEventListener('change', onPreferenceChange);
     root.removeAttribute('data-lit');
+    root.removeAttribute('data-cursor');
   };
 }

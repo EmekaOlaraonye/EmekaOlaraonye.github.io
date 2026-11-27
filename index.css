@@ -858,3 +858,136 @@ body::before {
     transform: none;
   }
 }
+
+/*
+  The cursor.
+
+  A chrome bead at the true pointer position and a ring that lags behind
+  it. The lag is not a tuned imitation of weight: the ring is drawn at
+  --lx/--ly, the eased position the pointer light already travels to, so
+  it is literally the rim of the pool of light the page has always had.
+  One loop writes both.
+
+  Hidden until the script sets data-cursor, so a page with no JavaScript
+  keeps its ordinary arrow; the script only sets it for a fine pointer
+  with motion allowed, which means anyone on reduced motion, a trackpad
+  with coarse pointer, or a touchscreen keeps the system cursor too.
+  Over a text field it steps aside and gives the caret back.
+*/
+.cursor-bead,
+.cursor-ring {
+  display: none;
+}
+
+:root[data-cursor] .cursor-bead,
+:root[data-cursor] .cursor-ring {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  /* Above the noise overlay at 9999, which is the topmost painted layer. */
+  z-index: 10000;
+  pointer-events: none;
+  border-radius: 50%;
+  opacity: 1;
+  transition: opacity 0.25s ease;
+}
+
+/* Only transform is animated per frame, so neither element ever lays out. */
+:root[data-cursor] .cursor-bead {
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3.5px;
+  background: radial-gradient(circle at 34% 30%, #ffffff 0%, #dde8f7 40%, #8ea3be 100%);
+  box-shadow: 0 0 7px rgba(214, 226, 241, 0.5);
+  transform: translate3d(var(--x, 50vw), var(--y, 50vh), 0);
+}
+
+:root[data-cursor] .cursor-ring {
+  width: 36px;
+  height: 36px;
+  margin: -18px 0 0 -18px;
+  border: 1px solid rgba(214, 226, 241, 0.4);
+  background: radial-gradient(circle at 32% 26%, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0) 64%);
+  transform: translate3d(var(--lx, 50vw), var(--ly, 50vh), 0) scale(var(--ring, 1));
+  transition:
+    opacity 0.25s ease,
+    border-color 0.3s ease,
+    background-color 0.3s ease;
+}
+
+/* Over something operable the ring opens and takes the accent, and the bead
+   gets out of the way - the ring is the thing saying "this is live". */
+:root[data-cursor='act'] {
+  --ring: 1.5;
+}
+
+:root[data-cursor='act'] .cursor-ring {
+  border-color: rgba(168, 216, 255, 0.72);
+  background-color: rgba(168, 216, 255, 0.07);
+}
+
+/* Dimmed, but not faded out: the ring lags by design, so the bead is the
+   only thing marking the exact point, and the links in the rail are 20px
+   tall. Precision beats the tidier look of letting the ring take over. */
+:root[data-cursor='act'] .cursor-bead {
+  opacity: 0.75;
+}
+
+/* Pointer out of the window, or over text it should not sit on top of. */
+:root[data-cursor]:not([data-lit]) .cursor-bead,
+:root[data-cursor]:not([data-lit]) .cursor-ring,
+:root[data-cursor='text'] .cursor-bead,
+:root[data-cursor='text'] .cursor-ring {
+  opacity: 0;
+}
+
+/* The system cursor is hidden only while ours is up. `*` is specificity 0,
+   so the caret rule below wins on its own without !important. */
+:root[data-cursor],
+:root[data-cursor] * {
+  cursor: none;
+}
+
+:root[data-cursor] :is(input, textarea, select, [contenteditable='true']) {
+  cursor: text;
+}
+
+@media print {
+  .cursor-bead,
+  .cursor-ring {
+    display: none !important;
+  }
+}
+
+/*
+  The tilting visual.
+
+  Gated behind a fine pointer and allowed motion, so on a phone or under
+  reduced motion the screenshots are exactly the flat screenshots they
+  were.
+
+  This used to tip the whole project card. It looked better and cost
+  4.5fps of a 25fps budget: a card is mostly glass, and a backdrop-filter
+  inside a rotating, preserve-3d subtree has to be recomputed every frame
+  because there is nothing stable to cache. The screenshot and the
+  architecture diagram carry no glass, so they turn for almost nothing -
+  and they are the part of the card a reader is looking at anyway.
+
+  The follow is nearly immediate and the return is slow: easing the follow
+  reads as the element lagging behind the pointer, while easing the return
+  is the only thing that stops it snapping flat.
+*/
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  [data-tilt] {
+    transform: perspective(1100px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+    transition: transform 0.55s cubic-bezier(0.22, 0.85, 0.2, 1);
+  }
+
+  [data-tilt][data-tilting] {
+    transition-duration: 0.12s;
+    /* Only while it is actually moving - a permanent promotion would keep
+       three extra layers alive for the whole page. */
+    will-change: transform;
+  }
+}

@@ -235,6 +235,22 @@
     </svg>
     <div class="ambient" aria-hidden="true"></div>
     <div class="lumen" aria-hidden="true"></div>
+    <!--
+      The cursor. Two parts: a chrome bead at the true pointer position, and
+      a ring that lags behind it.
+
+      The ring is not a second animation. The page already eases a pool of
+      light toward the pointer and publishes where it has got to, so the ring
+      reads that same position and becomes the rim of the light that was
+      already there - one loop, one set of numbers, and the trail is the
+      light's own weight rather than a decoration tuned to imitate it.
+
+      Here rather than in React because both are siblings of the other fixed
+      layers and never re-render; they are also hidden until the script says
+      otherwise, so a page with no JS keeps its ordinary arrow.
+    -->
+    <div class="cursor-ring" aria-hidden="true"></div>
+    <div class="cursor-bead" aria-hidden="true"></div>
     <div id="root"></div>
 <script type="module" src="/index.tsx"></script>
 </body>
