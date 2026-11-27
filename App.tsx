@@ -467,27 +467,6 @@ const STRATEGY_SCENARIOS = [
   }
 ] as const;
 
-const NOW_BUILDING = [
-  {
-    title: 'Neural Collaborative Filtering for E-Commerce',
-    status: 'MSc Research',
-    detail: 'Benchmarking learned interaction functions against matrix factorization baselines on implicit feedback.',
-    progress: '52%'
-  },
-  {
-    title: 'Tickety — Ticketing Platform Backend',
-    status: 'Building',
-    detail: 'Fastify service on Cloud Run owning authorization, the event catalogue, and sales reporting.',
-    progress: '60%'
-  },
-  {
-    title: 'Mentoring & Speaking on AI Careers',
-    status: 'Ongoing',
-    detail: 'Service Xcellence Mentorship and the CT Graduate Conference — helping graduates build for an AI-shaped job market.',
-    progress: '81%'
-  }
-];
-
 /* The facts an employer needs inside five seconds, in scan order. */
 /*
   Age, computed rather than written down, so it cannot go stale - a hardcoded
